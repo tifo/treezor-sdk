@@ -1,0 +1,60 @@
+### .gitattributes #############################################################
+#                                                                              #
+# Reference:                                                                   #
+# - https://git-scm.com/docs/gitattributes                                     #
+# - https://medium.com/@pablorsk/be-a-git-ninja-the-gitattributes-file-e58c07c9e915
+# - https://github.com/dotnet/corefx/blob/master/.gitattributes                #
+#                                                                              #
+################################################################################
+
+### File management rules ######################################################
+
+# Default rules
+*               text=auto
+*.md            text
+*.txt           text
+
+# Config file rules
+*.json          text
+*.toml          text
+*.yml           text
+*.yaml          text
+
+# Golang rules
+*.go            text
+go.mod          text eol=lf
+go.sum          -diff
+
+# React / Web rules
+*.html          text
+*.js            text
+*.css           text
+*.scss          text
+*.lock          -diff
+*-lock.json     -diff
+
+# Protobuf rules
+*.proto         text
+*.pb.go         -diff
+*.pb.gw.go      -diff
+*.swagger.json  -diff
+
+# Script rules
+*.sh            text
+
+# Images rules
+*.png           binary
+*.jpg           binary
+*.jpeg          binary
+*.svg           binary
+*.ico           binary
+*.pdf           binary
+
+### Export management rules ####################################################
+
+# Prevent Git specific files / folder from being exported (via Download ZIP)
+.gitattributes  export-ignore
+.gitignore      export-ignore
+/.github/       export-ignore
+
+### END OF FILE ################################################################
