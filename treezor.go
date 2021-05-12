@@ -335,6 +335,9 @@ func (t *BearerAuthTransport) Client() *http.Client {
 }
 
 func (t *BearerAuthTransport) transport() http.RoundTripper {
+	if t.Transport == nil {
+		return http.DefaultTransport
+	}
 	return t.Transport
 }
 
