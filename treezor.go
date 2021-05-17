@@ -15,7 +15,6 @@ import (
 	"strings"
 
 	"github.com/google/go-querystring/query"
-	"github.com/hashicorp/go-cleanhttp"
 	"github.com/pkg/errors"
 )
 
@@ -336,10 +335,10 @@ func (t *BearerAuthTransport) Client() *http.Client {
 }
 
 func (t *BearerAuthTransport) transport() http.RoundTripper {
-	if t.Transport != nil {
-		return t.Transport
+	if t.Transport == nil {
+		return http.DefaultTransport
 	}
-	return cleanhttp.DefaultTransport()
+	return t.Transport
 }
 
 // Access contains global keys to all Treezor objects.
