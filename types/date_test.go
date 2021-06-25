@@ -1,4 +1,4 @@
-package treezor
+package types
 
 import (
 	"encoding/json"

@@ -1,4 +1,4 @@
-package treezor
+package types
 
 import (
 	"encoding/json"
@@ -59,18 +59,17 @@ func TestTimestamp_UnmarshalJSON(t *testing.T) {
 		assert.Equal(t, expectedTi, ti)
 		assert.Nil(t, err)
 	})
-	t.Run("Error wrong format", func(t *testing.T) {
+	t.Run("Success with wrong format", func(t *testing.T) {
 		dateByte := []byte(`"2019-10-01"`)
 
 		ti := &timestamp{}
 
+		expectedTi := &timestamp{
+			OriginalPayload: string(dateByte),
+		}
+
 		err := json.Unmarshal(dateByte, ti)
-		assert.Equal(t, err, &time.ParseError{
-			Layout:     "\"2006-01-02 15:04:05\"",
-			Value:      "\"2019-10-01\"",
-			LayoutElem: " ",
-			ValueElem:  "\"",
-			Message:    "",
-		})
+		assert.Equal(t, expectedTi, ti)
+		assert.Nil(t, err)
 	})
 }

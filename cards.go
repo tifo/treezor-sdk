@@ -2,20 +2,13 @@ package treezor
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 
 	"github.com/pkg/errors"
-)
 
-// Available permissions for a card.
-const (
-	Noop    int = 0
-	Foreign     = 1
-	Online      = 2
-	ATM         = 4
-	NFC         = 8
-	All         = 15
+	"github.com/tifo/treezor-sdk/types"
 )
 
 // Error code for given status
@@ -26,12 +19,27 @@ const (
 	ErrCodeCardBlocked  = 32111
 )
 
+type CardPermissionMask int8
+
+// Available permissions for a card.
+const (
+	Foreign CardPermissionMask = 1 << iota
+	Online
+	ATM
+	NFC
+)
+
+const (
+	Noop CardPermissionMask = 0
+	All  CardPermissionMask = Foreign | Online | ATM | NFC
+)
+
 // ConvertPermissions map binary field of card permission to
 // an internal value at Treezor which groups those permissions.
 //
 // e.g.: ConvertPermissions(ATM|Foreign) returns TRZ-CU-006.
 //       ConvertPermissions(All) returns TRZ-CU-016.
-func ConvertPermissions(permissions int) string {
+func ConvertPermissions(permissions CardPermissionMask) string {
 	if permissions > All {
 		return "TRZ-CU-016"
 	}
@@ -52,74 +60,99 @@ type CardResponse struct {
 
 // Card represents a physical or virtual card.
 type Card struct {
-	Access
-	CardID                     *string          `json:"cardId,omitempty"`
-	UserID                     *string          `json:"userId,omitempty"`
-	WalletID                   *string          `json:"walletId,omitempty"`
-	PermsGroup                 *string          `json:"permsGroup,omitempty"`
-	WalletCardtransactionID    *string          `json:"walletCardtransactionId,omitempty"`
-	CardPrint                  *string          `json:"cardPrint,omitempty"`
-	CardDesign                 *string          `json:"cardDesign,omitempty"`
-	MccRestrictionGroupID      *string          `json:"mccRestrictionGroupId,omitempty"`
-	MerchantRestrictionGroupID *string          `json:"merchantRestrictionGroupId,omitempty"`
-	PublicToken                *string          `json:"publicToken,omitempty"`
-	IsPhysical                 *int64           `json:"physical,string,omitempty"`
-	CardTag                    *string          `json:"cardTag,omitempty"`
-	StatusCode                 *string          `json:"statusCode,omitempty"`
-	LockStatus                 *int64           `json:"lockStatus,omitempty"`
-	IsLive                     *int64           `json:"isLive,string,omitempty"`
-	PINTryExceeds              *int64           `json:"pinTryExceeds,string,omitempty"`
-	MaskedPan                  *string          `json:"maskedPan,omitempty"`
-	EmbossedName               *string          `json:"embossedName,omitempty"`
-	ExpiryDate                 *Date            `json:"expiryDate,omitempty"`
-	CVV                        *string          `json:"CVV,omitempty"`
-	StartDate                  *Date            `json:"startDate,omitempty"`
-	EndDate                    *Date            `json:"endDate,omitempty"`
-	CountryCode                *string          `json:"countryCode,omitempty"`
-	CurrencyCode               Currency         `json:"currencyCode,omitempty"`
-	Lang                       *string          `json:"lang,omitempty"`
-	DeliveryTitle              *string          `json:"deliveryTitle,omitempty"`
-	DeliveryFirstname          *string          `json:"deliveryFirstname,omitempty"`
-	DeliveryLastname           *string          `json:"deliveryLastname,omitempty"`
-	DeliveryAddress1           *string          `json:"deliveryAddress1,omitempty"`
-	DeliveryAddress2           *string          `json:"deliveryAddress2,omitempty"`
-	DeliveryAddress3           *string          `json:"deliveryAddress3,omitempty"`
-	DeliveryCity               *string          `json:"deliveryCity,omitempty"`
-	DeliveryPostcode           *string          `json:"deliveryPostcode,omitempty"`
-	DeliveryCountry            *string          `json:"deliveryCountry,omitempty"`
-	MobileSent                 *string          `json:"mobileSent,omitempty"`
-	LimitsGroup                *string          `json:"limitsGroup,omitempty"`
-	VirtualConverted           *int64           `json:"virtualConverted,string,omitempty"`
-	OptionATM                  *int64           `json:"optionAtm,string,omitempty"`
-	OptionForeign              *int64           `json:"optionForeign,string,omitempty"`
-	OptionOnline               *int64           `json:"optionOnline,string,omitempty"`
-	OptionNFC                  *int64           `json:"optionNfc,string,omitempty"`
-	PIN                        *string          `json:"pin,omitempty"`
-	LimitATMYear               *int64           `json:"limitAtmYear,string,omitempty"`
-	LimitATMMonth              *int64           `json:"limitAtmMonth,string,omitempty"`
-	LimitATMWeek               *int64           `json:"limitAtmWeek,string,omitempty"`
-	LimitATMDay                *int64           `json:"limitAtmDay,string,omitempty"`
-	LimitATMAll                *int64           `json:"limitAtmAll,string,omitempty"`
-	LimitPaymentYear           *int64           `json:"limitPaymentYear,string,omitempty"`
-	LimitPaymentMonth          *int64           `json:"limitPaymentMonth,string,omitempty"`
-	LimitPaymentWeek           *int64           `json:"limitPaymentWeek,string,omitempty"`
-	LimitPaymentDay            *int64           `json:"limitPaymentDay,string,omitempty"`
-	LimitPaymentAll            *int64           `json:"limitPaymentAll,string,omitempty"`
-	TotalATMYear               *float64         `json:"totalAtmYear,string,omitempty"`
-	TotalATMMonth              *float64         `json:"totalAtmMonth,string,omitempty"`
-	TotalATMWeek               *float64         `json:"totalAtmWeek,string,omitempty"`
-	TotalATMDay                *float64         `json:"totalAtmDay,string,omitempty"`
-	TotalATMAll                *float64         `json:"totalAtmAll,string,omitempty"`
-	TotalPaymentYear           *float64         `json:"totalPaymentYear,string,omitempty"`
-	TotalPaymentMonth          *float64         `json:"totalPaymentMonth,string,omitempty"`
-	TotalPaymentWeek           *float64         `json:"totalPaymentWeek,string,omitempty"`
-	TotalPaymentDay            *float64         `json:"totalPaymentDay,string,omitempty"`
-	TotalPaymentAll            *float64         `json:"totalPaymentAll,string,omitempty"`
-	CreatedBy                  *string          `json:"createdBy,omitempty"`
-	CreatedDate                *TimestampLondon `json:"createdDate,omitempty"`
-	ModifiedBy                 *string          `json:"modifiedBy,omitempty"`
-	ModifiedDate               *TimestampLondon `json:"modifiedDate,omitempty"`
-	TotalRows                  *int64           `json:"totalRows,string,omitempty"`
+	CardID                     *types.Identifier             `json:"cardId,omitempty"`
+	UserID                     *types.Identifier             `json:"userId,omitempty"`
+	WalletID                   *types.Identifier             `json:"walletId,omitempty"`
+	WalletCardtransactionID    *types.Identifier             `json:"walletCardtransactionId,omitempty"`
+	MccRestrictionGroupID      *types.Identifier             `json:"mccRestrictionGroupId,omitempty"`
+	MerchantRestrictionGroupID *types.Identifier             `json:"merchantRestrictionGroupId,omitempty"`
+	CountryRestrictionGroupID  *types.Identifier             `json:"countryRestrictionGroupID,omitempty"`
+	EventName                  *string                       `json:"eventName,omitempty"`
+	EventAlias                 *string                       `json:"eventAlias,omitempty"`
+	PublicToken                *string                       `json:"publicToken,omitempty"`
+	CardTag                    *string                       `json:"cardTag,omitempty"`
+	StatusCode                 *string                       `json:"statusCode,omitempty"`
+	IsLive                     *types.Boolean                `json:"isLive,omitempty"`
+	PINTryExceeds              *types.Boolean                `json:"pinTryExceeds,omitempty"`
+	MaskedPan                  *string                       `json:"maskedPan,omitempty"`
+	EmbossedName               *string                       `json:"embossedName,omitempty"`
+	ExpiryDate                 *types.Date                   `json:"expiryDate,omitempty"`
+	CVV                        *string                       `json:"CVV,omitempty"`
+	StartDate                  *types.Date                   `json:"startDate,omitempty"`
+	EndDate                    *types.Date                   `json:"endDate,omitempty"`
+	CountryCode                *string                       `json:"countryCode,omitempty"`
+	CurrencyCode               *types.Currency               `json:"currencyCode,omitempty"`
+	Lang                       *string                       `json:"lang,omitempty"`
+	DeliveryTitle              *string                       `json:"deliveryTitle,omitempty"`
+	DeliveryLastname           *string                       `json:"deliveryLastname,omitempty"`
+	DeliveryFirstname          *string                       `json:"deliveryFirstname,omitempty"`
+	DeliveryAddress1           *string                       `json:"deliveryAddress1,omitempty"`
+	DeliveryAddress2           *string                       `json:"deliveryAddress2,omitempty"`
+	DeliveryAddress3           *string                       `json:"deliveryAddress3,omitempty"`
+	DeliveryCity               *string                       `json:"deliveryCity,omitempty"`
+	DeliveryPostcode           *string                       `json:"deliveryPostcode,omitempty"`
+	DeliveryCountry            *string                       `json:"deliveryCountry,omitempty"`
+	MobileSent                 *string                       `json:"mobileSent,omitempty"`
+	LimitsGroup                *string                       `json:"limitsGroup,omitempty"`
+	PermsGroup                 *string                       `json:"permsGroup,omitempty"` // NOTE: could be a custom type using CardPermissionMask
+	CardDesign                 *string                       `json:"cardDesign,omitempty"`
+	VirtualConverted           *types.Boolean                `json:"virtualConverted,omitempty"`
+	Physical                   *types.Boolean                `json:"physical,string,omitempty"`
+	OptionATM                  *types.Boolean                `json:"optionAtm,omitempty"`
+	OptionForeign              *types.Boolean                `json:"optionForeign,omitempty"`
+	OptionOnline               *types.Boolean                `json:"optionOnline,omitempty"`
+	OptionNFC                  *types.Boolean                `json:"optionNfc,omitempty"`
+	LimitATMYear               *types.Integer                `json:"limitAtmYear,omitempty"`
+	LimitATMMonth              *types.Integer                `json:"limitAtmMonth,omitempty"`
+	LimitATMWeek               *types.Integer                `json:"limitAtmWeek,omitempty"`
+	LimitATMDay                *types.Integer                `json:"limitAtmDay,omitempty"`
+	LimitATMAll                *types.Integer                `json:"limitAtmAll,omitempty"`
+	LimitPaymentYear           *types.Integer                `json:"limitPaymentYear,omitempty"`
+	LimitPaymentMonth          *types.Integer                `json:"limitPaymentMonth,omitempty"`
+	LimitPaymentWeek           *types.Integer                `json:"limitPaymentWeek,omitempty"`
+	LimitPaymentDay            *types.Integer                `json:"limitPaymentDay,omitempty"`
+	LimitPaymentAll            *types.Integer                `json:"limitPaymentAll,omitempty"`
+	PaymentDailyLimit          *types.Amount                 `json:"paymentDailyLimit,omitempty"`
+	RestrictionGroupLimits     []*CardRestrictionGroupLimits `json:"restrictionGroupLimits,omitempty"`
+	TotalATMYear               *types.Amount                 `json:"totalAtmYear,omitempty"`
+	TotalATMMonth              *types.Amount                 `json:"totalAtmMonth,omitempty"`
+	TotalATMWeek               *types.Amount                 `json:"totalAtmWeek,omitempty"`
+	TotalATMDay                *types.Amount                 `json:"totalAtmDay,omitempty"`
+	TotalATMAll                *types.Amount                 `json:"totalAtmAll,omitempty"`
+	TotalPaymentYear           *types.Amount                 `json:"totalPaymentYear,omitempty"`
+	TotalPaymentMonth          *types.Amount                 `json:"totalPaymentMonth,omitempty"`
+	TotalPaymentWeek           *types.Amount                 `json:"totalPaymentWeek,omitempty"`
+	TotalPaymentDay            *types.Amount                 `json:"totalPaymentDay,omitempty"`
+	TotalPaymentAll            *types.Amount                 `json:"totalPaymentAll,omitempty"`
+	CreatedBy                  *types.Identifier             `json:"createdBy,omitempty"`
+	CreatedDate                *types.TimestampLondon        `json:"createdDate,omitempty"`
+	ModifiedBy                 *types.Identifier             `json:"modifiedBy,omitempty"`
+	ModifiedDate               *types.TimestampLondon        `json:"modifiedDate,omitempty"`
+	CancellationNumber         *types.Integer                `json:"cancellationNumber,omitempty"`
+	TotalRows                  *types.Integer                `json:"totalRows,omitempty"`
+}
+
+type CardRestrictionGroupLimits struct {
+	PaymentDailyLimit           *types.Amount `json:"paymentDailyLimit,omitempty"`
+	MccRestrictionGroups        *string       `json:"mccRestrictionGroups,omitempty"`        // TODO: verify model
+	CountryRestrictionGroups    *string       `json:"countryRestrictionGroups,omitempty"`    // TODO: verify model
+	MerchantIdRestrictionGroups *string       `json:"merchantIdRestrictionGroups,omitempty"` // TODO: verify model
+}
+
+type CreateVirtualCardOptions struct {
+	// Card.CreateVirtual / Card.RequestPhysical only data
+	CardPrint *string `json:"cardPrint,omitempty"`
+	PIN       *string `json:"pin,omitempty"`
+	// NOTE: might need to be stored in another struct as you don't need to send the whole card model when update a card status
+	LockStatus *int64 `json:"lockStatus,omitempty"`
+	// TODO: CreateCardRequest has much more field than cards and might require its own type (missing fields such as Anonymous, ...)
+}
+
+type RestrictionGroupLimits struct {
+	PaymentDailyLimit           *json.Number `json:"paymentDailyLimit,omitempty"`
+	MccRestrictionGroups        *json.Number `json:"mccRestrictionGroups,omitempty"`
+	CountryRestrictionGroups    *json.Number `json:"countryRestrictionGroups,omitempty"`
+	MerchantIdRestrictionGroups *json.Number `json:"merchantIdRestrictionGroups,omitempty"`
 }
 
 // CreateVirtual will create a virtual card.
@@ -278,11 +311,15 @@ const (
 	Stolen
 )
 
+type CardLockUnlockOptions struct {
+	LockStatus *int64 `json:"lockStatus,omitempty"`
+}
+
 // LockUnlock toggle the lock or unlock state of a card. If the card is locked, calling this function
 // will unlock the card, and vice versa.
 func (s *CardService) LockUnlock(ctx context.Context, cardID string, lockStatus LockStatus) (*Card, *http.Response, error) {
 	u := fmt.Sprintf("cards/%s/LockUnlock/", cardID)
-	req, _ := s.client.NewRequest(http.MethodPut, u, &Card{
+	req, _ := s.client.NewRequest(http.MethodPut, u, &CardLockUnlockOptions{
 		LockStatus: Int64(int64(lockStatus)),
 	})
 

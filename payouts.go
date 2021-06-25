@@ -2,10 +2,13 @@ package treezor
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 
 	"github.com/pkg/errors"
+
+	"github.com/tifo/treezor-sdk/types"
 )
 
 // PayoutService handles communication with the payout related
@@ -20,30 +23,57 @@ type PayoutResponse struct {
 	Payouts []*Payout `json:"payouts"`
 }
 
+// PayoutType defines the type of payout we're doing.
+type PayoutType int32
+
+const (
+	// CreditTransferPayout is a payout type used for sepa transfer transaction.
+	CreditTransferPayout PayoutType = 1
+	// DirectDebitPayout is payout type used for direct debit transaction.
+	DirectDebitPayout PayoutType = 2
+)
+
+func (t *PayoutType) UnmarshalJSON(data []byte) error {
+	var str json.Number
+	err := json.Unmarshal(data, &str)
+	if err != nil {
+		return err
+	}
+	v, err := str.Int64()
+	if err != nil {
+		return err
+	}
+	*t = PayoutType(v)
+	return nil
+}
+
 // Payout represents a pay-out to a beneficiary.
 type Payout struct {
-	Access
-	PayoutID               *string         `json:"payoutId,omitempty"`
-	PayoutTag              *string         `json:"payoutTag,omitempty"`
-	PayoutStatus           *string         `json:"payoutStatus,omitempty"`
-	PayoutTypeID           *string         `json:"payoutTypeId,omitempty"`
-	PayoutType             *string         `json:"payoutType,omitempty"`
-	WalletID               *string         `json:"walletId,omitempty"`
-	PayoutDate             *Date           `json:"payoutDate,omitempty"`
-	WalletEventName        *string         `json:"walletEventName,omitempty"`
-	WalletAlias            *string         `json:"walletAlias,omitempty"`
-	UserFirstname          *string         `json:"userFirstname,omitempty"`
-	UserLastname           *string         `json:"userLastname,omitempty"`
-	UserID                 *string         `json:"userId,omitempty"`
-	BeneficiaryID          *string         `json:"beneficiaryId,omitempty"`
-	UniqueMandateReference *string         `json:"uniqueMandateReference,omitempty"`
-	Label                  *string         `json:"label,omitempty"`
-	Amount                 *float64        `json:"amount,string,omitempty"`
-	Currency               Currency        `json:"currency,omitempty"`
-	PartnerFee             *float64        `json:"partnerFee,string,omitempty"`
-	CreatedDate            *TimestampParis `json:"createdDate,omitempty"`
-	ModifiedDate           *TimestampParis `json:"modifiedDate,omitempty"`
-	TotalRows              *int64          `json:"totalRows,string,omitempty"`
+	PayoutID               *types.Identifier     `json:"payoutId,omitempty"`
+	PayoutTag              *string               `json:"payoutTag,omitempty"`
+	PayoutStatus           *string               `json:"payoutStatus,omitempty"` // NOTE: can be an enum
+	PayoutTypeID           *PayoutType           `json:"payoutTypeId,omitempty"`
+	PayoutType             *string               `json:"payoutType,omitempty"`
+	WalletID               *types.Identifier     `json:"walletId,omitempty"`
+	PayoutDate             *types.Date           `json:"payoutDate,omitempty"`
+	WalletEventName        *string               `json:"walletEventName,omitempty"`
+	WalletAlias            *string               `json:"walletAlias,omitempty"`
+	UserFirstname          *string               `json:"userFirstname,omitempty"`
+	UserLastname           *string               `json:"userLastname,omitempty"`
+	UserID                 *types.Identifier     `json:"userId,omitempty"`
+	BankAccountID          *types.Identifier     `json:"bankaccountId,omitempty"`
+	BeneficiaryID          *types.Identifier     `json:"beneficiaryId,omitempty"`
+	UniqueMandateReference *string               `json:"uniqueMandateReference,omitempty"`
+	BankAccountIBAN        *string               `json:"bankaccountIBAN,omitempty"`
+	Label                  *string               `json:"label,omitempty"`
+	Amount                 *types.Amount         `json:"amount,omitempty"`
+	Currency               *types.Currency       `json:"currency,omitempty"`
+	PartnerFee             *types.Amount         `json:"partnerFee,omitempty"`
+	CreatedDate            *types.TimestampParis `json:"createdDate,omitempty"`
+	ModifiedDate           *types.TimestampParis `json:"modifiedDate,omitempty"`
+	TotalRows              *types.Integer        `json:"totalRows,omitempty"`
+	CodeStatus             *types.Identifier     `json:"codeStatus,omitempty"`        // NOTE: Legacy + Webhook
+	InformationStatus      *string               `json:"informationStatus,omitempty"` // NOTE: Legacy + Webhook
 }
 
 // Create creates a Treezor pay-out.

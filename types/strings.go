@@ -1,14 +1,14 @@
-package treezor
+package types
 
 import (
 	"bytes"
 	"fmt"
 	"io"
-
 	"reflect"
 )
 
 var (
+	dateType            = reflect.TypeOf(Date{})
 	timestampParisType  = reflect.TypeOf(TimestampParis{})
 	timestampLondonType = reflect.TypeOf(TimestampLondon{})
 )
@@ -36,10 +36,10 @@ func stringifyValue(w io.Writer, val reflect.Value) {
 	case reflect.String:
 		fmt.Fprintf(w, `"%s"`, v)
 	case reflect.Slice:
-		w.Write([]byte{'['})
+		_, _ = w.Write([]byte{'['})
 		for i := 0; i < v.Len(); i++ {
 			if i > 0 {
-				w.Write([]byte{' '})
+				_, _ = w.Write([]byte{' '})
 			}
 
 			stringifyValue(w, v.Index(i))
@@ -53,7 +53,7 @@ func stringifyValue(w io.Writer, val reflect.Value) {
 		}
 
 		// special handling of Timestamp values
-		if v.Type() == timestampParisType || v.Type() == timestampLondonType {
+		if v.Type() == timestampParisType || v.Type() == timestampLondonType || v.Type() == dateType {
 			fmt.Fprintf(w, "{%s}", v.Interface())
 			return
 		}

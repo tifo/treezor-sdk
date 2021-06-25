@@ -5,7 +5,6 @@ package treezor
 import (
 	"encoding/json"
 	"net/http"
-	"time"
 )
 
 // GetIdempotencyKey returns the IdempotencyKey field if it's non-nil, zero value otherwise.
@@ -32,46 +31,6 @@ func (a *Access) GetUserIP() string {
 	return ""
 }
 
-// GetAuthorizations returns the Authorizations field if it's non-nil, zero value otherwise.
-func (b *Balance) GetAuthorizations() float64 {
-	if b != nil && b.Authorizations != nil {
-		return *b.Authorizations
-	}
-	return 0.0
-}
-
-// GetAuthorizedBalance returns the AuthorizedBalance field if it's non-nil, zero value otherwise.
-func (b *Balance) GetAuthorizedBalance() float64 {
-	if b != nil && b.AuthorizedBalance != nil {
-		return *b.AuthorizedBalance
-	}
-	return 0.0
-}
-
-// GetCalculationDate returns the CalculationDate field if it's non-nil, zero value otherwise.
-func (b *Balance) GetCalculationDate() TimestampParis {
-	if b != nil && b.CalculationDate != nil {
-		return *b.CalculationDate
-	}
-	return TimestampParis{}
-}
-
-// GetCurrentBalance returns the CurrentBalance field if it's non-nil, zero value otherwise.
-func (b *Balance) GetCurrentBalance() float64 {
-	if b != nil && b.CurrentBalance != nil {
-		return *b.CurrentBalance
-	}
-	return 0.0
-}
-
-// GetWalletID returns the WalletID field if it's non-nil, zero value otherwise.
-func (b *Balance) GetWalletID() string {
-	if b != nil && b.WalletID != nil {
-		return *b.WalletID
-	}
-	return ""
-}
-
 // GetBalances returns the Balances field.
 func (b *BalanceResponse) GetBalances() []*Balance {
 	if b != nil {
@@ -88,14 +47,6 @@ func (b *Beneficiary) GetAddress() string {
 	return ""
 }
 
-// GetBeneficiaryID returns the BeneficiaryID field if it's non-nil, zero value otherwise.
-func (b *Beneficiary) GetBeneficiaryID() json.Number {
-	if b != nil && b.BeneficiaryID != nil {
-		return *b.BeneficiaryID
-	}
-	return json.Number("")
-}
-
 // GetBIC returns the BIC field if it's non-nil, zero value otherwise.
 func (b *Beneficiary) GetBIC() string {
 	if b != nil && b.BIC != nil {
@@ -104,10 +55,10 @@ func (b *Beneficiary) GetBIC() string {
 	return ""
 }
 
-// GetEncryptedIBAN returns the EncryptedIBAN field if it's non-nil, zero value otherwise.
-func (b *Beneficiary) GetEncryptedIBAN() string {
-	if b != nil && b.EncryptedIBAN != nil {
-		return *b.EncryptedIBAN
+// GetIBAN returns the IBAN field if it's non-nil, zero value otherwise.
+func (b *Beneficiary) GetIBAN() string {
+	if b != nil && b.IBAN != nil {
+		return *b.IBAN
 	}
 	return ""
 }
@@ -152,10 +103,10 @@ func (b *Beneficiary) GetSDDCoreKnownUniqueMandateReference() []string {
 	return nil
 }
 
-// GetSEPACreditorIdentifier returns the SEPACreditorIdentifier field if it's non-nil, zero value otherwise.
-func (b *Beneficiary) GetSEPACreditorIdentifier() string {
-	if b != nil && b.SEPACreditorIdentifier != nil {
-		return *b.SEPACreditorIdentifier
+// GetSepaCreditorIdentifier returns the SepaCreditorIdentifier field if it's non-nil, zero value otherwise.
+func (b *Beneficiary) GetSepaCreditorIdentifier() string {
+	if b != nil && b.SepaCreditorIdentifier != nil {
+		return *b.SepaCreditorIdentifier
 	}
 	return ""
 }
@@ -166,22 +117,6 @@ func (b *Beneficiary) GetTag() string {
 		return *b.Tag
 	}
 	return ""
-}
-
-// GetUsableForSCT returns the UsableForSCT field if it's non-nil, zero value otherwise.
-func (b *Beneficiary) GetUsableForSCT() bool {
-	if b != nil && b.UsableForSCT != nil {
-		return *b.UsableForSCT
-	}
-	return false
-}
-
-// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
-func (b *Beneficiary) GetUserID() json.Number {
-	if b != nil && b.UserID != nil {
-		return *b.UserID
-	}
-	return json.Number("")
 }
 
 // GetAddress returns the Address field if it's non-nil, zero value otherwise.
@@ -304,22 +239,6 @@ func (c *Card) GetCardDesign() string {
 	return ""
 }
 
-// GetCardID returns the CardID field if it's non-nil, zero value otherwise.
-func (c *Card) GetCardID() string {
-	if c != nil && c.CardID != nil {
-		return *c.CardID
-	}
-	return ""
-}
-
-// GetCardPrint returns the CardPrint field if it's non-nil, zero value otherwise.
-func (c *Card) GetCardPrint() string {
-	if c != nil && c.CardPrint != nil {
-		return *c.CardPrint
-	}
-	return ""
-}
-
 // GetCardTag returns the CardTag field if it's non-nil, zero value otherwise.
 func (c *Card) GetCardTag() string {
 	if c != nil && c.CardTag != nil {
@@ -334,22 +253,6 @@ func (c *Card) GetCountryCode() string {
 		return *c.CountryCode
 	}
 	return ""
-}
-
-// GetCreatedBy returns the CreatedBy field if it's non-nil, zero value otherwise.
-func (c *Card) GetCreatedBy() string {
-	if c != nil && c.CreatedBy != nil {
-		return *c.CreatedBy
-	}
-	return ""
-}
-
-// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
-func (c *Card) GetCreatedDate() TimestampLondon {
-	if c != nil && c.CreatedDate != nil {
-		return *c.CreatedDate
-	}
-	return TimestampLondon{}
 }
 
 // GetCVV returns the CVV field if it's non-nil, zero value otherwise.
@@ -440,36 +343,20 @@ func (c *Card) GetEmbossedName() string {
 	return ""
 }
 
-// GetEndDate returns the EndDate field if it's non-nil, zero value otherwise.
-func (c *Card) GetEndDate() Date {
-	if c != nil && c.EndDate != nil {
-		return *c.EndDate
+// GetEventAlias returns the EventAlias field if it's non-nil, zero value otherwise.
+func (c *Card) GetEventAlias() string {
+	if c != nil && c.EventAlias != nil {
+		return *c.EventAlias
 	}
-	return Date{}
+	return ""
 }
 
-// GetExpiryDate returns the ExpiryDate field if it's non-nil, zero value otherwise.
-func (c *Card) GetExpiryDate() Date {
-	if c != nil && c.ExpiryDate != nil {
-		return *c.ExpiryDate
+// GetEventName returns the EventName field if it's non-nil, zero value otherwise.
+func (c *Card) GetEventName() string {
+	if c != nil && c.EventName != nil {
+		return *c.EventName
 	}
-	return Date{}
-}
-
-// GetIsLive returns the IsLive field if it's non-nil, zero value otherwise.
-func (c *Card) GetIsLive() int64 {
-	if c != nil && c.IsLive != nil {
-		return *c.IsLive
-	}
-	return 0
-}
-
-// GetIsPhysical returns the IsPhysical field if it's non-nil, zero value otherwise.
-func (c *Card) GetIsPhysical() int64 {
-	if c != nil && c.IsPhysical != nil {
-		return *c.IsPhysical
-	}
-	return 0
+	return ""
 }
 
 // GetLang returns the Lang field if it's non-nil, zero value otherwise.
@@ -480,86 +367,6 @@ func (c *Card) GetLang() string {
 	return ""
 }
 
-// GetLimitATMAll returns the LimitATMAll field if it's non-nil, zero value otherwise.
-func (c *Card) GetLimitATMAll() int64 {
-	if c != nil && c.LimitATMAll != nil {
-		return *c.LimitATMAll
-	}
-	return 0
-}
-
-// GetLimitATMDay returns the LimitATMDay field if it's non-nil, zero value otherwise.
-func (c *Card) GetLimitATMDay() int64 {
-	if c != nil && c.LimitATMDay != nil {
-		return *c.LimitATMDay
-	}
-	return 0
-}
-
-// GetLimitATMMonth returns the LimitATMMonth field if it's non-nil, zero value otherwise.
-func (c *Card) GetLimitATMMonth() int64 {
-	if c != nil && c.LimitATMMonth != nil {
-		return *c.LimitATMMonth
-	}
-	return 0
-}
-
-// GetLimitATMWeek returns the LimitATMWeek field if it's non-nil, zero value otherwise.
-func (c *Card) GetLimitATMWeek() int64 {
-	if c != nil && c.LimitATMWeek != nil {
-		return *c.LimitATMWeek
-	}
-	return 0
-}
-
-// GetLimitATMYear returns the LimitATMYear field if it's non-nil, zero value otherwise.
-func (c *Card) GetLimitATMYear() int64 {
-	if c != nil && c.LimitATMYear != nil {
-		return *c.LimitATMYear
-	}
-	return 0
-}
-
-// GetLimitPaymentAll returns the LimitPaymentAll field if it's non-nil, zero value otherwise.
-func (c *Card) GetLimitPaymentAll() int64 {
-	if c != nil && c.LimitPaymentAll != nil {
-		return *c.LimitPaymentAll
-	}
-	return 0
-}
-
-// GetLimitPaymentDay returns the LimitPaymentDay field if it's non-nil, zero value otherwise.
-func (c *Card) GetLimitPaymentDay() int64 {
-	if c != nil && c.LimitPaymentDay != nil {
-		return *c.LimitPaymentDay
-	}
-	return 0
-}
-
-// GetLimitPaymentMonth returns the LimitPaymentMonth field if it's non-nil, zero value otherwise.
-func (c *Card) GetLimitPaymentMonth() int64 {
-	if c != nil && c.LimitPaymentMonth != nil {
-		return *c.LimitPaymentMonth
-	}
-	return 0
-}
-
-// GetLimitPaymentWeek returns the LimitPaymentWeek field if it's non-nil, zero value otherwise.
-func (c *Card) GetLimitPaymentWeek() int64 {
-	if c != nil && c.LimitPaymentWeek != nil {
-		return *c.LimitPaymentWeek
-	}
-	return 0
-}
-
-// GetLimitPaymentYear returns the LimitPaymentYear field if it's non-nil, zero value otherwise.
-func (c *Card) GetLimitPaymentYear() int64 {
-	if c != nil && c.LimitPaymentYear != nil {
-		return *c.LimitPaymentYear
-	}
-	return 0
-}
-
 // GetLimitsGroup returns the LimitsGroup field if it's non-nil, zero value otherwise.
 func (c *Card) GetLimitsGroup() string {
 	if c != nil && c.LimitsGroup != nil {
@@ -568,34 +375,10 @@ func (c *Card) GetLimitsGroup() string {
 	return ""
 }
 
-// GetLockStatus returns the LockStatus field if it's non-nil, zero value otherwise.
-func (c *Card) GetLockStatus() int64 {
-	if c != nil && c.LockStatus != nil {
-		return *c.LockStatus
-	}
-	return 0
-}
-
 // GetMaskedPan returns the MaskedPan field if it's non-nil, zero value otherwise.
 func (c *Card) GetMaskedPan() string {
 	if c != nil && c.MaskedPan != nil {
 		return *c.MaskedPan
-	}
-	return ""
-}
-
-// GetMccRestrictionGroupID returns the MccRestrictionGroupID field if it's non-nil, zero value otherwise.
-func (c *Card) GetMccRestrictionGroupID() string {
-	if c != nil && c.MccRestrictionGroupID != nil {
-		return *c.MccRestrictionGroupID
-	}
-	return ""
-}
-
-// GetMerchantRestrictionGroupID returns the MerchantRestrictionGroupID field if it's non-nil, zero value otherwise.
-func (c *Card) GetMerchantRestrictionGroupID() string {
-	if c != nil && c.MerchantRestrictionGroupID != nil {
-		return *c.MerchantRestrictionGroupID
 	}
 	return ""
 }
@@ -608,76 +391,12 @@ func (c *Card) GetMobileSent() string {
 	return ""
 }
 
-// GetModifiedBy returns the ModifiedBy field if it's non-nil, zero value otherwise.
-func (c *Card) GetModifiedBy() string {
-	if c != nil && c.ModifiedBy != nil {
-		return *c.ModifiedBy
-	}
-	return ""
-}
-
-// GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
-func (c *Card) GetModifiedDate() TimestampLondon {
-	if c != nil && c.ModifiedDate != nil {
-		return *c.ModifiedDate
-	}
-	return TimestampLondon{}
-}
-
-// GetOptionATM returns the OptionATM field if it's non-nil, zero value otherwise.
-func (c *Card) GetOptionATM() int64 {
-	if c != nil && c.OptionATM != nil {
-		return *c.OptionATM
-	}
-	return 0
-}
-
-// GetOptionForeign returns the OptionForeign field if it's non-nil, zero value otherwise.
-func (c *Card) GetOptionForeign() int64 {
-	if c != nil && c.OptionForeign != nil {
-		return *c.OptionForeign
-	}
-	return 0
-}
-
-// GetOptionNFC returns the OptionNFC field if it's non-nil, zero value otherwise.
-func (c *Card) GetOptionNFC() int64 {
-	if c != nil && c.OptionNFC != nil {
-		return *c.OptionNFC
-	}
-	return 0
-}
-
-// GetOptionOnline returns the OptionOnline field if it's non-nil, zero value otherwise.
-func (c *Card) GetOptionOnline() int64 {
-	if c != nil && c.OptionOnline != nil {
-		return *c.OptionOnline
-	}
-	return 0
-}
-
 // GetPermsGroup returns the PermsGroup field if it's non-nil, zero value otherwise.
 func (c *Card) GetPermsGroup() string {
 	if c != nil && c.PermsGroup != nil {
 		return *c.PermsGroup
 	}
 	return ""
-}
-
-// GetPIN returns the PIN field if it's non-nil, zero value otherwise.
-func (c *Card) GetPIN() string {
-	if c != nil && c.PIN != nil {
-		return *c.PIN
-	}
-	return ""
-}
-
-// GetPINTryExceeds returns the PINTryExceeds field if it's non-nil, zero value otherwise.
-func (c *Card) GetPINTryExceeds() int64 {
-	if c != nil && c.PINTryExceeds != nil {
-		return *c.PINTryExceeds
-	}
-	return 0
 }
 
 // GetPublicToken returns the PublicToken field if it's non-nil, zero value otherwise.
@@ -688,138 +407,18 @@ func (c *Card) GetPublicToken() string {
 	return ""
 }
 
-// GetStartDate returns the StartDate field if it's non-nil, zero value otherwise.
-func (c *Card) GetStartDate() Date {
-	if c != nil && c.StartDate != nil {
-		return *c.StartDate
+// GetRestrictionGroupLimits returns the RestrictionGroupLimits field.
+func (c *Card) GetRestrictionGroupLimits() []*CardRestrictionGroupLimits {
+	if c != nil {
+		return c.RestrictionGroupLimits
 	}
-	return Date{}
+	return nil
 }
 
 // GetStatusCode returns the StatusCode field if it's non-nil, zero value otherwise.
 func (c *Card) GetStatusCode() string {
 	if c != nil && c.StatusCode != nil {
 		return *c.StatusCode
-	}
-	return ""
-}
-
-// GetTotalATMAll returns the TotalATMAll field if it's non-nil, zero value otherwise.
-func (c *Card) GetTotalATMAll() float64 {
-	if c != nil && c.TotalATMAll != nil {
-		return *c.TotalATMAll
-	}
-	return 0.0
-}
-
-// GetTotalATMDay returns the TotalATMDay field if it's non-nil, zero value otherwise.
-func (c *Card) GetTotalATMDay() float64 {
-	if c != nil && c.TotalATMDay != nil {
-		return *c.TotalATMDay
-	}
-	return 0.0
-}
-
-// GetTotalATMMonth returns the TotalATMMonth field if it's non-nil, zero value otherwise.
-func (c *Card) GetTotalATMMonth() float64 {
-	if c != nil && c.TotalATMMonth != nil {
-		return *c.TotalATMMonth
-	}
-	return 0.0
-}
-
-// GetTotalATMWeek returns the TotalATMWeek field if it's non-nil, zero value otherwise.
-func (c *Card) GetTotalATMWeek() float64 {
-	if c != nil && c.TotalATMWeek != nil {
-		return *c.TotalATMWeek
-	}
-	return 0.0
-}
-
-// GetTotalATMYear returns the TotalATMYear field if it's non-nil, zero value otherwise.
-func (c *Card) GetTotalATMYear() float64 {
-	if c != nil && c.TotalATMYear != nil {
-		return *c.TotalATMYear
-	}
-	return 0.0
-}
-
-// GetTotalPaymentAll returns the TotalPaymentAll field if it's non-nil, zero value otherwise.
-func (c *Card) GetTotalPaymentAll() float64 {
-	if c != nil && c.TotalPaymentAll != nil {
-		return *c.TotalPaymentAll
-	}
-	return 0.0
-}
-
-// GetTotalPaymentDay returns the TotalPaymentDay field if it's non-nil, zero value otherwise.
-func (c *Card) GetTotalPaymentDay() float64 {
-	if c != nil && c.TotalPaymentDay != nil {
-		return *c.TotalPaymentDay
-	}
-	return 0.0
-}
-
-// GetTotalPaymentMonth returns the TotalPaymentMonth field if it's non-nil, zero value otherwise.
-func (c *Card) GetTotalPaymentMonth() float64 {
-	if c != nil && c.TotalPaymentMonth != nil {
-		return *c.TotalPaymentMonth
-	}
-	return 0.0
-}
-
-// GetTotalPaymentWeek returns the TotalPaymentWeek field if it's non-nil, zero value otherwise.
-func (c *Card) GetTotalPaymentWeek() float64 {
-	if c != nil && c.TotalPaymentWeek != nil {
-		return *c.TotalPaymentWeek
-	}
-	return 0.0
-}
-
-// GetTotalPaymentYear returns the TotalPaymentYear field if it's non-nil, zero value otherwise.
-func (c *Card) GetTotalPaymentYear() float64 {
-	if c != nil && c.TotalPaymentYear != nil {
-		return *c.TotalPaymentYear
-	}
-	return 0.0
-}
-
-// GetTotalRows returns the TotalRows field if it's non-nil, zero value otherwise.
-func (c *Card) GetTotalRows() int64 {
-	if c != nil && c.TotalRows != nil {
-		return *c.TotalRows
-	}
-	return 0
-}
-
-// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
-func (c *Card) GetUserID() string {
-	if c != nil && c.UserID != nil {
-		return *c.UserID
-	}
-	return ""
-}
-
-// GetVirtualConverted returns the VirtualConverted field if it's non-nil, zero value otherwise.
-func (c *Card) GetVirtualConverted() int64 {
-	if c != nil && c.VirtualConverted != nil {
-		return *c.VirtualConverted
-	}
-	return 0
-}
-
-// GetWalletCardtransactionID returns the WalletCardtransactionID field if it's non-nil, zero value otherwise.
-func (c *Card) GetWalletCardtransactionID() string {
-	if c != nil && c.WalletCardtransactionID != nil {
-		return *c.WalletCardtransactionID
-	}
-	return ""
-}
-
-// GetWalletID returns the WalletID field if it's non-nil, zero value otherwise.
-func (c *Card) GetWalletID() string {
-	if c != nil && c.WalletID != nil {
-		return *c.WalletID
 	}
 	return ""
 }
@@ -864,12 +463,44 @@ func (c *CardImagesResponse) GetCardImages() []*CardImage {
 	return nil
 }
 
+// GetLockStatus returns the LockStatus field if it's non-nil, zero value otherwise.
+func (c *CardLockUnlockOptions) GetLockStatus() int64 {
+	if c != nil && c.LockStatus != nil {
+		return *c.LockStatus
+	}
+	return 0
+}
+
 // GetCards returns the Cards field.
 func (c *CardResponse) GetCards() []*Card {
 	if c != nil {
 		return c.Cards
 	}
 	return nil
+}
+
+// GetCountryRestrictionGroups returns the CountryRestrictionGroups field if it's non-nil, zero value otherwise.
+func (c *CardRestrictionGroupLimits) GetCountryRestrictionGroups() string {
+	if c != nil && c.CountryRestrictionGroups != nil {
+		return *c.CountryRestrictionGroups
+	}
+	return ""
+}
+
+// GetMccRestrictionGroups returns the MccRestrictionGroups field if it's non-nil, zero value otherwise.
+func (c *CardRestrictionGroupLimits) GetMccRestrictionGroups() string {
+	if c != nil && c.MccRestrictionGroups != nil {
+		return *c.MccRestrictionGroups
+	}
+	return ""
+}
+
+// GetMerchantIdRestrictionGroups returns the MerchantIdRestrictionGroups field if it's non-nil, zero value otherwise.
+func (c *CardRestrictionGroupLimits) GetMerchantIdRestrictionGroups() string {
+	if c != nil && c.MerchantIdRestrictionGroups != nil {
+		return *c.MerchantIdRestrictionGroups
+	}
+	return ""
 }
 
 // GetAuthorizationIssuerID returns the AuthorizationIssuerID field if it's non-nil, zero value otherwise.
@@ -880,18 +511,10 @@ func (c *CardTransaction) GetAuthorizationIssuerID() string {
 	return ""
 }
 
-// GetAuthorizationIssuerTime returns the AuthorizationIssuerTime field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetAuthorizationIssuerTime() TimestampLondon {
-	if c != nil && c.AuthorizationIssuerTime != nil {
-		return *c.AuthorizationIssuerTime
-	}
-	return TimestampLondon{}
-}
-
-// GetAuthorizationMti returns the AuthorizationMti field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetAuthorizationMti() string {
-	if c != nil && c.AuthorizationMti != nil {
-		return *c.AuthorizationMti
+// GetAuthorizationMTI returns the AuthorizationMTI field if it's non-nil, zero value otherwise.
+func (c *CardTransaction) GetAuthorizationMTI() string {
+	if c != nil && c.AuthorizationMTI != nil {
+		return *c.AuthorizationMTI
 	}
 	return ""
 }
@@ -910,126 +533,6 @@ func (c *CardTransaction) GetAuthorizationResponseCode() string {
 		return *c.AuthorizationResponseCode
 	}
 	return ""
-}
-
-// GetAuthorizedBalance returns the AuthorizedBalance field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetAuthorizedBalance() float64 {
-	if c != nil && c.AuthorizedBalance != nil {
-		return *c.AuthorizedBalance
-	}
-	return 0.0
-}
-
-// GetCardID returns the CardID field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetCardID() string {
-	if c != nil && c.CardID != nil {
-		return *c.CardID
-	}
-	return ""
-}
-
-// GetCardTransactionID returns the CardTransactionID field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetCardTransactionID() string {
-	if c != nil && c.CardTransactionID != nil {
-		return *c.CardTransactionID
-	}
-	return ""
-}
-
-// GetFees returns the Fees field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetFees() float64 {
-	if c != nil && c.Fees != nil {
-		return *c.Fees
-	}
-	return 0.0
-}
-
-// GetIs3DS returns the Is3DS field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetIs3DS() string {
-	if c != nil && c.Is3DS != nil {
-		return *c.Is3DS
-	}
-	return ""
-}
-
-// GetLimitATMAll returns the LimitATMAll field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetLimitATMAll() int64 {
-	if c != nil && c.LimitATMAll != nil {
-		return *c.LimitATMAll
-	}
-	return 0
-}
-
-// GetLimitATMDay returns the LimitATMDay field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetLimitATMDay() int64 {
-	if c != nil && c.LimitATMDay != nil {
-		return *c.LimitATMDay
-	}
-	return 0
-}
-
-// GetLimitATMMonth returns the LimitATMMonth field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetLimitATMMonth() int64 {
-	if c != nil && c.LimitATMMonth != nil {
-		return *c.LimitATMMonth
-	}
-	return 0
-}
-
-// GetLimitATMWeek returns the LimitATMWeek field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetLimitATMWeek() int64 {
-	if c != nil && c.LimitATMWeek != nil {
-		return *c.LimitATMWeek
-	}
-	return 0
-}
-
-// GetLimitATMYear returns the LimitATMYear field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetLimitATMYear() int64 {
-	if c != nil && c.LimitATMYear != nil {
-		return *c.LimitATMYear
-	}
-	return 0
-}
-
-// GetLimitPaymentAll returns the LimitPaymentAll field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetLimitPaymentAll() int64 {
-	if c != nil && c.LimitPaymentAll != nil {
-		return *c.LimitPaymentAll
-	}
-	return 0
-}
-
-// GetLimitPaymentDay returns the LimitPaymentDay field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetLimitPaymentDay() int64 {
-	if c != nil && c.LimitPaymentDay != nil {
-		return *c.LimitPaymentDay
-	}
-	return 0
-}
-
-// GetLimitPaymentMonth returns the LimitPaymentMonth field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetLimitPaymentMonth() int64 {
-	if c != nil && c.LimitPaymentMonth != nil {
-		return *c.LimitPaymentMonth
-	}
-	return 0
-}
-
-// GetLimitPaymentWeek returns the LimitPaymentWeek field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetLimitPaymentWeek() int64 {
-	if c != nil && c.LimitPaymentWeek != nil {
-		return *c.LimitPaymentWeek
-	}
-	return 0
-}
-
-// GetLimitPaymentYear returns the LimitPaymentYear field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetLimitPaymentYear() int64 {
-	if c != nil && c.LimitPaymentYear != nil {
-		return *c.LimitPaymentYear
-	}
-	return 0
 }
 
 // GetMccCode returns the MccCode field if it's non-nil, zero value otherwise.
@@ -1080,14 +583,6 @@ func (c *CardTransaction) GetPanEntryMethod() string {
 	return ""
 }
 
-// GetPaymentAmount returns the PaymentAmount field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetPaymentAmount() float64 {
-	if c != nil && c.PaymentAmount != nil {
-		return *c.PaymentAmount
-	}
-	return 0.0
-}
-
 // GetPaymentCountry returns the PaymentCountry field if it's non-nil, zero value otherwise.
 func (c *CardTransaction) GetPaymentCountry() string {
 	if c != nil && c.PaymentCountry != nil {
@@ -1104,50 +599,10 @@ func (c *CardTransaction) GetPaymentCurrency() string {
 	return ""
 }
 
-// GetPaymentID returns the PaymentID field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetPaymentID() string {
-	if c != nil && c.PaymentID != nil {
-		return *c.PaymentID
-	}
-	return ""
-}
-
-// GetPaymentLocalAmount returns the PaymentLocalAmount field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetPaymentLocalAmount() float64 {
-	if c != nil && c.PaymentLocalAmount != nil {
-		return *c.PaymentLocalAmount
-	}
-	return 0.0
-}
-
-// GetPaymentLocalTime returns the PaymentLocalTime field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetPaymentLocalTime() string {
-	if c != nil && c.PaymentLocalTime != nil {
-		return *c.PaymentLocalTime
-	}
-	return ""
-}
-
 // GetPaymentStatus returns the PaymentStatus field if it's non-nil, zero value otherwise.
 func (c *CardTransaction) GetPaymentStatus() string {
 	if c != nil && c.PaymentStatus != nil {
 		return *c.PaymentStatus
-	}
-	return ""
-}
-
-// GetPosCardholderPresence returns the PosCardholderPresence field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetPosCardholderPresence() string {
-	if c != nil && c.PosCardholderPresence != nil {
-		return *c.PosCardholderPresence
-	}
-	return ""
-}
-
-// GetPosCardPresence returns the PosCardPresence field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetPosCardPresence() string {
-	if c != nil && c.PosCardPresence != nil {
-		return *c.PosCardPresence
 	}
 	return ""
 }
@@ -1184,98 +639,10 @@ func (c *CardTransaction) GetPublicToken() string {
 	return ""
 }
 
-// GetTotalLimitATMAll returns the TotalLimitATMAll field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetTotalLimitATMAll() float64 {
-	if c != nil && c.TotalLimitATMAll != nil {
-		return *c.TotalLimitATMAll
-	}
-	return 0.0
-}
-
-// GetTotalLimitATMDay returns the TotalLimitATMDay field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetTotalLimitATMDay() float64 {
-	if c != nil && c.TotalLimitATMDay != nil {
-		return *c.TotalLimitATMDay
-	}
-	return 0.0
-}
-
-// GetTotalLimitATMMonth returns the TotalLimitATMMonth field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetTotalLimitATMMonth() float64 {
-	if c != nil && c.TotalLimitATMMonth != nil {
-		return *c.TotalLimitATMMonth
-	}
-	return 0.0
-}
-
-// GetTotalLimitATMWeek returns the TotalLimitATMWeek field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetTotalLimitATMWeek() float64 {
-	if c != nil && c.TotalLimitATMWeek != nil {
-		return *c.TotalLimitATMWeek
-	}
-	return 0.0
-}
-
-// GetTotalLimitATMYear returns the TotalLimitATMYear field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetTotalLimitATMYear() float64 {
-	if c != nil && c.TotalLimitATMYear != nil {
-		return *c.TotalLimitATMYear
-	}
-	return 0.0
-}
-
-// GetTotalLimitPaymentAll returns the TotalLimitPaymentAll field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetTotalLimitPaymentAll() float64 {
-	if c != nil && c.TotalLimitPaymentAll != nil {
-		return *c.TotalLimitPaymentAll
-	}
-	return 0.0
-}
-
-// GetTotalLimitPaymentDay returns the TotalLimitPaymentDay field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetTotalLimitPaymentDay() float64 {
-	if c != nil && c.TotalLimitPaymentDay != nil {
-		return *c.TotalLimitPaymentDay
-	}
-	return 0.0
-}
-
-// GetTotalLimitPaymentMonth returns the TotalLimitPaymentMonth field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetTotalLimitPaymentMonth() float64 {
-	if c != nil && c.TotalLimitPaymentMonth != nil {
-		return *c.TotalLimitPaymentMonth
-	}
-	return 0.0
-}
-
-// GetTotalLimitPaymentWeek returns the TotalLimitPaymentWeek field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetTotalLimitPaymentWeek() float64 {
-	if c != nil && c.TotalLimitPaymentWeek != nil {
-		return *c.TotalLimitPaymentWeek
-	}
-	return 0.0
-}
-
-// GetTotalLimitPaymentYear returns the TotalLimitPaymentYear field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetTotalLimitPaymentYear() float64 {
-	if c != nil && c.TotalLimitPaymentYear != nil {
-		return *c.TotalLimitPaymentYear
-	}
-	return 0.0
-}
-
 // GetWalletCurrency returns the WalletCurrency field if it's non-nil, zero value otherwise.
 func (c *CardTransaction) GetWalletCurrency() string {
 	if c != nil && c.WalletCurrency != nil {
 		return *c.WalletCurrency
-	}
-	return ""
-}
-
-// GetWalletID returns the WalletID field if it's non-nil, zero value otherwise.
-func (c *CardTransaction) GetWalletID() string {
-	if c != nil && c.WalletID != nil {
-		return *c.WalletID
 	}
 	return ""
 }
@@ -1288,34 +655,26 @@ func (c *CardTransactionResponse) GetCardTransactions() []*CardTransaction {
 	return nil
 }
 
-// GetClientID returns the ClientID field if it's non-nil, zero value otherwise.
-func (d *Document) GetClientID() string {
-	if d != nil && d.ClientID != nil {
-		return *d.ClientID
+// GetCardPrint returns the CardPrint field if it's non-nil, zero value otherwise.
+func (c *CreateVirtualCardOptions) GetCardPrint() string {
+	if c != nil && c.CardPrint != nil {
+		return *c.CardPrint
 	}
 	return ""
 }
 
-// GetCodeStatus returns the CodeStatus field if it's non-nil, zero value otherwise.
-func (d *Document) GetCodeStatus() string {
-	if d != nil && d.CodeStatus != nil {
-		return *d.CodeStatus
+// GetLockStatus returns the LockStatus field if it's non-nil, zero value otherwise.
+func (c *CreateVirtualCardOptions) GetLockStatus() int64 {
+	if c != nil && c.LockStatus != nil {
+		return *c.LockStatus
 	}
-	return ""
+	return 0
 }
 
-// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
-func (d *Document) GetCreatedDate() string {
-	if d != nil && d.CreatedDate != nil {
-		return *d.CreatedDate
-	}
-	return ""
-}
-
-// GetDocumentID returns the DocumentID field if it's non-nil, zero value otherwise.
-func (d *Document) GetDocumentID() string {
-	if d != nil && d.DocumentID != nil {
-		return *d.DocumentID
+// GetPIN returns the PIN field if it's non-nil, zero value otherwise.
+func (c *CreateVirtualCardOptions) GetPIN() string {
+	if c != nil && c.PIN != nil {
+		return *c.PIN
 	}
 	return ""
 }
@@ -1328,12 +687,28 @@ func (d *Document) GetDocumentStatus() string {
 	return ""
 }
 
+// GetDocumentTag returns the DocumentTag field if it's non-nil, zero value otherwise.
+func (d *Document) GetDocumentTag() string {
+	if d != nil && d.DocumentTag != nil {
+		return *d.DocumentTag
+	}
+	return ""
+}
+
 // GetDocumentType returns the DocumentType field if it's non-nil, zero value otherwise.
 func (d *Document) GetDocumentType() string {
 	if d != nil && d.DocumentType != nil {
 		return *d.DocumentType
 	}
 	return ""
+}
+
+// GetDocumentTypeID returns the DocumentTypeID field.
+func (d *Document) GetDocumentTypeID() *DocumentType {
+	if d != nil {
+		return d.DocumentTypeID
+	}
+	return nil
 }
 
 // GetFilename returns the Filename field if it's non-nil, zero value otherwise.
@@ -1344,42 +719,10 @@ func (d *Document) GetFilename() string {
 	return ""
 }
 
-// GetFileSize returns the FileSize field if it's non-nil, zero value otherwise.
-func (d *Document) GetFileSize() int64 {
-	if d != nil && d.FileSize != nil {
-		return *d.FileSize
-	}
-	return 0
-}
-
 // GetInformationStatus returns the InformationStatus field if it's non-nil, zero value otherwise.
 func (d *Document) GetInformationStatus() string {
 	if d != nil && d.InformationStatus != nil {
 		return *d.InformationStatus
-	}
-	return ""
-}
-
-// GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
-func (d *Document) GetModifiedDate() string {
-	if d != nil && d.ModifiedDate != nil {
-		return *d.ModifiedDate
-	}
-	return ""
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (d *Document) GetName() string {
-	if d != nil && d.Name != nil {
-		return *d.Name
-	}
-	return ""
-}
-
-// GetResidenceID returns the ResidenceID field if it's non-nil, zero value otherwise.
-func (d *Document) GetResidenceID() string {
-	if d != nil && d.ResidenceID != nil {
-		return *d.ResidenceID
 	}
 	return ""
 }
@@ -1400,26 +743,10 @@ func (d *Document) GetTemporaryURLThumb() string {
 	return ""
 }
 
-// GetTotalRows returns the TotalRows field if it's non-nil, zero value otherwise.
-func (d *Document) GetTotalRows() int64 {
-	if d != nil && d.TotalRows != nil {
-		return *d.TotalRows
-	}
-	return 0
-}
-
 // GetUserFirstname returns the UserFirstname field if it's non-nil, zero value otherwise.
 func (d *Document) GetUserFirstname() string {
 	if d != nil && d.UserFirstname != nil {
 		return *d.UserFirstname
-	}
-	return ""
-}
-
-// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
-func (d *Document) GetUserID() string {
-	if d != nil && d.UserID != nil {
-		return *d.UserID
 	}
 	return ""
 }
@@ -1440,6 +767,22 @@ func (d *DocumentResponse) GetDocuments() []*Document {
 	return nil
 }
 
+// GetFileContentBase64 returns the FileContentBase64 field if it's non-nil, zero value otherwise.
+func (d *DocumentSendOptions) GetFileContentBase64() string {
+	if d != nil && d.FileContentBase64 != nil {
+		return *d.FileContentBase64
+	}
+	return ""
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (d *DocumentSendOptions) GetName() string {
+	if d != nil && d.Name != nil {
+		return *d.Name
+	}
+	return ""
+}
+
 // GetErrors returns the Errors field.
 func (e *ErrorResponse) GetErrors() []Error {
 	if e != nil {
@@ -1454,54 +797,6 @@ func (e *ErrorResponse) GetResponse() http.Response {
 		return *e.Response
 	}
 	return http.Response{}
-}
-
-// GetID returns the ID field if it's non-nil, zero value otherwise.
-func (e *Event) GetID() string {
-	if e != nil && e.ID != nil {
-		return *e.ID
-	}
-	return ""
-}
-
-// GetObject returns the Object field if it's non-nil, zero value otherwise.
-func (e *Event) GetObject() string {
-	if e != nil && e.Object != nil {
-		return *e.Object
-	}
-	return ""
-}
-
-// GetObjectID returns the ObjectID field if it's non-nil, zero value otherwise.
-func (e *Event) GetObjectID() string {
-	if e != nil && e.ObjectID != nil {
-		return *e.ObjectID
-	}
-	return ""
-}
-
-// GetPayloadSignature returns the PayloadSignature field if it's non-nil, zero value otherwise.
-func (e *Event) GetPayloadSignature() string {
-	if e != nil && e.PayloadSignature != nil {
-		return *e.PayloadSignature
-	}
-	return ""
-}
-
-// GetRawPayload returns the RawPayload field if it's non-nil, zero value otherwise.
-func (e *Event) GetRawPayload() json.RawMessage {
-	if e != nil && e.RawPayload != nil {
-		return *e.RawPayload
-	}
-	return json.RawMessage{}
-}
-
-// GetType returns the Type field if it's non-nil, zero value otherwise.
-func (e *Event) GetType() string {
-	if e != nil && e.Type != nil {
-		return *e.Type
-	}
-	return ""
 }
 
 // GetIdentificationID returns the IdentificationID field if it's non-nil, zero value otherwise.
@@ -1528,116 +823,12 @@ func (i *IdentificationResponse) GetIdentification() *Identification {
 	return nil
 }
 
-// GetComment returns the Comment field if it's non-nil, zero value otherwise.
-func (k *KycLiveness) GetComment() string {
-	if k != nil && k.Comment != nil {
-		return *k.Comment
-	}
-	return ""
-}
-
-// GetIdentity returns the Identity field.
-func (k *KycLiveness) GetIdentity() *KycLivenessIdentity {
-	if k != nil {
-		return k.Identity
+// GetAdditionalData returns the AdditionalData field.
+func (p *Payin) GetAdditionalData() *PayinAdditionalData {
+	if p != nil {
+		return p.AdditionalData
 	}
 	return nil
-}
-
-// GetKycStatus returns the KycStatus field if it's non-nil, zero value otherwise.
-func (k *KycLiveness) GetKycStatus() string {
-	if k != nil && k.KycStatus != nil {
-		return *k.KycStatus
-	}
-	return ""
-}
-
-// GetScore returns the Score field if it's non-nil, zero value otherwise.
-func (k *KycLiveness) GetScore() int {
-	if k != nil && k.Score != nil {
-		return *k.Score
-	}
-	return 0
-}
-
-// GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
-func (k *KycLiveness) GetStartedAt() time.Time {
-	if k != nil && k.StartedAt != nil {
-		return *k.StartedAt
-	}
-	return time.Time{}
-}
-
-// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (k *KycLiveness) GetUpdatedAt() time.Time {
-	if k != nil && k.UpdatedAt != nil {
-		return *k.UpdatedAt
-	}
-	return time.Time{}
-}
-
-// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
-func (k *KycLiveness) GetUserID() string {
-	if k != nil && k.UserID != nil {
-		return *k.UserID
-	}
-	return ""
-}
-
-// GetBirthDate returns the BirthDate field if it's non-nil, zero value otherwise.
-func (k *KycLivenessIdentity) GetBirthDate() string {
-	if k != nil && k.BirthDate != nil {
-		return *k.BirthDate
-	}
-	return ""
-}
-
-// GetFirstName returns the FirstName field if it's non-nil, zero value otherwise.
-func (k *KycLivenessIdentity) GetFirstName() string {
-	if k != nil && k.FirstName != nil {
-		return *k.FirstName
-	}
-	return ""
-}
-
-// GetLastName returns the LastName field if it's non-nil, zero value otherwise.
-func (k *KycLivenessIdentity) GetLastName() string {
-	if k != nil && k.LastName != nil {
-		return *k.LastName
-	}
-	return ""
-}
-
-// GetAdditionalData returns the AdditionalData field if it's non-nil, zero value otherwise.
-func (p *Payin) GetAdditionalData() AdditionalDataOneOf {
-	if p != nil && p.AdditionalData != nil {
-		return *p.AdditionalData
-	}
-	return AdditionalDataOneOf{}
-}
-
-// GetAmount returns the Amount field if it's non-nil, zero value otherwise.
-func (p *Payin) GetAmount() float64 {
-	if p != nil && p.Amount != nil {
-		return *p.Amount
-	}
-	return 0.0
-}
-
-// GetCodeStatus returns the CodeStatus field if it's non-nil, zero value otherwise.
-func (p *Payin) GetCodeStatus() string {
-	if p != nil && p.CodeStatus != nil {
-		return *p.CodeStatus
-	}
-	return ""
-}
-
-// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
-func (p *Payin) GetCreatedDate() TimestampParis {
-	if p != nil && p.CreatedDate != nil {
-		return *p.CreatedDate
-	}
-	return TimestampParis{}
 }
 
 // GetCreatedIP returns the CreatedIP field if it's non-nil, zero value otherwise.
@@ -1688,20 +879,12 @@ func (p *Payin) GetCreditorName() string {
 	return ""
 }
 
-// GetDebitorIBAN returns the DebitorIBAN field if it's non-nil, zero value otherwise.
-func (p *Payin) GetDebitorIBAN() string {
-	if p != nil && p.DebitorIBAN != nil {
-		return *p.DebitorIBAN
+// GetDbtrIBAN returns the DbtrIBAN field if it's non-nil, zero value otherwise.
+func (p *Payin) GetDbtrIBAN() string {
+	if p != nil && p.DbtrIBAN != nil {
+		return *p.DbtrIBAN
 	}
 	return ""
-}
-
-// GetDistributorFee returns the DistributorFee field if it's non-nil, zero value otherwise.
-func (p *Payin) GetDistributorFee() float64 {
-	if p != nil && p.DistributorFee != nil {
-		return *p.DistributorFee
-	}
-	return 0.0
 }
 
 // GetForwardURL returns the ForwardURL field if it's non-nil, zero value otherwise.
@@ -1760,34 +943,10 @@ func (p *Payin) GetInformationStatus() string {
 	return ""
 }
 
-// GetMandateID returns the MandateID field if it's non-nil, zero value otherwise.
-func (p *Payin) GetMandateID() string {
-	if p != nil && p.MandateID != nil {
-		return *p.MandateID
-	}
-	return ""
-}
-
 // GetMessageToUser returns the MessageToUser field if it's non-nil, zero value otherwise.
 func (p *Payin) GetMessageToUser() string {
 	if p != nil && p.MessageToUser != nil {
 		return *p.MessageToUser
-	}
-	return ""
-}
-
-// GetPayinDate returns the PayinDate field if it's non-nil, zero value otherwise.
-func (p *Payin) GetPayinDate() Date {
-	if p != nil && p.PayinDate != nil {
-		return *p.PayinDate
-	}
-	return Date{}
-}
-
-// GetPayinID returns the PayinID field if it's non-nil, zero value otherwise.
-func (p *Payin) GetPayinID() string {
-	if p != nil && p.PayinID != nil {
-		return *p.PayinID
 	}
 	return ""
 }
@@ -1848,14 +1007,6 @@ func (p *Payin) GetPaymentLanguage() string {
 	return ""
 }
 
-// GetPaymentMethodID returns the PaymentMethodID field if it's non-nil, zero value otherwise.
-func (p *Payin) GetPaymentMethodID() string {
-	if p != nil && p.PaymentMethodID != nil {
-		return *p.PaymentMethodID
-	}
-	return ""
-}
-
 // GetPaymentPostDataURL returns the PaymentPostDataURL field if it's non-nil, zero value otherwise.
 func (p *Payin) GetPaymentPostDataURL() string {
 	if p != nil && p.PaymentPostDataURL != nil {
@@ -1888,46 +1039,6 @@ func (p *Payin) GetPaymentWaitingURL() string {
 	return ""
 }
 
-// GetRefundAmount returns the RefundAmount field if it's non-nil, zero value otherwise.
-func (p *Payin) GetRefundAmount() float64 {
-	if p != nil && p.RefundAmount != nil {
-		return *p.RefundAmount
-	}
-	return 0.0
-}
-
-// GetSubtotalItems returns the SubtotalItems field if it's non-nil, zero value otherwise.
-func (p *Payin) GetSubtotalItems() float64 {
-	if p != nil && p.SubtotalItems != nil {
-		return *p.SubtotalItems
-	}
-	return 0.0
-}
-
-// GetSubtotalServices returns the SubtotalServices field if it's non-nil, zero value otherwise.
-func (p *Payin) GetSubtotalServices() float64 {
-	if p != nil && p.SubtotalServices != nil {
-		return *p.SubtotalServices
-	}
-	return 0.0
-}
-
-// GetSubtotalTax returns the SubtotalTax field if it's non-nil, zero value otherwise.
-func (p *Payin) GetSubtotalTax() float64 {
-	if p != nil && p.SubtotalTax != nil {
-		return *p.SubtotalTax
-	}
-	return 0.0
-}
-
-// GetTotalRows returns the TotalRows field if it's non-nil, zero value otherwise.
-func (p *Payin) GetTotalRows() int64 {
-	if p != nil && p.TotalRows != nil {
-		return *p.TotalRows
-	}
-	return 0
-}
-
 // GetUserFirstname returns the UserFirstname field if it's non-nil, zero value otherwise.
 func (p *Payin) GetUserFirstname() string {
 	if p != nil && p.UserFirstname != nil {
@@ -1936,26 +1047,10 @@ func (p *Payin) GetUserFirstname() string {
 	return ""
 }
 
-// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
-func (p *Payin) GetUserID() string {
-	if p != nil && p.UserID != nil {
-		return *p.UserID
-	}
-	return ""
-}
-
 // GetUserLastname returns the UserLastname field if it's non-nil, zero value otherwise.
 func (p *Payin) GetUserLastname() string {
 	if p != nil && p.UserLastname != nil {
 		return *p.UserLastname
-	}
-	return ""
-}
-
-// GetVirtualIBANID returns the VirtualIBANID field if it's non-nil, zero value otherwise.
-func (p *Payin) GetVirtualIBANID() string {
-	if p != nil && p.VirtualIBANID != nil {
-		return *p.VirtualIBANID
 	}
 	return ""
 }
@@ -1984,14 +1079,6 @@ func (p *Payin) GetWalletEventName() string {
 	return ""
 }
 
-// GetWalletID returns the WalletID field if it's non-nil, zero value otherwise.
-func (p *Payin) GetWalletID() string {
-	if p != nil && p.WalletID != nil {
-		return *p.WalletID
-	}
-	return ""
-}
-
 // GetPayins returns the Payins field.
 func (p *PayinResponse) GetPayins() []*Payin {
 	if p != nil {
@@ -2000,66 +1087,26 @@ func (p *PayinResponse) GetPayins() []*Payin {
 	return nil
 }
 
-// GetAmount returns the Amount field if it's non-nil, zero value otherwise.
-func (p *Payout) GetAmount() float64 {
-	if p != nil && p.Amount != nil {
-		return *p.Amount
-	}
-	return 0.0
-}
-
-// GetBeneficiaryID returns the BeneficiaryID field if it's non-nil, zero value otherwise.
-func (p *Payout) GetBeneficiaryID() string {
-	if p != nil && p.BeneficiaryID != nil {
-		return *p.BeneficiaryID
+// GetBankAccountIBAN returns the BankAccountIBAN field if it's non-nil, zero value otherwise.
+func (p *Payout) GetBankAccountIBAN() string {
+	if p != nil && p.BankAccountIBAN != nil {
+		return *p.BankAccountIBAN
 	}
 	return ""
 }
 
-// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
-func (p *Payout) GetCreatedDate() TimestampParis {
-	if p != nil && p.CreatedDate != nil {
-		return *p.CreatedDate
+// GetInformationStatus returns the InformationStatus field if it's non-nil, zero value otherwise.
+func (p *Payout) GetInformationStatus() string {
+	if p != nil && p.InformationStatus != nil {
+		return *p.InformationStatus
 	}
-	return TimestampParis{}
+	return ""
 }
 
 // GetLabel returns the Label field if it's non-nil, zero value otherwise.
 func (p *Payout) GetLabel() string {
 	if p != nil && p.Label != nil {
 		return *p.Label
-	}
-	return ""
-}
-
-// GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
-func (p *Payout) GetModifiedDate() TimestampParis {
-	if p != nil && p.ModifiedDate != nil {
-		return *p.ModifiedDate
-	}
-	return TimestampParis{}
-}
-
-// GetPartnerFee returns the PartnerFee field if it's non-nil, zero value otherwise.
-func (p *Payout) GetPartnerFee() float64 {
-	if p != nil && p.PartnerFee != nil {
-		return *p.PartnerFee
-	}
-	return 0.0
-}
-
-// GetPayoutDate returns the PayoutDate field if it's non-nil, zero value otherwise.
-func (p *Payout) GetPayoutDate() Date {
-	if p != nil && p.PayoutDate != nil {
-		return *p.PayoutDate
-	}
-	return Date{}
-}
-
-// GetPayoutID returns the PayoutID field if it's non-nil, zero value otherwise.
-func (p *Payout) GetPayoutID() string {
-	if p != nil && p.PayoutID != nil {
-		return *p.PayoutID
 	}
 	return ""
 }
@@ -2088,20 +1135,12 @@ func (p *Payout) GetPayoutType() string {
 	return ""
 }
 
-// GetPayoutTypeID returns the PayoutTypeID field if it's non-nil, zero value otherwise.
-func (p *Payout) GetPayoutTypeID() string {
-	if p != nil && p.PayoutTypeID != nil {
-		return *p.PayoutTypeID
+// GetPayoutTypeID returns the PayoutTypeID field.
+func (p *Payout) GetPayoutTypeID() *PayoutType {
+	if p != nil {
+		return p.PayoutTypeID
 	}
-	return ""
-}
-
-// GetTotalRows returns the TotalRows field if it's non-nil, zero value otherwise.
-func (p *Payout) GetTotalRows() int64 {
-	if p != nil && p.TotalRows != nil {
-		return *p.TotalRows
-	}
-	return 0
+	return nil
 }
 
 // GetUniqueMandateReference returns the UniqueMandateReference field if it's non-nil, zero value otherwise.
@@ -2116,14 +1155,6 @@ func (p *Payout) GetUniqueMandateReference() string {
 func (p *Payout) GetUserFirstname() string {
 	if p != nil && p.UserFirstname != nil {
 		return *p.UserFirstname
-	}
-	return ""
-}
-
-// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
-func (p *Payout) GetUserID() string {
-	if p != nil && p.UserID != nil {
-		return *p.UserID
 	}
 	return ""
 }
@@ -2152,14 +1183,6 @@ func (p *Payout) GetWalletEventName() string {
 	return ""
 }
 
-// GetWalletID returns the WalletID field if it's non-nil, zero value otherwise.
-func (p *Payout) GetWalletID() string {
-	if p != nil && p.WalletID != nil {
-		return *p.WalletID
-	}
-	return ""
-}
-
 // GetPayouts returns the Payouts field.
 func (p *PayoutResponse) GetPayouts() []*Payout {
 	if p != nil {
@@ -2168,20 +1191,36 @@ func (p *PayoutResponse) GetPayouts() []*Payout {
 	return nil
 }
 
-// GetBeneficiaryID returns the BeneficiaryID field if it's non-nil, zero value otherwise.
-func (s *SDDB2BWhitelist) GetBeneficiaryID() string {
-	if s != nil && s.BeneficiaryID != nil {
-		return *s.BeneficiaryID
+// GetCountryRestrictionGroups returns the CountryRestrictionGroups field if it's non-nil, zero value otherwise.
+func (r *RestrictionGroupLimits) GetCountryRestrictionGroups() json.Number {
+	if r != nil && r.CountryRestrictionGroups != nil {
+		return *r.CountryRestrictionGroups
 	}
-	return ""
+	return json.Number("")
 }
 
-// GetIsRecurrent returns the IsRecurrent field if it's non-nil, zero value otherwise.
-func (s *SDDB2BWhitelist) GetIsRecurrent() bool {
-	if s != nil && s.IsRecurrent != nil {
-		return *s.IsRecurrent
+// GetMccRestrictionGroups returns the MccRestrictionGroups field if it's non-nil, zero value otherwise.
+func (r *RestrictionGroupLimits) GetMccRestrictionGroups() json.Number {
+	if r != nil && r.MccRestrictionGroups != nil {
+		return *r.MccRestrictionGroups
 	}
-	return false
+	return json.Number("")
+}
+
+// GetMerchantIdRestrictionGroups returns the MerchantIdRestrictionGroups field if it's non-nil, zero value otherwise.
+func (r *RestrictionGroupLimits) GetMerchantIdRestrictionGroups() json.Number {
+	if r != nil && r.MerchantIdRestrictionGroups != nil {
+		return *r.MerchantIdRestrictionGroups
+	}
+	return json.Number("")
+}
+
+// GetPaymentDailyLimit returns the PaymentDailyLimit field if it's non-nil, zero value otherwise.
+func (r *RestrictionGroupLimits) GetPaymentDailyLimit() json.Number {
+	if r != nil && r.PaymentDailyLimit != nil {
+		return *r.PaymentDailyLimit
+	}
+	return json.Number("")
 }
 
 // GetUniqueMandateReference returns the UniqueMandateReference field if it's non-nil, zero value otherwise.
@@ -2190,166 +1229,6 @@ func (s *SDDB2BWhitelist) GetUniqueMandateReference() string {
 		return *s.UniqueMandateReference
 	}
 	return ""
-}
-
-// GetBankaccountID returns the BankaccountID field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetBankaccountID() string {
-	if s != nil && s.BankaccountID != nil {
-		return *s.BankaccountID
-	}
-	return ""
-}
-
-// GetBeneficiaryID returns the BeneficiaryID field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetBeneficiaryID() string {
-	if s != nil && s.BeneficiaryID != nil {
-		return *s.BeneficiaryID
-	}
-	return ""
-}
-
-// GetCreditorAddress returns the CreditorAddress field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetCreditorAddress() string {
-	if s != nil && s.CreditorAddress != nil {
-		return *s.CreditorAddress
-	}
-	return ""
-}
-
-// GetCreditorCountry returns the CreditorCountry field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetCreditorCountry() string {
-	if s != nil && s.CreditorCountry != nil {
-		return *s.CreditorCountry
-	}
-	return ""
-}
-
-// GetCreditorName returns the CreditorName field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetCreditorName() string {
-	if s != nil && s.CreditorName != nil {
-		return *s.CreditorName
-	}
-	return ""
-}
-
-// GetDateOfSignature returns the DateOfSignature field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetDateOfSignature() string {
-	if s != nil && s.DateOfSignature != nil {
-		return *s.DateOfSignature
-	}
-	return ""
-}
-
-// GetDebitorAddress returns the DebitorAddress field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetDebitorAddress() string {
-	if s != nil && s.DebitorAddress != nil {
-		return *s.DebitorAddress
-	}
-	return ""
-}
-
-// GetDebitorCountry returns the DebitorCountry field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetDebitorCountry() string {
-	if s != nil && s.DebitorCountry != nil {
-		return *s.DebitorCountry
-	}
-	return ""
-}
-
-// GetDebitorName returns the DebitorName field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetDebitorName() string {
-	if s != nil && s.DebitorName != nil {
-		return *s.DebitorName
-	}
-	return ""
-}
-
-// GetInterbankSettlementAmount returns the InterbankSettlementAmount field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetInterbankSettlementAmount() string {
-	if s != nil && s.InterbankSettlementAmount != nil {
-		return *s.InterbankSettlementAmount
-	}
-	return ""
-}
-
-// GetMandateID returns the MandateID field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetMandateID() string {
-	if s != nil && s.MandateID != nil {
-		return *s.MandateID
-	}
-	return ""
-}
-
-// GetRejectReasonCode returns the RejectReasonCode field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetRejectReasonCode() string {
-	if s != nil && s.RejectReasonCode != nil {
-		return *s.RejectReasonCode
-	}
-	return ""
-}
-
-// GetRequestedCollectionDate returns the RequestedCollectionDate field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetRequestedCollectionDate() string {
-	if s != nil && s.RequestedCollectionDate != nil {
-		return *s.RequestedCollectionDate
-	}
-	return ""
-}
-
-// GetSepaCreditorIdentifier returns the SepaCreditorIdentifier field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetSepaCreditorIdentifier() string {
-	if s != nil && s.SepaCreditorIdentifier != nil {
-		return *s.SepaCreditorIdentifier
-	}
-	return ""
-}
-
-// GetSequenceType returns the SequenceType field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetSequenceType() string {
-	if s != nil && s.SequenceType != nil {
-		return *s.SequenceType
-	}
-	return ""
-}
-
-// GetTransactionID returns the TransactionID field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetTransactionID() string {
-	if s != nil && s.TransactionID != nil {
-		return *s.TransactionID
-	}
-	return ""
-}
-
-// GetUnstructuredField returns the UnstructuredField field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetUnstructuredField() string {
-	if s != nil && s.UnstructuredField != nil {
-		return *s.UnstructuredField
-	}
-	return ""
-}
-
-// GetVirtualIbanID returns the VirtualIbanID field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetVirtualIbanID() string {
-	if s != nil && s.VirtualIbanID != nil {
-		return *s.VirtualIbanID
-	}
-	return ""
-}
-
-// GetWalletID returns the WalletID field if it's non-nil, zero value otherwise.
-func (s *SepaSddr) GetWalletID() int64 {
-	if s != nil && s.WalletID != nil {
-		return *s.WalletID
-	}
-	return 0
-}
-
-// GetSepaSddrs returns the SepaSddrs field.
-func (s *SepaSddrResponse) GetSepaSddrs() []*SepaSddr {
-	if s != nil {
-		return s.SepaSddrs
-	}
-	return nil
 }
 
 // GetCountry returns the Country field if it's non-nil, zero value otherwise.
@@ -2400,14 +1279,6 @@ func (t *TaxResidencesResponse) GetTaxResidences() []*TaxResidence {
 	return nil
 }
 
-// GetAmount returns the Amount field if it's non-nil, zero value otherwise.
-func (t *Transfer) GetAmount() float64 {
-	if t != nil && t.Amount != nil {
-		return *t.Amount
-	}
-	return 0.0
-}
-
 // GetBeneficiaryWalletAlias returns the BeneficiaryWalletAlias field if it's non-nil, zero value otherwise.
 func (t *Transfer) GetBeneficiaryWalletAlias() string {
 	if t != nil && t.BeneficiaryWalletAlias != nil {
@@ -2424,66 +1295,18 @@ func (t *Transfer) GetBeneficiaryWalletEventName() string {
 	return ""
 }
 
-// GetBeneficiaryWalletID returns the BeneficiaryWalletID field if it's non-nil, zero value otherwise.
-func (t *Transfer) GetBeneficiaryWalletID() string {
-	if t != nil && t.BeneficiaryWalletID != nil {
-		return *t.BeneficiaryWalletID
+// GetInformationStatus returns the InformationStatus field if it's non-nil, zero value otherwise.
+func (t *Transfer) GetInformationStatus() string {
+	if t != nil && t.InformationStatus != nil {
+		return *t.InformationStatus
 	}
 	return ""
-}
-
-// GetBeneficiaryWalletTypeID returns the BeneficiaryWalletTypeID field if it's non-nil, zero value otherwise.
-func (t *Transfer) GetBeneficiaryWalletTypeID() string {
-	if t != nil && t.BeneficiaryWalletTypeID != nil {
-		return *t.BeneficiaryWalletTypeID
-	}
-	return ""
-}
-
-// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
-func (t *Transfer) GetCreatedDate() TimestampParis {
-	if t != nil && t.CreatedDate != nil {
-		return *t.CreatedDate
-	}
-	return TimestampParis{}
 }
 
 // GetLabel returns the Label field if it's non-nil, zero value otherwise.
 func (t *Transfer) GetLabel() string {
 	if t != nil && t.Label != nil {
 		return *t.Label
-	}
-	return ""
-}
-
-// GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
-func (t *Transfer) GetModifiedDate() TimestampParis {
-	if t != nil && t.ModifiedDate != nil {
-		return *t.ModifiedDate
-	}
-	return TimestampParis{}
-}
-
-// GetTotalRows returns the TotalRows field if it's non-nil, zero value otherwise.
-func (t *Transfer) GetTotalRows() int64 {
-	if t != nil && t.TotalRows != nil {
-		return *t.TotalRows
-	}
-	return 0
-}
-
-// GetTransferDate returns the TransferDate field if it's non-nil, zero value otherwise.
-func (t *Transfer) GetTransferDate() Date {
-	if t != nil && t.TransferDate != nil {
-		return *t.TransferDate
-	}
-	return Date{}
-}
-
-// GetTransferID returns the TransferID field if it's non-nil, zero value otherwise.
-func (t *Transfer) GetTransferID() string {
-	if t != nil && t.TransferID != nil {
-		return *t.TransferID
 	}
 	return ""
 }
@@ -2504,6 +1327,14 @@ func (t *Transfer) GetTransferTag() string {
 	return ""
 }
 
+// GetTransferTypeID returns the TransferTypeID field.
+func (t *Transfer) GetTransferTypeID() *TransferType {
+	if t != nil {
+		return t.TransferTypeID
+	}
+	return nil
+}
+
 // GetWalletAlias returns the WalletAlias field if it's non-nil, zero value otherwise.
 func (t *Transfer) GetWalletAlias() string {
 	if t != nil && t.WalletAlias != nil {
@@ -2520,36 +1351,12 @@ func (t *Transfer) GetWalletEventName() string {
 	return ""
 }
 
-// GetWalletID returns the WalletID field if it's non-nil, zero value otherwise.
-func (t *Transfer) GetWalletID() string {
-	if t != nil && t.WalletID != nil {
-		return *t.WalletID
-	}
-	return ""
-}
-
-// GetWalletTypeID returns the WalletTypeID field if it's non-nil, zero value otherwise.
-func (t *Transfer) GetWalletTypeID() string {
-	if t != nil && t.WalletTypeID != nil {
-		return *t.WalletTypeID
-	}
-	return ""
-}
-
 // GetTransfers returns the Transfers field.
 func (t *TransferResponse) GetTransfers() []*Transfer {
 	if t != nil {
 		return t.Transfers
 	}
 	return nil
-}
-
-// GetActivityOutsideEu returns the ActivityOutsideEu field if it's non-nil, zero value otherwise.
-func (u *User) GetActivityOutsideEu() string {
-	if u != nil && u.ActivityOutsideEu != nil {
-		return *u.ActivityOutsideEu
-	}
-	return ""
 }
 
 // GetAddress1 returns the Address1 field if it's non-nil, zero value otherwise.
@@ -2584,42 +1391,10 @@ func (u *User) GetBirthCountry() string {
 	return ""
 }
 
-// GetBirthday returns the Birthday field if it's non-nil, zero value otherwise.
-func (u *User) GetBirthday() Date {
-	if u != nil && u.Birthday != nil {
-		return *u.Birthday
-	}
-	return Date{}
-}
-
 // GetCity returns the City field if it's non-nil, zero value otherwise.
 func (u *User) GetCity() string {
 	if u != nil && u.City != nil {
 		return *u.City
-	}
-	return ""
-}
-
-// GetClientID returns the ClientID field if it's non-nil, zero value otherwise.
-func (u *User) GetClientID() string {
-	if u != nil && u.ClientID != nil {
-		return *u.ClientID
-	}
-	return ""
-}
-
-// GetCodeStatus returns the CodeStatus field if it's non-nil, zero value otherwise.
-func (u *User) GetCodeStatus() string {
-	if u != nil && u.CodeStatus != nil {
-		return *u.CodeStatus
-	}
-	return ""
-}
-
-// GetControllingPersonType returns the ControllingPersonType field if it's non-nil, zero value otherwise.
-func (u *User) GetControllingPersonType() string {
-	if u != nil && u.ControllingPersonType != nil {
-		return *u.ControllingPersonType
 	}
 	return ""
 }
@@ -2640,50 +1415,10 @@ func (u *User) GetCountryName() string {
 	return ""
 }
 
-// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
-func (u *User) GetCreatedDate() TimestampParis {
-	if u != nil && u.CreatedDate != nil {
-		return *u.CreatedDate
-	}
-	return TimestampParis{}
-}
-
-// GetEconomicSanctions returns the EconomicSanctions field if it's non-nil, zero value otherwise.
-func (u *User) GetEconomicSanctions() string {
-	if u != nil && u.EconomicSanctions != nil {
-		return *u.EconomicSanctions
-	}
-	return ""
-}
-
-// GetEffectiveBeneficiary returns the EffectiveBeneficiary field if it's non-nil, zero value otherwise.
-func (u *User) GetEffectiveBeneficiary() string {
-	if u != nil && u.EffectiveBeneficiary != nil {
-		return *u.EffectiveBeneficiary
-	}
-	return ""
-}
-
 // GetEmail returns the Email field if it's non-nil, zero value otherwise.
 func (u *User) GetEmail() string {
 	if u != nil && u.Email != nil {
 		return *u.Email
-	}
-	return ""
-}
-
-// GetEmployeeType returns the EmployeeType field if it's non-nil, zero value otherwise.
-func (u *User) GetEmployeeType() string {
-	if u != nil && u.EmployeeType != nil {
-		return *u.EmployeeType
-	}
-	return ""
-}
-
-// GetEntityType returns the EntityType field if it's non-nil, zero value otherwise.
-func (u *User) GetEntityType() string {
-	if u != nil && u.EntityType != nil {
-		return *u.EntityType
 	}
 	return ""
 }
@@ -2710,38 +1445,6 @@ func (u *User) GetInformationStatus() string {
 		return *u.InformationStatus
 	}
 	return ""
-}
-
-// GetInvolvedSanctions returns the InvolvedSanctions field if it's non-nil, zero value otherwise.
-func (u *User) GetInvolvedSanctions() string {
-	if u != nil && u.InvolvedSanctions != nil {
-		return *u.InvolvedSanctions
-	}
-	return ""
-}
-
-// GetIsFreezed returns the IsFreezed field if it's non-nil, zero value otherwise.
-func (u *User) GetIsFreezed() int64 {
-	if u != nil && u.IsFreezed != nil {
-		return *u.IsFreezed
-	}
-	return 0
-}
-
-// GetKycLevel returns the KycLevel field if it's non-nil, zero value otherwise.
-func (u *User) GetKycLevel() Level {
-	if u != nil && u.KycLevel != nil {
-		return *u.KycLevel
-	}
-	return LevelNone
-}
-
-// GetKycReview returns the KycReview field if it's non-nil, zero value otherwise.
-func (u *User) GetKycReview() Review {
-	if u != nil && u.KycReview != nil {
-		return *u.KycReview
-	}
-	return ReviewNone
 }
 
 // GetKycReviewComment returns the KycReviewComment field if it's non-nil, zero value otherwise.
@@ -2816,14 +1519,6 @@ func (u *User) GetLegalNumberOfEmployeeRange() string {
 	return ""
 }
 
-// GetLegalRegistrationDate returns the LegalRegistrationDate field if it's non-nil, zero value otherwise.
-func (u *User) GetLegalRegistrationDate() Date {
-	if u != nil && u.LegalRegistrationDate != nil {
-		return *u.LegalRegistrationDate
-	}
-	return Date{}
-}
-
 // GetLegalRegistrationNumber returns the LegalRegistrationNumber field if it's non-nil, zero value otherwise.
 func (u *User) GetLegalRegistrationNumber() string {
 	if u != nil && u.LegalRegistrationNumber != nil {
@@ -2836,14 +1531,6 @@ func (u *User) GetLegalRegistrationNumber() string {
 func (u *User) GetLegalSector() string {
 	if u != nil && u.LegalSector != nil {
 		return *u.LegalSector
-	}
-	return ""
-}
-
-// GetLegalShareCapital returns the LegalShareCapital field if it's non-nil, zero value otherwise.
-func (u *User) GetLegalShareCapital() string {
-	if u != nil && u.LegalShareCapital != nil {
-		return *u.LegalShareCapital
 	}
 	return ""
 }
@@ -2870,14 +1557,6 @@ func (u *User) GetMobile() string {
 		return *u.Mobile
 	}
 	return ""
-}
-
-// GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
-func (u *User) GetModifiedDate() TimestampParis {
-	if u != nil && u.ModifiedDate != nil {
-		return *u.ModifiedDate
-	}
-	return TimestampParis{}
 }
 
 // GetNationality returns the Nationality field if it's non-nil, zero value otherwise.
@@ -2910,22 +1589,6 @@ func (u *User) GetParentType() string {
 		return *u.ParentType
 	}
 	return ""
-}
-
-// GetParentUserID returns the ParentUserID field if it's non-nil, zero value otherwise.
-func (u *User) GetParentUserID() string {
-	if u != nil && u.ParentUserID != nil {
-		return *u.ParentUserID
-	}
-	return ""
-}
-
-// GetPayinCount returns the PayinCount field if it's non-nil, zero value otherwise.
-func (u *User) GetPayinCount() int64 {
-	if u != nil && u.PayinCount != nil {
-		return *u.PayinCount
-	}
-	return 0
 }
 
 // GetPersonalAssets returns the PersonalAssets field if it's non-nil, zero value otherwise.
@@ -2968,34 +1631,10 @@ func (u *User) GetPostcode() string {
 	return ""
 }
 
-// GetResidentCountriesSanctions returns the ResidentCountriesSanctions field if it's non-nil, zero value otherwise.
-func (u *User) GetResidentCountriesSanctions() string {
-	if u != nil && u.ResidentCountriesSanctions != nil {
-		return *u.ResidentCountriesSanctions
-	}
-	return ""
-}
-
-// GetSanctionsQuestionnaireDate returns the SanctionsQuestionnaireDate field if it's non-nil, zero value otherwise.
-func (u *User) GetSanctionsQuestionnaireDate() string {
-	if u != nil && u.SanctionsQuestionnaireDate != nil {
-		return *u.SanctionsQuestionnaireDate
-	}
-	return ""
-}
-
 // GetSepaCreditorIdentifier returns the SepaCreditorIdentifier field if it's non-nil, zero value otherwise.
 func (u *User) GetSepaCreditorIdentifier() string {
 	if u != nil && u.SepaCreditorIdentifier != nil {
 		return *u.SepaCreditorIdentifier
-	}
-	return ""
-}
-
-// GetSpecifiedUSPerson returns the SpecifiedUSPerson field if it's non-nil, zero value otherwise.
-func (u *User) GetSpecifiedUSPerson() string {
-	if u != nil && u.SpecifiedUSPerson != nil {
-		return *u.SpecifiedUSPerson
 	}
 	return ""
 }
@@ -3024,26 +1663,18 @@ func (u *User) GetTaxResidence() string {
 	return ""
 }
 
-// GetTitle returns the Title field if it's non-nil, zero value otherwise.
-func (u *User) GetTitle() string {
-	if u != nil && u.Title != nil {
-		return *u.Title
+// GetTimezone returns the Timezone field if it's non-nil, zero value otherwise.
+func (u *User) GetTimezone() string {
+	if u != nil && u.Timezone != nil {
+		return *u.Timezone
 	}
 	return ""
 }
 
-// GetTotalRows returns the TotalRows field if it's non-nil, zero value otherwise.
-func (u *User) GetTotalRows() int64 {
-	if u != nil && u.TotalRows != nil {
-		return *u.TotalRows
-	}
-	return 0
-}
-
-// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
-func (u *User) GetUserID() string {
-	if u != nil && u.UserID != nil {
-		return *u.UserID
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (u *User) GetTitle() string {
+	if u != nil && u.Title != nil {
+		return *u.Title
 	}
 	return ""
 }
@@ -3064,44 +1695,12 @@ func (u *User) GetUserTag() string {
 	return ""
 }
 
-// GetUserTypeID returns the UserTypeID field if it's non-nil, zero value otherwise.
-func (u *User) GetUserTypeID() string {
-	if u != nil && u.UserTypeID != nil {
-		return *u.UserTypeID
-	}
-	return ""
-}
-
-// GetWalletCount returns the WalletCount field if it's non-nil, zero value otherwise.
-func (u *User) GetWalletCount() int64 {
-	if u != nil && u.WalletCount != nil {
-		return *u.WalletCount
-	}
-	return 0
-}
-
 // GetUsers returns the Users field.
 func (u *UserResponse) GetUsers() []*User {
 	if u != nil {
 		return u.Users
 	}
 	return nil
-}
-
-// GetAlias returns the Alias field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetAlias() string {
-	if w != nil && w.Alias != nil {
-		return *w.Alias
-	}
-	return ""
-}
-
-// GetAuthorizedBalance returns the AuthorizedBalance field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetAuthorizedBalance() float64 {
-	if w != nil && w.AuthorizedBalance != nil {
-		return *w.AuthorizedBalance
-	}
-	return 0.0
 }
 
 // GetBIC returns the BIC field if it's non-nil, zero value otherwise.
@@ -3112,42 +1711,26 @@ func (w *Wallet) GetBIC() string {
 	return ""
 }
 
-// GetCodeStatus returns the CodeStatus field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetCodeStatus() string {
-	if w != nil && w.CodeStatus != nil {
-		return *w.CodeStatus
+// GetEventAlias returns the EventAlias field if it's non-nil, zero value otherwise.
+func (w *Wallet) GetEventAlias() string {
+	if w != nil && w.EventAlias != nil {
+		return *w.EventAlias
 	}
 	return ""
 }
 
-// GetContractSigned returns the ContractSigned field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetContractSigned() string {
-	if w != nil && w.ContractSigned != nil {
-		return *w.ContractSigned
+// GetEventMessage returns the EventMessage field if it's non-nil, zero value otherwise.
+func (w *Wallet) GetEventMessage() string {
+	if w != nil && w.EventMessage != nil {
+		return *w.EventMessage
 	}
 	return ""
 }
 
-// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetCreatedDate() TimestampParis {
-	if w != nil && w.CreatedDate != nil {
-		return *w.CreatedDate
-	}
-	return TimestampParis{}
-}
-
-// GetDate returns the Date field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetDate() Date {
-	if w != nil && w.Date != nil {
-		return *w.Date
-	}
-	return Date{}
-}
-
-// GetDescription returns the Description field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetDescription() string {
-	if w != nil && w.Description != nil {
-		return *w.Description
+// GetEventName returns the EventName field if it's non-nil, zero value otherwise.
+func (w *Wallet) GetEventName() string {
+	if w != nil && w.EventName != nil {
+		return *w.EventName
 	}
 	return ""
 }
@@ -3168,94 +1751,6 @@ func (w *Wallet) GetInformationStatus() string {
 	return ""
 }
 
-// GetJointUserID returns the JointUserID field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetJointUserID() string {
-	if w != nil && w.JointUserID != nil {
-		return *w.JointUserID
-	}
-	return ""
-}
-
-// GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetModifiedDate() TimestampParis {
-	if w != nil && w.ModifiedDate != nil {
-		return *w.ModifiedDate
-	}
-	return TimestampParis{}
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetName() string {
-	if w != nil && w.Name != nil {
-		return *w.Name
-	}
-	return ""
-}
-
-// GetPayinCount returns the PayinCount field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetPayinCount() int64 {
-	if w != nil && w.PayinCount != nil {
-		return *w.PayinCount
-	}
-	return 0
-}
-
-// GetPayinEndDate returns the PayinEndDate field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetPayinEndDate() Date {
-	if w != nil && w.PayinEndDate != nil {
-		return *w.PayinEndDate
-	}
-	return Date{}
-}
-
-// GetPayinStartDate returns the PayinStartDate field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetPayinStartDate() Date {
-	if w != nil && w.PayinStartDate != nil {
-		return *w.PayinStartDate
-	}
-	return Date{}
-}
-
-// GetPayoutCount returns the PayoutCount field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetPayoutCount() int64 {
-	if w != nil && w.PayoutCount != nil {
-		return *w.PayoutCount
-	}
-	return 0
-}
-
-// GetSolde returns the Solde field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetSolde() float64 {
-	if w != nil && w.Solde != nil {
-		return *w.Solde
-	}
-	return 0.0
-}
-
-// GetTariffID returns the TariffID field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetTariffID() string {
-	if w != nil && w.TariffID != nil {
-		return *w.TariffID
-	}
-	return ""
-}
-
-// GetTotalRows returns the TotalRows field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetTotalRows() int64 {
-	if w != nil && w.TotalRows != nil {
-		return *w.TotalRows
-	}
-	return 0
-}
-
-// GetTransferCount returns the TransferCount field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetTransferCount() int64 {
-	if w != nil && w.TransferCount != nil {
-		return *w.TransferCount
-	}
-	return 0
-}
-
 // GetURLImage returns the URLImage field if it's non-nil, zero value otherwise.
 func (w *Wallet) GetURLImage() string {
 	if w != nil && w.URLImage != nil {
@@ -3272,26 +1767,10 @@ func (w *Wallet) GetUserFirstname() string {
 	return ""
 }
 
-// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetUserID() string {
-	if w != nil && w.UserID != nil {
-		return *w.UserID
-	}
-	return ""
-}
-
 // GetUserLastname returns the UserLastname field if it's non-nil, zero value otherwise.
 func (w *Wallet) GetUserLastname() string {
 	if w != nil && w.UserLastname != nil {
 		return *w.UserLastname
-	}
-	return ""
-}
-
-// GetWalletID returns the WalletID field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetWalletID() string {
-	if w != nil && w.WalletID != nil {
-		return *w.WalletID
 	}
 	return ""
 }
@@ -3308,14 +1787,6 @@ func (w *Wallet) GetWalletStatus() string {
 func (w *Wallet) GetWalletTag() string {
 	if w != nil && w.WalletTag != nil {
 		return *w.WalletTag
-	}
-	return ""
-}
-
-// GetWalletTypeID returns the WalletTypeID field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetWalletTypeID() string {
-	if w != nil && w.WalletTypeID != nil {
-		return *w.WalletTypeID
 	}
 	return ""
 }

@@ -1,4 +1,4 @@
-package treezor
+package types
 
 import (
 	"encoding/json"
@@ -8,12 +8,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestTimestampLondon_MarshalJSON(t *testing.T) {
+func TestTimestampParis_MarshalJSON(t *testing.T) {
 	t.Run("Success full format CEST", func(t *testing.T) {
 		dateUTC0, _ := time.Parse(fullFormat, "2019-10-01 09:00:00")
-		location, _ := time.LoadLocation("Europe/London")
+		location, _ := time.LoadLocation("Europe/Paris")
 
-		ti := &TimestampLondon{}
+		ti := &TimestampParis{}
 		ti.Time = dateUTC0
 
 		jsonDate, err := json.Marshal(ti)
@@ -25,9 +25,9 @@ func TestTimestampLondon_MarshalJSON(t *testing.T) {
 	})
 	t.Run("Success full format CET", func(t *testing.T) {
 		dateUTC0, _ := time.Parse(fullFormat, "2019-11-01 09:00:00")
-		location, _ := time.LoadLocation("Europe/London")
+		location, _ := time.LoadLocation("Europe/Paris")
 
-		ti := &TimestampLondon{}
+		ti := &TimestampParis{}
 		ti.Time = dateUTC0
 
 		jsonDate, err := json.Marshal(ti)
@@ -38,7 +38,7 @@ func TestTimestampLondon_MarshalJSON(t *testing.T) {
 		assert.Nil(t, err)
 	})
 	t.Run("Success emtpy date", func(t *testing.T) {
-		ti := &TimestampLondon{}
+		ti := &TimestampParis{}
 
 		data, err := json.Marshal(ti)
 		assert.Equal(t, []byte(`"0000-00-00 00:00:00"`), data)
@@ -46,14 +46,14 @@ func TestTimestampLondon_MarshalJSON(t *testing.T) {
 	})
 }
 
-func TestTimestampLondon_UnmarshalJSON(t *testing.T) {
+func TestTimestampParis_UnmarshalJSON(t *testing.T) {
 	t.Run("Success full format", func(t *testing.T) {
 		dateByte := []byte(`"2019-10-01 11:00:00"`)
-		location, _ := time.LoadLocation("Europe/London")
+		location, _ := time.LoadLocation("Europe/Paris")
 
-		ti := &TimestampLondon{}
+		ti := &TimestampParis{}
 		dateUTC0, _ := time.ParseInLocation(`"`+fullFormat+`"`, string(dateByte), location)
-		expectedTi := NewTimestampLondon(dateUTC0)
+		expectedTi := NewTimestampParis(dateUTC0)
 		expectedTi.OriginalPayload = string(dateByte)
 
 		err := json.Unmarshal(dateByte, ti)
@@ -63,9 +63,9 @@ func TestTimestampLondon_UnmarshalJSON(t *testing.T) {
 	t.Run("Success empty date", func(t *testing.T) {
 		dateByte := []byte(`"0000-00-00 00:00:00"`)
 
-		ti := &TimestampLondon{}
+		ti := &TimestampParis{}
 
-		expectedTi := NewTimestampLondon(time.Time{})
+		expectedTi := NewTimestampParis(time.Time{})
 		expectedTi.OriginalPayload = string(dateByte)
 
 		err := json.Unmarshal(dateByte, ti)

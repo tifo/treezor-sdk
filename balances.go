@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	"github.com/pkg/errors"
+
+	"github.com/tifo/treezor-sdk/types"
 )
 
 // BalanceService handles communication with the balance related
@@ -21,13 +23,12 @@ type BalanceResponse struct {
 
 // Balance represents the balance on a wallet.
 type Balance struct {
-	Access
-	WalletID          *string         `json:"walletId,omitempty"`
-	CurrentBalance    *float64        `json:"currentBalance,string,omitempty"`
-	Authorizations    *float64        `json:"authorizations,string,omitempty"`
-	AuthorizedBalance *float64        `json:"authorizedBalance,string,omitempty"`
-	Currency          Currency        `json:"currency,omitempty"`
-	CalculationDate   *TimestampParis `json:"calculationDate,omitempty"`
+	WalletID          *types.Identifier     `json:"walletId,omitempty"`
+	CurrentBalance    *types.Amount         `json:"currentBalance,omitempty"`
+	Authorizations    *types.Amount         `json:"authorizations,omitempty"`
+	AuthorizedBalance *types.Amount         `json:"authorizedBalance,omitempty"`
+	Currency          *types.Currency       `json:"currency,omitempty"`
+	CalculationDate   *types.TimestampParis `json:"calculationDate,omitempty"`
 }
 
 // BalanceOptions specifies the optional parameters to the BalanceService.List.

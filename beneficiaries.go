@@ -2,11 +2,12 @@ package treezor
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 
 	"github.com/pkg/errors"
+
+	"github.com/tifo/treezor-sdk/types"
 )
 
 // BeneficiaryService handles communication with the beneficiary related
@@ -23,19 +24,30 @@ type BeneficiaryResponse struct {
 
 // Beneficiary represents a beneficiary.
 type Beneficiary struct {
-	BeneficiaryID                      *json.Number       `json:"id,omitempty"`
-	UserID                             *json.Number       `json:"userId,omitempty"`
-	Tag                                *string            `json:"tag,omitempty"`
-	NickName                           *string            `json:"nickName,omitempty"`
-	Name                               *string            `json:"name,omitempty"`
-	Address                            *string            `json:"address,omitempty"`
-	EncryptedIBAN                      *string            `json:"iban,omitempty"`
-	BIC                                *string            `json:"bic,omitempty"`
-	SEPACreditorIdentifier             *string            `json:"sepaCreditorIdentifier,omitempty"`
-	UsableForSCT                       *bool              `json:"usableForSct,omitempty"`
-	SDDCoreKnownUniqueMandateReference []string           `json:"sddCoreKnownUniqueMandateReference,omitempty"`
-	SDDCoreBlacklist                   []string           `json:"sddCoreBlacklist,omitempty"`
-	SDDB2BWhitelist                    []*SDDB2BWhitelist `json:"sddB2bWhitelist,omitempty"`
+	BeneficiaryID                      *types.Identifier     `json:"id,omitempty"`
+	Tag                                *string               `json:"tag,omitempty"`
+	UserID                             *types.Identifier     `json:"userId,omitempty"`
+	NickName                           *string               `json:"nickName,omitempty"`
+	Name                               *string               `json:"name,omitempty"`
+	Address                            *string               `json:"address,omitempty"`
+	IBAN                               *string               `json:"iban,omitempty"`
+	BIC                                *string               `json:"bic,omitempty"`
+	SepaCreditorIdentifier             *string               `json:"sepaCreditorIdentifier,omitempty"`
+	SDDB2BWhitelist                    []*SDDB2BWhitelist    `json:"sddB2bWhitelist,omitempty"`
+	SDDCoreBlacklist                   []string              `json:"sddCoreBlacklist,omitempty"`
+	UsableForSCT                       *types.Boolean        `json:"usableForSct,omitempty"`
+	SDDCoreKnownUniqueMandateReference []string              `json:"sddCoreKnownUniqueMandateReference,omitempty"`
+	IsActive                           *types.Boolean        `json:"isActive,omitempty"`
+	CreatedDate                        *types.TimestampParis `json:"createdDate,omitempty"`
+	ModifiedDate                       *types.TimestampParis `json:"modifiedDate,omitempty"`
+	// NOTE: see about totalRows, codeStatus and informationStatus
+}
+
+// SDDB2BWhitelist is a whitelisted company for B2B SEPA mandates.
+type SDDB2BWhitelist struct {
+	UniqueMandateReference *string           `json:"uniqueMandateReference,omitempty"`
+	IsRecurrent            *types.Boolean    `json:"isRecurrent,omitempty"`
+	WalletID               *types.Identifier `json:"walletId,omitempty"`
 }
 
 // BeneficiaryRequest represents a request to create/edit a beneficiary.
@@ -56,13 +68,6 @@ type BeneficiaryRequest struct {
 	SDDCoreKnownUniqueMandateReference *[]string          `json:"sddCoreKnownUniqueMandateReference,omitempty"`
 	SDDCoreBlacklist                   *[]string          `json:"sddCoreBlacklist,omitempty"`
 	SDDB2BWhitelist                    []*SDDB2BWhitelist `json:"sddB2bWhitelist,omitempty"`
-}
-
-// SDDB2BWhitelist is a whitelisted company for B2B SEPA mandates.
-type SDDB2BWhitelist struct {
-	UniqueMandateReference *string `json:"uniqueMandateReference,omitempty"`
-	IsRecurrent            *bool   `json:"isRecurrent,omitempty"`
-	BeneficiaryID          *string `json:"beneficiaryId,omitempty"`
 }
 
 // Create creates a Treezor beneficiary.

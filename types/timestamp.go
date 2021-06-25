@@ -1,4 +1,4 @@
-package treezor
+package types
 
 import (
 	"time"
@@ -43,10 +43,14 @@ func (t *timestamp) UnmarshalJSON(data []byte) error {
 
 	tt, err := time.ParseInLocation(`"`+fullFormat+`"`, str, t.Location())
 	if err != nil {
-		return err
+		// NOTE: the error is ignored here as we sometime have weird negative dates coming in, instead we handle it as ZeroTime
+		return nil
 	}
 
 	t.Time = tt
 
 	return nil
 }
+
+// TODO(0rax): see if we want / need to move those types to a `types` subpackage and just creer helper functions like treezor.String for those types in the main package.
+// TODO(0rax): see about creating custom enums for some of the TypeId's available and use those types in root and event pkg

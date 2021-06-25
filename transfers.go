@@ -2,22 +2,13 @@ package treezor
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 
 	"github.com/pkg/errors"
-)
 
-// TransferType defines the type of transfer we're doing.
-type TransferType string
-
-const (
-	// Wallet2WalletTransfer is a transfer type used for peer-to-peer transaction.
-	Wallet2WalletTransfer TransferType = "1"
-	// ClientFeesTransfer is transfer type used for client fees.
-	ClientFeesTransfer TransferType = "3"
-	// CreditNoteTransfer is a transfer type used for credit note.
-	CreditNoteTransfer TransferType = "4"
+	"github.com/tifo/treezor-sdk/types"
 )
 
 // TransferService handles communication with the transfer related
@@ -32,28 +23,57 @@ type TransferResponse struct {
 	Transfers []*Transfer `json:"transfers"`
 }
 
+// TransferType defines the type of transfer we're doing.
+type TransferType int32
+
+const (
+	// Wallet2WalletTransfer is a transfer type used for peer-to-peer transaction.
+	Wallet2WalletTransfer TransferType = 1
+	// ClientFeesTransfer is transfer type used for client fees.
+	ClientFeesTransfer TransferType = 3
+	// CreditNoteTransfer is a transfer type used for credit note.
+	CreditNoteTransfer TransferType = 4
+)
+
+func (t *TransferType) UnmarshalJSON(data []byte) error {
+	var str json.Number
+	err := json.Unmarshal(data, &str)
+	if err != nil {
+		return err
+	}
+	v, err := str.Int64()
+	if err != nil {
+		return err
+	}
+	*t = TransferType(v)
+	return nil
+}
+
 // Transfer represents a transfer.
 type Transfer struct {
-	Access
-	TransferID                 *string         `json:"transferId,omitempty"`
-	TransferStatus             *string         `json:"transferStatus,omitempty"`
-	TransferTypeID             TransferType    `json:"transferTypeId,omitempty"`
-	TransferTag                *string         `json:"transferTag,omitempty"`
-	WalletID                   *string         `json:"walletId,omitempty"`
-	WalletTypeID               *string         `json:"walletTypeId,omitempty"`
-	BeneficiaryWalletID        *string         `json:"beneficiaryWalletId,omitempty"`
-	BeneficiaryWalletTypeID    *string         `json:"beneficiaryWalletTypeId,omitempty"`
-	TransferDate               *Date           `json:"transferDate,omitempty"`
-	WalletEventName            *string         `json:"walletEventName,omitempty"`
-	WalletAlias                *string         `json:"walletAlias,omitempty"`
-	BeneficiaryWalletEventName *string         `json:"beneficiaryWalletEventName,omitempty"`
-	BeneficiaryWalletAlias     *string         `json:"beneficiaryWalletAlias,omitempty"`
-	Amount                     *float64        `json:"amount,string,omitempty"`
-	Currency                   Currency        `json:"currency,omitempty"`
-	Label                      *string         `json:"label,omitempty"`
-	CreatedDate                *TimestampParis `json:"createdDate,omitempty"`
-	ModifiedDate               *TimestampParis `json:"modifiedDate,omitempty"`
-	TotalRows                  *int64          `json:"totalRows,string,omitempty"`
+	TransferID                 *types.Identifier     `json:"transferId,omitempty"`
+	TransferTypeID             *TransferType         `json:"transferTypeId,omitempty"`
+	TransferTag                *string               `json:"transferTag,omitempty"`
+	TransferStatus             *string               `json:"transferStatus,omitempty"` // NOTE: can be an enum
+	WalletID                   *types.Identifier     `json:"walletId,omitempty"`
+	ForeignID                  *types.Identifier     `json:"foreignId,omitempty"`
+	WalletTypeID               *types.Identifier     `json:"walletTypeId,omitempty"` // NOTE: can be an enum
+	BeneficiaryWalletID        *types.Identifier     `json:"beneficiaryWalletId,omitempty"`
+	BeneficiaryWalletTypeID    *types.Identifier     `json:"beneficiaryWalletTypeId,omitempty"` // NOTE: can be an enum
+	TransferDate               *types.Date           `json:"transferDate,omitempty"`
+	Amount                     *types.Amount         `json:"amount,omitempty"`
+	Currency                   types.Currency        `json:"currency,omitempty"`
+	Label                      *string               `json:"label,omitempty"`
+	PartnerFee                 *types.Amount         `json:"partnerFee,omitempty"`
+	WalletEventName            *string               `json:"walletEventName,omitempty"`
+	WalletAlias                *string               `json:"walletAlias,omitempty"`
+	BeneficiaryWalletEventName *string               `json:"beneficiaryWalletEventName,omitempty"`
+	BeneficiaryWalletAlias     *string               `json:"beneficiaryWalletAlias,omitempty"`
+	CreatedDate                *types.TimestampParis `json:"createdDate,omitempty"`
+	ModifiedDate               *types.TimestampParis `json:"modifiedDate,omitempty"`
+	TotalRows                  *types.Integer        `json:"totalRows,omitempty"`
+	CodeStatus                 *types.Identifier     `json:"codeStatus,omitempty"`        // NOTE: Legacy + Webhook
+	InformationStatus          *string               `json:"informationStatus,omitempty"` // NOTE: Legacy + Webhook
 }
 
 // Create creates a Treezor transfer. Required: WalletID, BeneficiaryWalletID,Amount,Currency(ISO 4217)

@@ -32,7 +32,8 @@ var (
 	blacklistStructMethod = map[string]bool{}
 	// blacklistStruct lists structs to skip.
 	blacklistStruct = map[string]bool{
-		"Client": true,
+		"Client":        true,
+		"ConnectClient": true,
 	}
 )
 

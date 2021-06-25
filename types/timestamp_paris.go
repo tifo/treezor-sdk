@@ -1,4 +1,4 @@
-package treezor
+package types
 
 import (
 	"time"
@@ -27,9 +27,8 @@ func NewTimestampParis(t time.Time) *TimestampParis {
 }
 
 // MarshalJSON implements the json.Marshaler interface.
-// Time is return as "YYYY-MM-DD HH:mm:ss" or "YYYY-MM-DD"
-// depending whether Timestamp.Short is true.
-// time zone Europe/Paris
+// Time is return as "YYYY-MM-DD HH:mm:ss".
+// Time zone Europe/Paris
 func (t *TimestampParis) MarshalJSON() ([]byte, error) {
 	t.Time = t.In(parisLocation)
 
@@ -37,7 +36,7 @@ func (t *TimestampParis) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
-// Time is expected in "YYYY-MM-DD HH:mm:ss" or "YYYY-MM-DD".
+// Time is expected in "YYYY-MM-DD HH:mm:ss".
 // Time zone Europe/Paris
 func (t *TimestampParis) UnmarshalJSON(data []byte) error {
 	t.Time = t.In(parisLocation)

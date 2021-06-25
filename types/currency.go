@@ -1,4 +1,4 @@
-package treezor
+package types
 
 // Currency is a string that contains the ISO 4217 currency code.
 type Currency string
