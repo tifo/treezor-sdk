@@ -14,6 +14,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"regexp"
 	"sort"
 	"strings"
 	"text/template"
@@ -30,12 +31,11 @@ var (
 
 	// blacklistStructMethod lists "struct.method" combos to skip.
 	blacklistStructMethod = map[string]bool{}
-	// blacklistStruct lists structs to skip.
-	blacklistStruct = map[string]bool{
-		"Client":        true,
-		"ConnectClient": true,
-		"APIError":      true,
-		"Error":         true,
+	// blacklistStructPattern define a list of struct name pattern to skip.
+	blacklistStructPattern = []*regexp.Regexp{
+		regexp.MustCompile("^[a-zA-Z]*Client$"),
+		regexp.MustCompile("^[a-zA-Z]*Error$"),
+		regexp.MustCompile("^[a-zA-Z]+Options$"),
 	}
 )
 
@@ -85,18 +85,25 @@ func (t *templateData) processAST(f *ast.File) error {
 			if !ok {
 				continue
 			}
+			// Check that the type is indeed a struct
+			st, ok := ts.Type.(*ast.StructType)
+			if !ok {
+				continue
+			}
 			// Skip unexported identifiers.
 			if !ts.Name.IsExported() {
 				logf("Struct %v is unexported; skipping.", ts.Name)
 				continue
 			}
 			// Check if the struct is blacklisted.
-			if blacklistStruct[ts.Name.Name] {
-				logf("Struct %v is blacklisted; skipping.", ts.Name)
-				continue
+			blacklisted := false
+			for _, re := range blacklistStructPattern {
+				if re.MatchString(ts.Name.Name) {
+					blacklisted = true
+				}
 			}
-			st, ok := ts.Type.(*ast.StructType)
-			if !ok {
+			if blacklisted {
+				logf("Struct %v is blacklisted; skipping.", ts.Name)
 				continue
 			}
 			for _, field := range st.Fields.List {
