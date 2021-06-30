@@ -5,7 +5,7 @@ import (
 )
 
 // TimestampParis Paris time zone
-type TimestampParis timestamp
+type TimestampParis Timestamp
 
 var (
 	parisLocation *time.Location
@@ -32,7 +32,7 @@ func NewTimestampParis(t time.Time) *TimestampParis {
 func (t *TimestampParis) MarshalJSON() ([]byte, error) {
 	t.Time = t.In(parisLocation)
 
-	return (*timestamp)(t).MarshalJSON()
+	return (*Timestamp)(t).MarshalJSON()
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
@@ -41,5 +41,5 @@ func (t *TimestampParis) MarshalJSON() ([]byte, error) {
 func (t *TimestampParis) UnmarshalJSON(data []byte) error {
 	t.Time = t.In(parisLocation)
 
-	return (*timestamp)(t).UnmarshalJSON(data)
+	return (*Timestamp)(t).UnmarshalJSON(data)
 }

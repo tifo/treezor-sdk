@@ -12,7 +12,7 @@ func TestTimestamp_MarshalJSON(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		dateUTC0, _ := time.Parse(fullFormat, "2019-10-01 09:00:00")
 
-		ti := &timestamp{}
+		ti := &Timestamp{}
 		ti.Time = dateUTC0
 
 		jsonDate, err := json.Marshal(ti)
@@ -23,7 +23,7 @@ func TestTimestamp_MarshalJSON(t *testing.T) {
 		assert.Nil(t, err)
 	})
 	t.Run("Success emtpy date", func(t *testing.T) {
-		ti := &timestamp{}
+		ti := &Timestamp{}
 
 		data, err := json.Marshal(ti)
 		assert.Equal(t, []byte(`"0000-00-00 00:00:00"`), data)
@@ -35,9 +35,9 @@ func TestTimestamp_UnmarshalJSON(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		dateByte := []byte(`"2019-10-01 11:00:00"`)
 
-		ti := &timestamp{}
+		ti := &Timestamp{}
 		dateUTC0, _ := time.Parse(`"`+fullFormat+`"`, string(dateByte))
-		expectedTi := &timestamp{
+		expectedTi := &Timestamp{
 			Time:            dateUTC0,
 			OriginalPayload: string(dateByte),
 		}
@@ -49,9 +49,9 @@ func TestTimestamp_UnmarshalJSON(t *testing.T) {
 	t.Run("Success empty date", func(t *testing.T) {
 		dateByte := []byte(`"0000-00-00 00:00:00"`)
 
-		ti := &timestamp{}
+		ti := &Timestamp{}
 
-		expectedTi := &timestamp{
+		expectedTi := &Timestamp{
 			OriginalPayload: string(dateByte),
 		}
 
@@ -62,9 +62,9 @@ func TestTimestamp_UnmarshalJSON(t *testing.T) {
 	t.Run("Success with wrong format", func(t *testing.T) {
 		dateByte := []byte(`"2019-10-01"`)
 
-		ti := &timestamp{}
+		ti := &Timestamp{}
 
-		expectedTi := &timestamp{
+		expectedTi := &Timestamp{
 			OriginalPayload: string(dateByte),
 		}
 

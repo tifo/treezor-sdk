@@ -289,7 +289,7 @@ type UserCreateOptions struct {
 	UserTag                    *string                `url:"-" json:"userTag,omitempty"`                    // Optional
 	ParentUserID               *string                `url:"-" json:"parentUserId,omitempty"`               // Optional
 	ParentType                 *ParentType            `url:"-" json:"parentType,omitempty"`                 // Optional
-	SpecifiedUSPerson          *types.Boolean         `url:"-" json:"specifiedUSPerson,omitempty"`          // Required // NOTE: Should be a boolean converted to an integer on marshalling
+	SpecifiedUSPerson          *types.Boolean         `url:"-" json:"specifiedUSPerson,omitempty"`          // Required
 	ControllingPersonType      *ControllingPersonType `url:"-" json:"controllingPersonType,omitempty"`      // Optional
 	EmployeeType               *EmployeeType          `url:"-" json:"employeeType,omitempty"`               // Optional
 	EntityType                 *EntityType            `url:"-" json:"entityType,omitempty"`                 // Optional
@@ -319,12 +319,12 @@ type UserCreateOptions struct {
 	LegalTVANumber             *string                `url:"-" json:"legalTvaNumber,omitempty"`             // Optional
 	LegalRegistrationDate      *types.Date            `url:"-" json:"legalRegistrationDate,omitempty"`      // Optional
 	LegalForm                  *string                `url:"-" json:"legalForm,omitempty"`                  // Optional
-	LegalShareCapital          *types.Integer         `url:"-" json:"legalShareCapital,omitempty"`          // Optional
+	LegalShareCapital          *int64                 `url:"-" json:"legalShareCapital,omitempty"`          // Optional
 	LegalSector                *string                `url:"-" json:"legalSector,omitempty"`                // Optional
 	LegalAnnualTurnOver        *string                `url:"-" json:"legalAnnualTurnOver,omitempty"`        // Optional
 	LegalNetIncomeRange        *string                `url:"-" json:"legalNetIncomeRange,omitempty"`        // Optional
 	LegalNumberOfEmployeeRange *string                `url:"-" json:"legalNumberOfEmployeeRange,omitempty"` // Optional
-	EffectiveBeneficiary       *types.Percentage      `url:"-" json:"effectiveBeneficiary,omitempty"`       // Optional
+	EffectiveBeneficiary       *float64               `url:"-" json:"effectiveBeneficiary,omitempty"`       // Optional
 	Language                   *string                `url:"-" json:"language,omitempty"`                   // Optional
 	TaxNumber                  *string                `url:"-" json:"taxNumber,omitempty"`                  // Optional
 	TaxResidence               *string                `url:"-" json:"taxResidence,omitempty"`               // Optional
@@ -453,12 +453,12 @@ type UserEditOptions struct {
 	LegalTVANumber             *string                `url:"-" json:"legalTvaNumber,omitempty"`             // Optional
 	LegalRegistrationDate      *types.Date            `url:"-" json:"legalRegistrationDate,omitempty"`      // Optional
 	LegalForm                  *string                `url:"-" json:"legalForm,omitempty"`                  // Optional
-	LegalShareCapital          *types.Integer         `url:"-" json:"legalShareCapital,omitempty"`          // Optional
+	LegalShareCapital          *int64                 `url:"-" json:"legalShareCapital,omitempty"`          // Optional
 	LegalSector                *string                `url:"-" json:"legalSector,omitempty"`                // Optional
 	LegalAnnualTurnOver        *string                `url:"-" json:"legalAnnualTurnOver,omitempty"`        // Optional
 	LegalNetIncomeRange        *string                `url:"-" json:"legalNetIncomeRange,omitempty"`        // Optional
 	LegalNumberOfEmployeeRange *string                `url:"-" json:"legalNumberOfEmployeeRange,omitempty"` // Optional
-	EffectiveBeneficiary       *types.Percentage      `url:"-" json:"effectiveBeneficiary,omitempty"`       // Optional
+	EffectiveBeneficiary       *float64               `url:"-" json:"effectiveBeneficiary,omitempty"`       // Optional
 	Language                   *string                `url:"-" json:"language,omitempty"`                   // Optional
 	TaxNumber                  *string                `url:"-" json:"taxNumber,omitempty"`                  // Optional
 	TaxResidence               *string                `url:"-" json:"taxResidence,omitempty"`               // Optional

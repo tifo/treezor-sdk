@@ -148,17 +148,17 @@ func (s *WalletService) Get(ctx context.Context, walletID string, opts *WalletGe
 type WalletListOptions struct {
 	Access
 
-	WalletID            *string               `url:"walletId,omitempty" json:"-"`
-	WalletStatus        *string               `url:"walletStatus,omitempty" json:"-"` // NOTE: can be an enum (need to see if VALIDATED or Validated)
-	UserID              *string               `url:"userId,omitempty" json:"-"`
-	ParentUserID        *string               `url:"parentUserId,omitempty" json:"-"`
-	WalletTag           *string               `url:"walletTag,omitempty" json:"-"`
-	WalletTypeID        *WalletType           `url:"walletTypeId,omitempty" json:"-"`
-	EventAlias          *string               `url:"eventAlias,omitempty" json:"-"`
-	EventPayinStartDate *types.TimestampParis `url:"eventPayinStartDate,omitempty" json:"-"`
-	EventPayinEndDate   *types.Date           `url:"eventPayinEndDate,omitempty" json:"-"`
-	TariffID            *string               `url:"tariffId,omitempty" json:"-"`
-	PayinCount          *int                  `url:"payinCount,omitempty" json:"-"`
+	WalletID            *string          `url:"walletId,omitempty" json:"-"`
+	WalletStatus        *string          `url:"walletStatus,omitempty" json:"-"` // NOTE: can be an enum (need to see if VALIDATED or Validated)
+	UserID              *string          `url:"userId,omitempty" json:"-"`
+	ParentUserID        *string          `url:"parentUserId,omitempty" json:"-"`
+	WalletTag           *string          `url:"walletTag,omitempty" json:"-"`
+	WalletTypeID        *WalletType      `url:"walletTypeId,omitempty" json:"-"`
+	EventAlias          *string          `url:"eventAlias,omitempty" json:"-"`
+	EventPayinStartDate *types.Timestamp `url:"eventPayinStartDate,omitempty" json:"-"`
+	EventPayinEndDate   *types.Date      `url:"eventPayinEndDate,omitempty" json:"-"`
+	TariffID            *string          `url:"tariffId,omitempty" json:"-"`
+	PayinCount          *int             `url:"payinCount,omitempty" json:"-"`
 
 	ListOptions
 }

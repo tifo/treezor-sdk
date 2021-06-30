@@ -294,14 +294,12 @@ func (t *templateData) addSelectorExpr(x *ast.SelectorExpr, receiverType, fieldN
 			fieldType = "string"
 			accessor = "String()"
 		case xX == "types" && x.Sel.Name == "Date":
+			t.Imports["time"] = "time"
 			fieldType = "time.Time"
 			zeroValue = "time.Time{}"
 			accessor = "Time"
-		case xX == "types" && x.Sel.Name == "TimestampParis":
-			fieldType = "time.Time"
-			zeroValue = "time.Time{}"
-			accessor = "Time"
-		case xX == "types" && x.Sel.Name == "TimestampLondon":
+		case xX == "types" && strings.HasPrefix(x.Sel.Name, "Timestamp"):
+			t.Imports["time"] = "time"
 			fieldType = "time.Time"
 			zeroValue = "time.Time{}"
 			accessor = "Time"

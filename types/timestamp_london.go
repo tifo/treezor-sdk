@@ -3,7 +3,7 @@ package types
 import "time"
 
 // TimestampLondon london time zone
-type TimestampLondon timestamp
+type TimestampLondon Timestamp
 
 var (
 	londonLocation *time.Location
@@ -30,7 +30,7 @@ func NewTimestampLondon(t time.Time) *TimestampLondon {
 func (t *TimestampLondon) MarshalJSON() ([]byte, error) {
 	t.Time = t.In(londonLocation)
 
-	return (*timestamp)(t).MarshalJSON()
+	return (*Timestamp)(t).MarshalJSON()
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
@@ -39,5 +39,5 @@ func (t *TimestampLondon) MarshalJSON() ([]byte, error) {
 func (t *TimestampLondon) UnmarshalJSON(data []byte) error {
 	t.Time = t.In(londonLocation)
 
-	return (*timestamp)(t).UnmarshalJSON(data)
+	return (*Timestamp)(t).UnmarshalJSON(data)
 }

@@ -1675,7 +1675,7 @@ func (i *IdentificationResponse) GetIdentification() *Identification {
 // GetCreatedFrom returns the CreatedFrom field if it's non-nil, zero value otherwise.
 func (l *ListOptions) GetCreatedFrom() time.Time {
 	if l != nil && l.CreatedFrom != nil {
-		return *l.CreatedFrom
+		return l.CreatedFrom.Time
 	}
 	return time.Time{}
 }
@@ -1683,13 +1683,13 @@ func (l *ListOptions) GetCreatedFrom() time.Time {
 // GetCreatedTo returns the CreatedTo field if it's non-nil, zero value otherwise.
 func (l *ListOptions) GetCreatedTo() time.Time {
 	if l != nil && l.CreatedTo != nil {
-		return *l.CreatedTo
+		return l.CreatedTo.Time
 	}
 	return time.Time{}
 }
 
 // GetPage returns the Page field if it's non-nil, zero value otherwise.
-func (l *ListOptions) GetPage() int {
+func (l *ListOptions) GetPage() int64 {
 	if l != nil && l.Page != nil {
 		return *l.Page
 	}
@@ -1697,7 +1697,7 @@ func (l *ListOptions) GetPage() int {
 }
 
 // GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
-func (l *ListOptions) GetPerPage() int {
+func (l *ListOptions) GetPerPage() int64 {
 	if l != nil && l.PerPage != nil {
 		return *l.PerPage
 	}
@@ -1723,7 +1723,7 @@ func (l *ListOptions) GetSortOrder() *SortOrder {
 // GetUpdatedFrom returns the UpdatedFrom field if it's non-nil, zero value otherwise.
 func (l *ListOptions) GetUpdatedFrom() time.Time {
 	if l != nil && l.UpdatedFrom != nil {
-		return *l.UpdatedFrom
+		return l.UpdatedFrom.Time
 	}
 	return time.Time{}
 }
@@ -1731,7 +1731,7 @@ func (l *ListOptions) GetUpdatedFrom() time.Time {
 // GetUpdatedTo returns the UpdatedTo field if it's non-nil, zero value otherwise.
 func (l *ListOptions) GetUpdatedTo() time.Time {
 	if l != nil && l.UpdatedTo != nil {
-		return *l.UpdatedTo
+		return l.UpdatedTo.Time
 	}
 	return time.Time{}
 }
@@ -3299,7 +3299,7 @@ func (u *UserCreateOptions) GetEconomicSanctions() bool {
 // GetEffectiveBeneficiary returns the EffectiveBeneficiary field if it's non-nil, zero value otherwise.
 func (u *UserCreateOptions) GetEffectiveBeneficiary() float64 {
 	if u != nil && u.EffectiveBeneficiary != nil {
-		return u.EffectiveBeneficiary.Float64()
+		return *u.EffectiveBeneficiary
 	}
 	return 0.0
 }
@@ -3435,7 +3435,7 @@ func (u *UserCreateOptions) GetLegalSector() string {
 // GetLegalShareCapital returns the LegalShareCapital field if it's non-nil, zero value otherwise.
 func (u *UserCreateOptions) GetLegalShareCapital() int64 {
 	if u != nil && u.LegalShareCapital != nil {
-		return u.LegalShareCapital.Int64()
+		return *u.LegalShareCapital
 	}
 	return 0
 }
@@ -3699,7 +3699,7 @@ func (u *UserEditOptions) GetEconomicSanctions() bool {
 // GetEffectiveBeneficiary returns the EffectiveBeneficiary field if it's non-nil, zero value otherwise.
 func (u *UserEditOptions) GetEffectiveBeneficiary() float64 {
 	if u != nil && u.EffectiveBeneficiary != nil {
-		return u.EffectiveBeneficiary.Float64()
+		return *u.EffectiveBeneficiary
 	}
 	return 0.0
 }
@@ -3827,7 +3827,7 @@ func (u *UserEditOptions) GetLegalSector() string {
 // GetLegalShareCapital returns the LegalShareCapital field if it's non-nil, zero value otherwise.
 func (u *UserEditOptions) GetLegalShareCapital() int64 {
 	if u != nil && u.LegalShareCapital != nil {
-		return u.LegalShareCapital.Int64()
+		return *u.LegalShareCapital
 	}
 	return 0
 }

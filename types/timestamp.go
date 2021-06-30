@@ -12,14 +12,14 @@ const (
 // formatted as "YYYY-MM-DD HH:mm:ss".
 // This is necessary for some fields since the Treezor API is inconsistent
 // in how it represents times. All exported methods of time.Time can be called on Timestamp.
-type timestamp struct {
+type Timestamp struct {
 	time.Time
 	OriginalPayload string
 }
 
 // MarshalJSON implements the json.Marshaler interface.
 // Time is return as "YYYY-MM-DD HH:mm:ss"
-func (t *timestamp) MarshalJSON() ([]byte, error) {
+func (t *Timestamp) MarshalJSON() ([]byte, error) {
 	var str string
 
 	if t.Time.IsZero() {
@@ -33,7 +33,7 @@ func (t *timestamp) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
 // Time is expected in "YYYY-MM-DD HH:mm:ss".
-func (t *timestamp) UnmarshalJSON(data []byte) error {
+func (t *Timestamp) UnmarshalJSON(data []byte) error {
 	str := string(data)
 	t.OriginalPayload = str
 
