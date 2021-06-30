@@ -92,5 +92,3 @@ const (
 	// UserOrigin represents the end user.
 	UserOrigin Origin = "USER"
 )
-
-// TODO: See how to handle "Access" setup for Get, List and Delete requests

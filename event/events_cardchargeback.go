@@ -5,11 +5,6 @@ import (
 	"github.com/tifo/treezor-sdk/internal/types"
 )
 
-// CardEvent represents a card event
-type CardEvent struct {
-	Cards []*treezor.Card `json:"cards"`
-}
-
 // CardChargebackEvent represents a card.aquiring.chargeback event
 type CardChargebackEvent struct {
 	Chargebacks []*Chargeback `json:"chargebacks"`

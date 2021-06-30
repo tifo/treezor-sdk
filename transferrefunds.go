@@ -1,13 +1,6 @@
-package event
+package treezor
 
-import (
-	"github.com/tifo/treezor-sdk"
-	"github.com/tifo/treezor-sdk/internal/types"
-)
-
-type TransferRefundEvent struct {
-	TransferRefunds []*TransferRefund `json:"transferrefunds"`
-}
+import "github.com/tifo/treezor-sdk/internal/types"
 
 type TransferRefund struct {
 	TransferRefundID     *types.Identifier     `json:"transferrefundId,omitempty"`
@@ -17,7 +10,7 @@ type TransferRefund struct {
 	TransferID           *types.Identifier     `json:"transferId,omitempty"`
 	TransferRefundDate   *types.TimestampParis `json:"transferrefundDate,omitempty"`
 	Amount               *types.Amount         `json:"amount,omitempty"`
-	Currency             *treezor.Currency     `json:"currency,omitempty"`
+	Currency             *Currency             `json:"currency,omitempty"`
 	CreatedDate          *types.TimestampParis `json:"createdDate,omitempty"`
 	ModifiedDate         *types.TimestampParis `json:"modifiedDate,omitempty"`
 	TotalRows            *types.Integer        `json:"totalRows,omitempty"`

@@ -1,10 +1,6 @@
-package event
+package treezor
 
 import "github.com/tifo/treezor-sdk/internal/types"
-
-type BankAccountEvent struct {
-	BankAccounts []*BankAccount `json:"bankaccounts"`
-}
 
 type BankAccount struct {
 	BankAccountID           *types.Identifier     `json:"bankaccountId,omitempty"`

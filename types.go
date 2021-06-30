@@ -31,7 +31,7 @@ func Date(date time.Time) *types.Date {
 	return types.NewDate(date)
 }
 
-// Time is a helper routine that allocates a new Time value
+// Timestamp is a helper routine that allocates a new Timestamp value
 // to store v and returns a pointer to it.
 func Timestamp(v time.Time) *types.Timestamp {
 	return &types.Timestamp{

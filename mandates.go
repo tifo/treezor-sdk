@@ -1,10 +1,6 @@
-package event
+package treezor
 
 import "github.com/tifo/treezor-sdk/internal/types"
-
-type MandateEvent struct {
-	Mandates []*Mandate `json:"mandates"`
-}
 
 type Mandate struct {
 	MandateID                           *types.Identifier     `json:"mandateId,omitempty"`

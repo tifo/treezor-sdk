@@ -1,13 +1,6 @@
-package event
+package treezor
 
-import (
-	"github.com/tifo/treezor-sdk"
-	"github.com/tifo/treezor-sdk/internal/types"
-)
-
-type PayinRefundEvent struct {
-	PayinRefunds []*PayinRefund `json:"payinrefunds"`
-}
+import "github.com/tifo/treezor-sdk/internal/types"
 
 type PayinRefund struct {
 	PayinRefundID     *types.Identifier     `json:"payinrefundId,omitempty"`
@@ -17,7 +10,7 @@ type PayinRefund struct {
 	PayinID           *types.Identifier     `json:"payinId,omitempty"`
 	PayinRefundDate   *types.Date           `json:"payinrefundDate,omitempty"`
 	Amount            *types.Amount         `json:"amount,omitempty"`
-	Currency          *treezor.Currency     `json:"currency,omitempty"`
+	Currency          *Currency             `json:"currency,omitempty"`
 	CreatedDate       *types.TimestampParis `json:"createdDate,omitempty"`
 	ModifiedDate      *types.TimestampParis `json:"modifiedDate,omitempty"`
 	ReasonTms         *string               `json:"reasonTms,omitempty"`

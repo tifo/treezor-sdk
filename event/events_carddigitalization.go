@@ -17,5 +17,3 @@ type CardDigitalizationEvent struct {
 	ActivationMethod             *string           `json:"activationMethod,omitempty"` // NOTE: can be an enum
 	ExpirationDate               *types.Date       `json:"expirationDate,omitempty"`
 }
-
-// TODO: Add CardDigitalization API

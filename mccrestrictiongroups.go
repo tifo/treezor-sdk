@@ -1,10 +1,6 @@
-package event
+package treezor
 
 import "github.com/tifo/treezor-sdk/internal/types"
-
-type MCCRestrictionGroupEvent struct {
-	MCCRestrictionGroups []*MCCRestrictionGroup `json:"mccIdRestrictionGroups"`
-}
 
 type MCCRestrictionGroup struct {
 	ID           *types.Identifier     `json:"id,omitempty"`
