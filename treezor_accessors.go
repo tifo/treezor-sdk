@@ -4,6 +4,7 @@ package treezor
 
 import (
 	"encoding/json"
+	"github.com/tifo/treezor-sdk/internal/types"
 	"net/http"
 	"time"
 )
@@ -113,9 +114,145 @@ func (b *Balance) GetWalletID() string {
 }
 
 // GetBalances returns the Balances field.
+func (b *BalanceEvent) GetBalances() []*Balance {
+	if b != nil {
+		return b.Balances
+	}
+	return nil
+}
+
+// GetBalances returns the Balances field.
 func (b *BalanceResponse) GetBalances() []*Balance {
 	if b != nil {
 		return b.Balances
+	}
+	return nil
+}
+
+// GetBankAccountBIC returns the BankAccountBIC field if it's non-nil, zero value otherwise.
+func (b *BankAccount) GetBankAccountBIC() string {
+	if b != nil && b.BankAccountBIC != nil {
+		return *b.BankAccountBIC
+	}
+	return ""
+}
+
+// GetBankAccountIBAN returns the BankAccountIBAN field if it's non-nil, zero value otherwise.
+func (b *BankAccount) GetBankAccountIBAN() string {
+	if b != nil && b.BankAccountIBAN != nil {
+		return *b.BankAccountIBAN
+	}
+	return ""
+}
+
+// GetBankAccountID returns the BankAccountID field if it's non-nil, zero value otherwise.
+func (b *BankAccount) GetBankAccountID() string {
+	if b != nil && b.BankAccountID != nil {
+		return b.BankAccountID.String()
+	}
+	return ""
+}
+
+// GetBankAccountOwnerAddress returns the BankAccountOwnerAddress field if it's non-nil, zero value otherwise.
+func (b *BankAccount) GetBankAccountOwnerAddress() string {
+	if b != nil && b.BankAccountOwnerAddress != nil {
+		return *b.BankAccountOwnerAddress
+	}
+	return ""
+}
+
+// GetBankAccountOwnerName returns the BankAccountOwnerName field if it's non-nil, zero value otherwise.
+func (b *BankAccount) GetBankAccountOwnerName() string {
+	if b != nil && b.BankAccountOwnerName != nil {
+		return *b.BankAccountOwnerName
+	}
+	return ""
+}
+
+// GetBankAccountStatus returns the BankAccountStatus field if it's non-nil, zero value otherwise.
+func (b *BankAccount) GetBankAccountStatus() string {
+	if b != nil && b.BankAccountStatus != nil {
+		return *b.BankAccountStatus
+	}
+	return ""
+}
+
+// GetBankAccountTag returns the BankAccountTag field if it's non-nil, zero value otherwise.
+func (b *BankAccount) GetBankAccountTag() string {
+	if b != nil && b.BankAccountTag != nil {
+		return *b.BankAccountTag
+	}
+	return ""
+}
+
+// GetBankAccountType returns the BankAccountType field if it's non-nil, zero value otherwise.
+func (b *BankAccount) GetBankAccountType() string {
+	if b != nil && b.BankAccountType != nil {
+		return *b.BankAccountType
+	}
+	return ""
+}
+
+// GetCodeStatus returns the CodeStatus field if it's non-nil, zero value otherwise.
+func (b *BankAccount) GetCodeStatus() string {
+	if b != nil && b.CodeStatus != nil {
+		return b.CodeStatus.String()
+	}
+	return ""
+}
+
+// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
+func (b *BankAccount) GetCreatedDate() time.Time {
+	if b != nil && b.CreatedDate != nil {
+		return b.CreatedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetInformationStatus returns the InformationStatus field if it's non-nil, zero value otherwise.
+func (b *BankAccount) GetInformationStatus() string {
+	if b != nil && b.InformationStatus != nil {
+		return *b.InformationStatus
+	}
+	return ""
+}
+
+// GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
+func (b *BankAccount) GetModifiedDate() time.Time {
+	if b != nil && b.ModifiedDate != nil {
+		return b.ModifiedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (b *BankAccount) GetName() string {
+	if b != nil && b.Name != nil {
+		return *b.Name
+	}
+	return ""
+}
+
+// GetTotalRows returns the TotalRows field if it's non-nil, zero value otherwise.
+func (b *BankAccount) GetTotalRows() int64 {
+	if b != nil && b.TotalRows != nil {
+		return b.TotalRows.Int64()
+	}
+	return 0
+}
+
+// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
+func (b *BankAccount) GetUserID() string {
+	if b != nil && b.UserID != nil {
+		return b.UserID.String()
+	}
+	return ""
+}
+
+// GetBankAccounts returns the BankAccounts field.
+func (b *BankAccountEvent) GetBankAccounts() []*BankAccount {
+	if b != nil {
+		return b.BankAccounts
 	}
 	return nil
 }
@@ -246,6 +383,14 @@ func (b *Beneficiary) GetUserID() string {
 		return b.UserID.String()
 	}
 	return ""
+}
+
+// GetBeneficiaries returns the Beneficiaries field.
+func (b *BeneficiaryEvent) GetBeneficiaries() []*Beneficiary {
+	if b != nil {
+		return b.Beneficiaries
+	}
+	return nil
 }
 
 // GetAddress returns the Address field if it's non-nil, zero value otherwise.
@@ -928,6 +1073,94 @@ func (c *Card3DS) GetCardID() string {
 	return ""
 }
 
+// GetChargebacks returns the Chargebacks field.
+func (c *CardChargebackEvent) GetChargebacks() []*Chargeback {
+	if c != nil {
+		return c.Chargebacks
+	}
+	return nil
+}
+
+// GetActivationCode returns the ActivationCode field if it's non-nil, zero value otherwise.
+func (c *CardDigitalizationEvent) GetActivationCode() string {
+	if c != nil && c.ActivationCode != nil {
+		return *c.ActivationCode
+	}
+	return ""
+}
+
+// GetActivationCodeExpiry returns the ActivationCodeExpiry field if it's non-nil, zero value otherwise.
+func (c *CardDigitalizationEvent) GetActivationCodeExpiry() time.Time {
+	if c != nil && c.ActivationCodeExpiry != nil {
+		return *c.ActivationCodeExpiry
+	}
+	return time.Time{}
+}
+
+// GetActivationMethod returns the ActivationMethod field if it's non-nil, zero value otherwise.
+func (c *CardDigitalizationEvent) GetActivationMethod() string {
+	if c != nil && c.ActivationMethod != nil {
+		return *c.ActivationMethod
+	}
+	return ""
+}
+
+// GetCardDigitalizationExternalID returns the CardDigitalizationExternalID field if it's non-nil, zero value otherwise.
+func (c *CardDigitalizationEvent) GetCardDigitalizationExternalID() string {
+	if c != nil && c.CardDigitalizationExternalID != nil {
+		return *c.CardDigitalizationExternalID
+	}
+	return ""
+}
+
+// GetCardID returns the CardID field if it's non-nil, zero value otherwise.
+func (c *CardDigitalizationEvent) GetCardID() string {
+	if c != nil && c.CardID != nil {
+		return c.CardID.String()
+	}
+	return ""
+}
+
+// GetDeviceName returns the DeviceName field if it's non-nil, zero value otherwise.
+func (c *CardDigitalizationEvent) GetDeviceName() string {
+	if c != nil && c.DeviceName != nil {
+		return *c.DeviceName
+	}
+	return ""
+}
+
+// GetDeviceType returns the DeviceType field if it's non-nil, zero value otherwise.
+func (c *CardDigitalizationEvent) GetDeviceType() string {
+	if c != nil && c.DeviceType != nil {
+		return *c.DeviceType
+	}
+	return ""
+}
+
+// GetExpirationDate returns the ExpirationDate field if it's non-nil, zero value otherwise.
+func (c *CardDigitalizationEvent) GetExpirationDate() time.Time {
+	if c != nil && c.ExpirationDate != nil {
+		return c.ExpirationDate.Time
+	}
+	return time.Time{}
+}
+
+// GetTokenRequestor returns the TokenRequestor field if it's non-nil, zero value otherwise.
+func (c *CardDigitalizationEvent) GetTokenRequestor() string {
+	if c != nil && c.TokenRequestor != nil {
+		return *c.TokenRequestor
+	}
+	return ""
+}
+
+// GetCards returns the Cards field.
+func (c *CardEvent) GetCards() []*Card {
+	if c != nil {
+		return c.Cards
+	}
+	return nil
+}
+
 // GetCardID returns the CardID field if it's non-nil, zero value otherwise.
 func (c *CardImage) GetCardID() string {
 	if c != nil && c.CardID != nil {
@@ -1433,9 +1666,209 @@ func (c *CardTransaction) GetWalletID() string {
 }
 
 // GetCardTransactions returns the CardTransactions field.
+func (c *CardTransactionEvent) GetCardTransactions() []*CardTransaction {
+	if c != nil {
+		return c.CardTransactions
+	}
+	return nil
+}
+
+// GetCardTransactions returns the CardTransactions field.
 func (c *CardTransactionResponse) GetCardTransactions() []*CardTransaction {
 	if c != nil {
 		return c.CardTransactions
+	}
+	return nil
+}
+
+// GetAmount returns the Amount field if it's non-nil, zero value otherwise.
+func (c *Chargeback) GetAmount() string {
+	if c != nil && c.Amount != nil {
+		return *c.Amount
+	}
+	return ""
+}
+
+// GetChargebackCreatedDate returns the ChargebackCreatedDate field if it's non-nil, zero value otherwise.
+func (c *Chargeback) GetChargebackCreatedDate() time.Time {
+	if c != nil && c.ChargebackCreatedDate != nil {
+		return c.ChargebackCreatedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetChargebackReason returns the ChargebackReason field if it's non-nil, zero value otherwise.
+func (c *Chargeback) GetChargebackReason() string {
+	if c != nil && c.ChargebackReason != nil {
+		return *c.ChargebackReason
+	}
+	return ""
+}
+
+// GetCountry returns the Country field if it's non-nil, zero value otherwise.
+func (c *Chargeback) GetCountry() string {
+	if c != nil && c.Country != nil {
+		return *c.Country
+	}
+	return ""
+}
+
+// GetCurrency returns the Currency field if it's non-nil, zero value otherwise.
+func (c *Chargeback) GetCurrency() Currency {
+	if c != nil && c.Currency != nil {
+		return *c.Currency
+	}
+	return Currency("")
+}
+
+// GetIsRefunded returns the IsRefunded field if it's non-nil, zero value otherwise.
+func (c *Chargeback) GetIsRefunded() bool {
+	if c != nil && c.IsRefunded != nil {
+		return c.IsRefunded.Bool()
+	}
+	return false
+}
+
+// GetPayinCreatedDate returns the PayinCreatedDate field if it's non-nil, zero value otherwise.
+func (c *Chargeback) GetPayinCreatedDate() time.Time {
+	if c != nil && c.PayinCreatedDate != nil {
+		return c.PayinCreatedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetPayinID returns the PayinID field if it's non-nil, zero value otherwise.
+func (c *Chargeback) GetPayinID() string {
+	if c != nil && c.PayinID != nil {
+		return c.PayinID.String()
+	}
+	return ""
+}
+
+// GetPayinRefundCreatedDate returns the PayinRefundCreatedDate field if it's non-nil, zero value otherwise.
+func (c *Chargeback) GetPayinRefundCreatedDate() time.Time {
+	if c != nil && c.PayinRefundCreatedDate != nil {
+		return c.PayinRefundCreatedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetPayinRefundID returns the PayinRefundID field if it's non-nil, zero value otherwise.
+func (c *Chargeback) GetPayinRefundID() string {
+	if c != nil && c.PayinRefundID != nil {
+		return c.PayinRefundID.String()
+	}
+	return ""
+}
+
+// GetPaymentBrand returns the PaymentBrand field if it's non-nil, zero value otherwise.
+func (c *Chargeback) GetPaymentBrand() string {
+	if c != nil && c.PaymentBrand != nil {
+		return *c.PaymentBrand
+	}
+	return ""
+}
+
+// GetPaymentMethodId returns the PaymentMethodId field if it's non-nil, zero value otherwise.
+func (c *Chargeback) GetPaymentMethodId() string {
+	if c != nil && c.PaymentMethodId != nil {
+		return c.PaymentMethodId.String()
+	}
+	return ""
+}
+
+// GetTransactionReference returns the TransactionReference field if it's non-nil, zero value otherwise.
+func (c *Chargeback) GetTransactionReference() string {
+	if c != nil && c.TransactionReference != nil {
+		return c.TransactionReference.String()
+	}
+	return ""
+}
+
+// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
+func (c *Chargeback) GetUserID() string {
+	if c != nil && c.UserID != nil {
+		return c.UserID.String()
+	}
+	return ""
+}
+
+// GetWalletID returns the WalletID field if it's non-nil, zero value otherwise.
+func (c *Chargeback) GetWalletID() string {
+	if c != nil && c.WalletID != nil {
+		return c.WalletID.String()
+	}
+	return ""
+}
+
+// GetCountries returns the Countries field.
+func (c *CountryRestrictionGroup) GetCountries() []*types.Identifier {
+	if c != nil {
+		return c.Countries
+	}
+	return nil
+}
+
+// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
+func (c *CountryRestrictionGroup) GetCreatedDate() time.Time {
+	if c != nil && c.CreatedDate != nil {
+		return c.CreatedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CountryRestrictionGroup) GetID() string {
+	if c != nil && c.ID != nil {
+		return c.ID.String()
+	}
+	return ""
+}
+
+// GetIsWhitelist returns the IsWhitelist field if it's non-nil, zero value otherwise.
+func (c *CountryRestrictionGroup) GetIsWhitelist() bool {
+	if c != nil && c.IsWhitelist != nil {
+		return c.IsWhitelist.Bool()
+	}
+	return false
+}
+
+// GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
+func (c *CountryRestrictionGroup) GetModifiedDate() time.Time {
+	if c != nil && c.ModifiedDate != nil {
+		return c.ModifiedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CountryRestrictionGroup) GetName() string {
+	if c != nil && c.Name != nil {
+		return *c.Name
+	}
+	return ""
+}
+
+// GetStartDate returns the StartDate field if it's non-nil, zero value otherwise.
+func (c *CountryRestrictionGroup) GetStartDate() time.Time {
+	if c != nil && c.StartDate != nil {
+		return c.StartDate.Time
+	}
+	return time.Time{}
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (c *CountryRestrictionGroup) GetStatus() string {
+	if c != nil && c.Status != nil {
+		return *c.Status
+	}
+	return ""
+}
+
+// GetCountryRestrictionGroups returns the CountryRestrictionGroups field.
+func (c *CountryRestrictionGroupEvent) GetCountryRestrictionGroups() []*CountryRestrictionGroup {
+	if c != nil {
+		return c.CountryRestrictionGroups
 	}
 	return nil
 }
@@ -1609,6 +2042,14 @@ func (d *Document) GetUserLastname() string {
 }
 
 // GetDocuments returns the Documents field.
+func (d *DocumentEvent) GetDocuments() []*Document {
+	if d != nil {
+		return d.Documents
+	}
+	return nil
+}
+
+// GetDocuments returns the Documents field.
 func (d *DocumentResponse) GetDocuments() []*Document {
 	if d != nil {
 		return d.Documents
@@ -1648,6 +2089,54 @@ func (e *Error) GetResponse() http.Response {
 	return http.Response{}
 }
 
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (e *Event) GetID() string {
+	if e != nil && e.ID != nil {
+		return *e.ID
+	}
+	return ""
+}
+
+// GetObject returns the Object field if it's non-nil, zero value otherwise.
+func (e *Event) GetObject() string {
+	if e != nil && e.Object != nil {
+		return *e.Object
+	}
+	return ""
+}
+
+// GetObjectID returns the ObjectID field if it's non-nil, zero value otherwise.
+func (e *Event) GetObjectID() string {
+	if e != nil && e.ObjectID != nil {
+		return *e.ObjectID
+	}
+	return ""
+}
+
+// GetPayloadSignature returns the PayloadSignature field if it's non-nil, zero value otherwise.
+func (e *Event) GetPayloadSignature() string {
+	if e != nil && e.PayloadSignature != nil {
+		return *e.PayloadSignature
+	}
+	return ""
+}
+
+// GetRawPayload returns the RawPayload field if it's non-nil, zero value otherwise.
+func (e *Event) GetRawPayload() json.RawMessage {
+	if e != nil && e.RawPayload != nil {
+		return *e.RawPayload
+	}
+	return json.RawMessage{}
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (e *Event) GetType() string {
+	if e != nil && e.Type != nil {
+		return *e.Type
+	}
+	return ""
+}
+
 // GetIdentificationID returns the IdentificationID field if it's non-nil, zero value otherwise.
 func (i *Identification) GetIdentificationID() string {
 	if i != nil && i.IdentificationID != nil {
@@ -1670,6 +2159,86 @@ func (i *IdentificationResponse) GetIdentification() *Identification {
 		return i.Identification
 	}
 	return nil
+}
+
+// GetComment returns the Comment field if it's non-nil, zero value otherwise.
+func (k *KYCLivenessEvent) GetComment() string {
+	if k != nil && k.Comment != nil {
+		return *k.Comment
+	}
+	return ""
+}
+
+// GetIdentity returns the Identity field.
+func (k *KYCLivenessEvent) GetIdentity() *KYCLivenessIdentity {
+	if k != nil {
+		return k.Identity
+	}
+	return nil
+}
+
+// GetKycStatus returns the KycStatus field if it's non-nil, zero value otherwise.
+func (k *KYCLivenessEvent) GetKycStatus() string {
+	if k != nil && k.KycStatus != nil {
+		return *k.KycStatus
+	}
+	return ""
+}
+
+// GetScore returns the Score field if it's non-nil, zero value otherwise.
+func (k *KYCLivenessEvent) GetScore() int {
+	if k != nil && k.Score != nil {
+		return *k.Score
+	}
+	return 0
+}
+
+// GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
+func (k *KYCLivenessEvent) GetStartedAt() time.Time {
+	if k != nil && k.StartedAt != nil {
+		return *k.StartedAt
+	}
+	return time.Time{}
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (k *KYCLivenessEvent) GetUpdatedAt() time.Time {
+	if k != nil && k.UpdatedAt != nil {
+		return *k.UpdatedAt
+	}
+	return time.Time{}
+}
+
+// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
+func (k *KYCLivenessEvent) GetUserID() string {
+	if k != nil && k.UserID != nil {
+		return *k.UserID
+	}
+	return ""
+}
+
+// GetBirthDate returns the BirthDate field if it's non-nil, zero value otherwise.
+func (k *KYCLivenessIdentity) GetBirthDate() string {
+	if k != nil && k.BirthDate != nil {
+		return *k.BirthDate
+	}
+	return ""
+}
+
+// GetFirstName returns the FirstName field if it's non-nil, zero value otherwise.
+func (k *KYCLivenessIdentity) GetFirstName() string {
+	if k != nil && k.FirstName != nil {
+		return *k.FirstName
+	}
+	return ""
+}
+
+// GetLastName returns the LastName field if it's non-nil, zero value otherwise.
+func (k *KYCLivenessIdentity) GetLastName() string {
+	if k != nil && k.LastName != nil {
+		return *k.LastName
+	}
+	return ""
 }
 
 // GetCreatedFrom returns the CreatedFrom field if it's non-nil, zero value otherwise.
@@ -1734,6 +2303,470 @@ func (l *ListOptions) GetUpdatedTo() time.Time {
 		return l.UpdatedTo.Time
 	}
 	return time.Time{}
+}
+
+// GetCodeStatus returns the CodeStatus field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetCodeStatus() string {
+	if m != nil && m.CodeStatus != nil {
+		return m.CodeStatus.String()
+	}
+	return ""
+}
+
+// GetContractDescription returns the ContractDescription field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetContractDescription() string {
+	if m != nil && m.ContractDescription != nil {
+		return *m.ContractDescription
+	}
+	return ""
+}
+
+// GetContractIdentificationNumber returns the ContractIdentificationNumber field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetContractIdentificationNumber() string {
+	if m != nil && m.ContractIdentificationNumber != nil {
+		return *m.ContractIdentificationNumber
+	}
+	return ""
+}
+
+// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetCreatedDate() time.Time {
+	if m != nil && m.CreatedDate != nil {
+		return m.CreatedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetCreatedIP returns the CreatedIP field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetCreatedIP() string {
+	if m != nil && m.CreatedIP != nil {
+		return *m.CreatedIP
+	}
+	return ""
+}
+
+// GetCreditorAddress returns the CreditorAddress field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetCreditorAddress() string {
+	if m != nil && m.CreditorAddress != nil {
+		return *m.CreditorAddress
+	}
+	return ""
+}
+
+// GetCreditorCity returns the CreditorCity field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetCreditorCity() string {
+	if m != nil && m.CreditorCity != nil {
+		return *m.CreditorCity
+	}
+	return ""
+}
+
+// GetCreditorCountry returns the CreditorCountry field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetCreditorCountry() string {
+	if m != nil && m.CreditorCountry != nil {
+		return *m.CreditorCountry
+	}
+	return ""
+}
+
+// GetCreditorName returns the CreditorName field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetCreditorName() string {
+	if m != nil && m.CreditorName != nil {
+		return *m.CreditorName
+	}
+	return ""
+}
+
+// GetCreditorReferenceIdentificationCode returns the CreditorReferenceIdentificationCode field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetCreditorReferenceIdentificationCode() string {
+	if m != nil && m.CreditorReferenceIdentificationCode != nil {
+		return *m.CreditorReferenceIdentificationCode
+	}
+	return ""
+}
+
+// GetCreditorReferencePartyName returns the CreditorReferencePartyName field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetCreditorReferencePartyName() string {
+	if m != nil && m.CreditorReferencePartyName != nil {
+		return *m.CreditorReferencePartyName
+	}
+	return ""
+}
+
+// GetCreditorZipCode returns the CreditorZipCode field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetCreditorZipCode() string {
+	if m != nil && m.CreditorZipCode != nil {
+		return *m.CreditorZipCode
+	}
+	return ""
+}
+
+// GetDebtorAddress returns the DebtorAddress field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetDebtorAddress() string {
+	if m != nil && m.DebtorAddress != nil {
+		return *m.DebtorAddress
+	}
+	return ""
+}
+
+// GetDebtorBIC returns the DebtorBIC field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetDebtorBIC() string {
+	if m != nil && m.DebtorBIC != nil {
+		return *m.DebtorBIC
+	}
+	return ""
+}
+
+// GetDebtorCity returns the DebtorCity field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetDebtorCity() string {
+	if m != nil && m.DebtorCity != nil {
+		return *m.DebtorCity
+	}
+	return ""
+}
+
+// GetDebtorCountry returns the DebtorCountry field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetDebtorCountry() string {
+	if m != nil && m.DebtorCountry != nil {
+		return *m.DebtorCountry
+	}
+	return ""
+}
+
+// GetDebtorIBAN returns the DebtorIBAN field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetDebtorIBAN() string {
+	if m != nil && m.DebtorIBAN != nil {
+		return *m.DebtorIBAN
+	}
+	return ""
+}
+
+// GetDebtorIdentificationCode returns the DebtorIdentificationCode field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetDebtorIdentificationCode() string {
+	if m != nil && m.DebtorIdentificationCode != nil {
+		return *m.DebtorIdentificationCode
+	}
+	return ""
+}
+
+// GetDebtorName returns the DebtorName field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetDebtorName() string {
+	if m != nil && m.DebtorName != nil {
+		return *m.DebtorName
+	}
+	return ""
+}
+
+// GetDebtorReferenceIdentificationCode returns the DebtorReferenceIdentificationCode field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetDebtorReferenceIdentificationCode() string {
+	if m != nil && m.DebtorReferenceIdentificationCode != nil {
+		return *m.DebtorReferenceIdentificationCode
+	}
+	return ""
+}
+
+// GetDebtorReferencePartyName returns the DebtorReferencePartyName field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetDebtorReferencePartyName() string {
+	if m != nil && m.DebtorReferencePartyName != nil {
+		return *m.DebtorReferencePartyName
+	}
+	return ""
+}
+
+// GetDebtorSignatureIP returns the DebtorSignatureIP field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetDebtorSignatureIP() string {
+	if m != nil && m.DebtorSignatureIP != nil {
+		return *m.DebtorSignatureIP
+	}
+	return ""
+}
+
+// GetDebtorZipCode returns the DebtorZipCode field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetDebtorZipCode() string {
+	if m != nil && m.DebtorZipCode != nil {
+		return *m.DebtorZipCode
+	}
+	return ""
+}
+
+// GetInformationStatus returns the InformationStatus field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetInformationStatus() string {
+	if m != nil && m.InformationStatus != nil {
+		return *m.InformationStatus
+	}
+	return ""
+}
+
+// GetIsPaper returns the IsPaper field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetIsPaper() bool {
+	if m != nil && m.IsPaper != nil {
+		return m.IsPaper.Bool()
+	}
+	return false
+}
+
+// GetLegalInformations returns the LegalInformations field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetLegalInformations() string {
+	if m != nil && m.LegalInformations != nil {
+		return *m.LegalInformations
+	}
+	return ""
+}
+
+// GetMandateID returns the MandateID field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetMandateID() string {
+	if m != nil && m.MandateID != nil {
+		return m.MandateID.String()
+	}
+	return ""
+}
+
+// GetMandateStatus returns the MandateStatus field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetMandateStatus() string {
+	if m != nil && m.MandateStatus != nil {
+		return *m.MandateStatus
+	}
+	return ""
+}
+
+// GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetModifiedDate() time.Time {
+	if m != nil && m.ModifiedDate != nil {
+		return m.ModifiedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetRevocationSignatureDate returns the RevocationSignatureDate field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetRevocationSignatureDate() time.Time {
+	if m != nil && m.RevocationSignatureDate != nil {
+		return m.RevocationSignatureDate.Time
+	}
+	return time.Time{}
+}
+
+// GetSDDType returns the SDDType field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetSDDType() string {
+	if m != nil && m.SDDType != nil {
+		return *m.SDDType
+	}
+	return ""
+}
+
+// GetSepaCreditorIdentifier returns the SepaCreditorIdentifier field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetSepaCreditorIdentifier() string {
+	if m != nil && m.SepaCreditorIdentifier != nil {
+		return *m.SepaCreditorIdentifier
+	}
+	return ""
+}
+
+// GetSequenceType returns the SequenceType field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetSequenceType() string {
+	if m != nil && m.SequenceType != nil {
+		return *m.SequenceType
+	}
+	return ""
+}
+
+// GetSignatureDate returns the SignatureDate field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetSignatureDate() time.Time {
+	if m != nil && m.SignatureDate != nil {
+		return m.SignatureDate.Time
+	}
+	return time.Time{}
+}
+
+// GetSigned returns the Signed field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetSigned() bool {
+	if m != nil && m.Signed != nil {
+		return m.Signed.Bool()
+	}
+	return false
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetTitle() string {
+	if m != nil && m.Title != nil {
+		return *m.Title
+	}
+	return ""
+}
+
+// GetUniqueMandateReference returns the UniqueMandateReference field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetUniqueMandateReference() string {
+	if m != nil && m.UniqueMandateReference != nil {
+		return *m.UniqueMandateReference
+	}
+	return ""
+}
+
+// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetUserID() string {
+	if m != nil && m.UserID != nil {
+		return m.UserID.String()
+	}
+	return ""
+}
+
+// GetUserIDUltimateCreditor returns the UserIDUltimateCreditor field if it's non-nil, zero value otherwise.
+func (m *Mandate) GetUserIDUltimateCreditor() string {
+	if m != nil && m.UserIDUltimateCreditor != nil {
+		return m.UserIDUltimateCreditor.String()
+	}
+	return ""
+}
+
+// GetMandates returns the Mandates field.
+func (m *MandateEvent) GetMandates() []*Mandate {
+	if m != nil {
+		return m.Mandates
+	}
+	return nil
+}
+
+// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
+func (m *MCCRestrictionGroup) GetCreatedDate() time.Time {
+	if m != nil && m.CreatedDate != nil {
+		return m.CreatedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (m *MCCRestrictionGroup) GetID() string {
+	if m != nil && m.ID != nil {
+		return m.ID.String()
+	}
+	return ""
+}
+
+// GetIsWhitelist returns the IsWhitelist field if it's non-nil, zero value otherwise.
+func (m *MCCRestrictionGroup) GetIsWhitelist() bool {
+	if m != nil && m.IsWhitelist != nil {
+		return m.IsWhitelist.Bool()
+	}
+	return false
+}
+
+// GetMerchants returns the Merchants field.
+func (m *MCCRestrictionGroup) GetMerchants() []*types.Identifier {
+	if m != nil {
+		return m.Merchants
+	}
+	return nil
+}
+
+// GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
+func (m *MCCRestrictionGroup) GetModifiedDate() time.Time {
+	if m != nil && m.ModifiedDate != nil {
+		return m.ModifiedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (m *MCCRestrictionGroup) GetName() string {
+	if m != nil && m.Name != nil {
+		return *m.Name
+	}
+	return ""
+}
+
+// GetStartDate returns the StartDate field if it's non-nil, zero value otherwise.
+func (m *MCCRestrictionGroup) GetStartDate() time.Time {
+	if m != nil && m.StartDate != nil {
+		return m.StartDate.Time
+	}
+	return time.Time{}
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (m *MCCRestrictionGroup) GetStatus() string {
+	if m != nil && m.Status != nil {
+		return *m.Status
+	}
+	return ""
+}
+
+// GetMCCRestrictionGroups returns the MCCRestrictionGroups field.
+func (m *MCCRestrictionGroupEvent) GetMCCRestrictionGroups() []*MCCRestrictionGroup {
+	if m != nil {
+		return m.MCCRestrictionGroups
+	}
+	return nil
+}
+
+// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
+func (m *MIDRestrictionGroup) GetCreatedDate() time.Time {
+	if m != nil && m.CreatedDate != nil {
+		return m.CreatedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (m *MIDRestrictionGroup) GetID() string {
+	if m != nil && m.ID != nil {
+		return m.ID.String()
+	}
+	return ""
+}
+
+// GetIsWhitelist returns the IsWhitelist field if it's non-nil, zero value otherwise.
+func (m *MIDRestrictionGroup) GetIsWhitelist() bool {
+	if m != nil && m.IsWhitelist != nil {
+		return m.IsWhitelist.Bool()
+	}
+	return false
+}
+
+// GetMerchants returns the Merchants field.
+func (m *MIDRestrictionGroup) GetMerchants() []*types.Identifier {
+	if m != nil {
+		return m.Merchants
+	}
+	return nil
+}
+
+// GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
+func (m *MIDRestrictionGroup) GetModifiedDate() time.Time {
+	if m != nil && m.ModifiedDate != nil {
+		return m.ModifiedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (m *MIDRestrictionGroup) GetName() string {
+	if m != nil && m.Name != nil {
+		return *m.Name
+	}
+	return ""
+}
+
+// GetStartDate returns the StartDate field if it's non-nil, zero value otherwise.
+func (m *MIDRestrictionGroup) GetStartDate() time.Time {
+	if m != nil && m.StartDate != nil {
+		return m.StartDate.Time
+	}
+	return time.Time{}
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (m *MIDRestrictionGroup) GetStatus() string {
+	if m != nil && m.Status != nil {
+		return *m.Status
+	}
+	return ""
+}
+
+// GetMerchantIDRestrictionGroups returns the MerchantIDRestrictionGroups field.
+func (m *MIDRestrictionGroupEvent) GetMerchantIDRestrictionGroups() []*MIDRestrictionGroup {
+	if m != nil {
+		return m.MerchantIDRestrictionGroups
+	}
+	return nil
 }
 
 // GetAdditionalData returns the AdditionalData field.
@@ -2137,6 +3170,134 @@ func (p *Payin) GetWalletID() string {
 }
 
 // GetPayins returns the Payins field.
+func (p *PayinEvent) GetPayins() []*Payin {
+	if p != nil {
+		return p.Payins
+	}
+	return nil
+}
+
+// GetAmount returns the Amount field if it's non-nil, zero value otherwise.
+func (p *PayinRefund) GetAmount() float64 {
+	if p != nil && p.Amount != nil {
+		return p.Amount.Float64()
+	}
+	return 0.0
+}
+
+// GetCodeStatus returns the CodeStatus field if it's non-nil, zero value otherwise.
+func (p *PayinRefund) GetCodeStatus() string {
+	if p != nil && p.CodeStatus != nil {
+		return p.CodeStatus.String()
+	}
+	return ""
+}
+
+// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
+func (p *PayinRefund) GetCreatedDate() time.Time {
+	if p != nil && p.CreatedDate != nil {
+		return p.CreatedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetCurrency returns the Currency field if it's non-nil, zero value otherwise.
+func (p *PayinRefund) GetCurrency() Currency {
+	if p != nil && p.Currency != nil {
+		return *p.Currency
+	}
+	return Currency("")
+}
+
+// GetInformationStatus returns the InformationStatus field if it's non-nil, zero value otherwise.
+func (p *PayinRefund) GetInformationStatus() string {
+	if p != nil && p.InformationStatus != nil {
+		return *p.InformationStatus
+	}
+	return ""
+}
+
+// GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
+func (p *PayinRefund) GetModifiedDate() time.Time {
+	if p != nil && p.ModifiedDate != nil {
+		return p.ModifiedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetPayinID returns the PayinID field if it's non-nil, zero value otherwise.
+func (p *PayinRefund) GetPayinID() string {
+	if p != nil && p.PayinID != nil {
+		return p.PayinID.String()
+	}
+	return ""
+}
+
+// GetPayinRefundDate returns the PayinRefundDate field if it's non-nil, zero value otherwise.
+func (p *PayinRefund) GetPayinRefundDate() time.Time {
+	if p != nil && p.PayinRefundDate != nil {
+		return p.PayinRefundDate.Time
+	}
+	return time.Time{}
+}
+
+// GetPayinRefundID returns the PayinRefundID field if it's non-nil, zero value otherwise.
+func (p *PayinRefund) GetPayinRefundID() string {
+	if p != nil && p.PayinRefundID != nil {
+		return p.PayinRefundID.String()
+	}
+	return ""
+}
+
+// GetPayinRefundStatus returns the PayinRefundStatus field if it's non-nil, zero value otherwise.
+func (p *PayinRefund) GetPayinRefundStatus() string {
+	if p != nil && p.PayinRefundStatus != nil {
+		return *p.PayinRefundStatus
+	}
+	return ""
+}
+
+// GetPayinRefundTag returns the PayinRefundTag field if it's non-nil, zero value otherwise.
+func (p *PayinRefund) GetPayinRefundTag() string {
+	if p != nil && p.PayinRefundTag != nil {
+		return *p.PayinRefundTag
+	}
+	return ""
+}
+
+// GetReasonTms returns the ReasonTms field if it's non-nil, zero value otherwise.
+func (p *PayinRefund) GetReasonTms() string {
+	if p != nil && p.ReasonTms != nil {
+		return *p.ReasonTms
+	}
+	return ""
+}
+
+// GetTotalRows returns the TotalRows field if it's non-nil, zero value otherwise.
+func (p *PayinRefund) GetTotalRows() int64 {
+	if p != nil && p.TotalRows != nil {
+		return p.TotalRows.Int64()
+	}
+	return 0
+}
+
+// GetWalletID returns the WalletID field if it's non-nil, zero value otherwise.
+func (p *PayinRefund) GetWalletID() string {
+	if p != nil && p.WalletID != nil {
+		return p.WalletID.String()
+	}
+	return ""
+}
+
+// GetPayinRefunds returns the PayinRefunds field.
+func (p *PayinRefundEvent) GetPayinRefunds() []*PayinRefund {
+	if p != nil {
+		return p.PayinRefunds
+	}
+	return nil
+}
+
+// GetPayins returns the Payins field.
 func (p *PayinResponse) GetPayins() []*Payin {
 	if p != nil {
 		return p.Payins
@@ -2345,9 +3506,321 @@ func (p *Payout) GetWalletID() string {
 }
 
 // GetPayouts returns the Payouts field.
+func (p *PayoutEvent) GetPayouts() []*Payout {
+	if p != nil {
+		return p.Payouts
+	}
+	return nil
+}
+
+// GetCodeStatus returns the CodeStatus field if it's non-nil, zero value otherwise.
+func (p *PayoutRefund) GetCodeStatus() string {
+	if p != nil && p.CodeStatus != nil {
+		return p.CodeStatus.String()
+	}
+	return ""
+}
+
+// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
+func (p *PayoutRefund) GetCreatedDate() time.Time {
+	if p != nil && p.CreatedDate != nil {
+		return p.CreatedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *PayoutRefund) GetID() string {
+	if p != nil && p.ID != nil {
+		return p.ID.String()
+	}
+	return ""
+}
+
+// GetInformationStatus returns the InformationStatus field if it's non-nil, zero value otherwise.
+func (p *PayoutRefund) GetInformationStatus() string {
+	if p != nil && p.InformationStatus != nil {
+		return *p.InformationStatus
+	}
+	return ""
+}
+
+// GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
+func (p *PayoutRefund) GetModifiedDate() time.Time {
+	if p != nil && p.ModifiedDate != nil {
+		return p.ModifiedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetPayoutID returns the PayoutID field if it's non-nil, zero value otherwise.
+func (p *PayoutRefund) GetPayoutID() string {
+	if p != nil && p.PayoutID != nil {
+		return p.PayoutID.String()
+	}
+	return ""
+}
+
+// GetReasonCode returns the ReasonCode field if it's non-nil, zero value otherwise.
+func (p *PayoutRefund) GetReasonCode() string {
+	if p != nil && p.ReasonCode != nil {
+		return *p.ReasonCode
+	}
+	return ""
+}
+
+// GetRefundAmount returns the RefundAmount field if it's non-nil, zero value otherwise.
+func (p *PayoutRefund) GetRefundAmount() float64 {
+	if p != nil && p.RefundAmount != nil {
+		return p.RefundAmount.Float64()
+	}
+	return 0.0
+}
+
+// GetRefundComment returns the RefundComment field if it's non-nil, zero value otherwise.
+func (p *PayoutRefund) GetRefundComment() string {
+	if p != nil && p.RefundComment != nil {
+		return *p.RefundComment
+	}
+	return ""
+}
+
+// GetRefundCurrency returns the RefundCurrency field if it's non-nil, zero value otherwise.
+func (p *PayoutRefund) GetRefundCurrency() Currency {
+	if p != nil && p.RefundCurrency != nil {
+		return *p.RefundCurrency
+	}
+	return Currency("")
+}
+
+// GetRefundDate returns the RefundDate field if it's non-nil, zero value otherwise.
+func (p *PayoutRefund) GetRefundDate() time.Time {
+	if p != nil && p.RefundDate != nil {
+		return p.RefundDate.Time
+	}
+	return time.Time{}
+}
+
+// GetRequestAmount returns the RequestAmount field if it's non-nil, zero value otherwise.
+func (p *PayoutRefund) GetRequestAmount() float64 {
+	if p != nil && p.RequestAmount != nil {
+		return p.RequestAmount.Float64()
+	}
+	return 0.0
+}
+
+// GetRequestComment returns the RequestComment field if it's non-nil, zero value otherwise.
+func (p *PayoutRefund) GetRequestComment() string {
+	if p != nil && p.RequestComment != nil {
+		return *p.RequestComment
+	}
+	return ""
+}
+
+// GetRequestCurrency returns the RequestCurrency field if it's non-nil, zero value otherwise.
+func (p *PayoutRefund) GetRequestCurrency() Currency {
+	if p != nil && p.RequestCurrency != nil {
+		return *p.RequestCurrency
+	}
+	return Currency("")
+}
+
+// GetTag returns the Tag field if it's non-nil, zero value otherwise.
+func (p *PayoutRefund) GetTag() string {
+	if p != nil && p.Tag != nil {
+		return *p.Tag
+	}
+	return ""
+}
+
+// GetPayoutRefunds returns the PayoutRefunds field.
+func (p *PayoutRefundEvent) GetPayoutRefunds() []*PayoutRefund {
+	if p != nil {
+		return p.PayoutRefunds
+	}
+	return nil
+}
+
+// GetPayouts returns the Payouts field.
 func (p *PayoutResponse) GetPayouts() []*Payout {
 	if p != nil {
 		return p.Payouts
+	}
+	return nil
+}
+
+// GetAdditionalInformation returns the AdditionalInformation field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetAdditionalInformation() string {
+	if r != nil && r.AdditionalInformation != nil {
+		return *r.AdditionalInformation
+	}
+	return ""
+}
+
+// GetCxlID returns the CxlID field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetCxlID() string {
+	if r != nil && r.CxlID != nil {
+		return *r.CxlID
+	}
+	return ""
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetID() string {
+	if r != nil && r.ID != nil {
+		return r.ID.String()
+	}
+	return ""
+}
+
+// GetPayinRefundID returns the PayinRefundID field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetPayinRefundID() string {
+	if r != nil && r.PayinRefundID != nil {
+		return r.PayinRefundID.String()
+	}
+	return ""
+}
+
+// GetReasonCode returns the ReasonCode field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetReasonCode() string {
+	if r != nil && r.ReasonCode != nil {
+		return *r.ReasonCode
+	}
+	return ""
+}
+
+// GetReceivedDate returns the ReceivedDate field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetReceivedDate() time.Time {
+	if r != nil && r.ReceivedDate != nil {
+		return r.ReceivedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetSctrAmount returns the SctrAmount field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetSctrAmount() float64 {
+	if r != nil && r.SctrAmount != nil {
+		return r.SctrAmount.Float64()
+	}
+	return 0.0
+}
+
+// GetSctrCurrency returns the SctrCurrency field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetSctrCurrency() Currency {
+	if r != nil && r.SctrCurrency != nil {
+		return *r.SctrCurrency
+	}
+	return Currency("")
+}
+
+// GetSctrDbtrName returns the SctrDbtrName field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetSctrDbtrName() string {
+	if r != nil && r.SctrDbtrName != nil {
+		return *r.SctrDbtrName
+	}
+	return ""
+}
+
+// GetSctrID returns the SctrID field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetSctrID() string {
+	if r != nil && r.SctrID != nil {
+		return r.SctrID.String()
+	}
+	return ""
+}
+
+// GetSctrSettelmentDate returns the SctrSettelmentDate field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetSctrSettelmentDate() time.Time {
+	if r != nil && r.SctrSettelmentDate != nil {
+		return r.SctrSettelmentDate.Time
+	}
+	return time.Time{}
+}
+
+// GetSctrSettlementDate returns the SctrSettlementDate field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetSctrSettlementDate() time.Time {
+	if r != nil && r.SctrSettlementDate != nil {
+		return r.SctrSettlementDate.Time
+	}
+	return time.Time{}
+}
+
+// GetSctrTxID returns the SctrTxID field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetSctrTxID() string {
+	if r != nil && r.SctrTxID != nil {
+		return r.SctrTxID.String()
+	}
+	return ""
+}
+
+// GetStatusID returns the StatusID field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetStatusID() string {
+	if r != nil && r.StatusID != nil {
+		return r.StatusID.String()
+	}
+	return ""
+}
+
+// GetStatusLabel returns the StatusLabel field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetStatusLabel() string {
+	if r != nil && r.StatusLabel != nil {
+		return *r.StatusLabel
+	}
+	return ""
+}
+
+// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetUserID() string {
+	if r != nil && r.UserID != nil {
+		return r.UserID.String()
+	}
+	return ""
+}
+
+// GetUserName returns the UserName field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetUserName() string {
+	if r != nil && r.UserName != nil {
+		return *r.UserName
+	}
+	return ""
+}
+
+// GetUserStatusID returns the UserStatusID field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetUserStatusID() string {
+	if r != nil && r.UserStatusID != nil {
+		return r.UserStatusID.String()
+	}
+	return ""
+}
+
+// GetWalletActivationDate returns the WalletActivationDate field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetWalletActivationDate() time.Time {
+	if r != nil && r.WalletActivationDate != nil {
+		return r.WalletActivationDate.Time
+	}
+	return time.Time{}
+}
+
+// GetWalletID returns the WalletID field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetWalletID() string {
+	if r != nil && r.WalletID != nil {
+		return r.WalletID.String()
+	}
+	return ""
+}
+
+// GetWalletStatusID returns the WalletStatusID field if it's non-nil, zero value otherwise.
+func (r *RecallR) GetWalletStatusID() string {
+	if r != nil && r.WalletStatusID != nil {
+		return r.WalletStatusID.String()
+	}
+	return ""
+}
+
+// GetRecallRs returns the RecallRs field.
+func (r *RecallREvent) GetRecallRs() []*RecallR {
+	if r != nil {
+		return r.RecallRs
 	}
 	return nil
 }
@@ -2408,6 +3881,270 @@ func (s *SDDB2BWhitelist) GetWalletID() string {
 	return ""
 }
 
+// GetCreditorAddress returns the CreditorAddress field if it's non-nil, zero value otherwise.
+func (s *SepaSctr) GetCreditorAddress() string {
+	if s != nil && s.CreditorAddress != nil {
+		return *s.CreditorAddress
+	}
+	return ""
+}
+
+// GetCreditorCountry returns the CreditorCountry field if it's non-nil, zero value otherwise.
+func (s *SepaSctr) GetCreditorCountry() string {
+	if s != nil && s.CreditorCountry != nil {
+		return *s.CreditorCountry
+	}
+	return ""
+}
+
+// GetCreditorName returns the CreditorName field if it's non-nil, zero value otherwise.
+func (s *SepaSctr) GetCreditorName() string {
+	if s != nil && s.CreditorName != nil {
+		return *s.CreditorName
+	}
+	return ""
+}
+
+// GetDebitorAddress returns the DebitorAddress field if it's non-nil, zero value otherwise.
+func (s *SepaSctr) GetDebitorAddress() string {
+	if s != nil && s.DebitorAddress != nil {
+		return *s.DebitorAddress
+	}
+	return ""
+}
+
+// GetDebitorCountry returns the DebitorCountry field if it's non-nil, zero value otherwise.
+func (s *SepaSctr) GetDebitorCountry() string {
+	if s != nil && s.DebitorCountry != nil {
+		return *s.DebitorCountry
+	}
+	return ""
+}
+
+// GetDebitorName returns the DebitorName field if it's non-nil, zero value otherwise.
+func (s *SepaSctr) GetDebitorName() string {
+	if s != nil && s.DebitorName != nil {
+		return *s.DebitorName
+	}
+	return ""
+}
+
+// GetInterbankSettlementAmount returns the InterbankSettlementAmount field if it's non-nil, zero value otherwise.
+func (s *SepaSctr) GetInterbankSettlementAmount() float64 {
+	if s != nil && s.InterbankSettlementAmount != nil {
+		return s.InterbankSettlementAmount.Float64()
+	}
+	return 0.0
+}
+
+// GetReturnReasonCode returns the ReturnReasonCode field if it's non-nil, zero value otherwise.
+func (s *SepaSctr) GetReturnReasonCode() string {
+	if s != nil && s.ReturnReasonCode != nil {
+		return *s.ReturnReasonCode
+	}
+	return ""
+}
+
+// GetTransactionID returns the TransactionID field if it's non-nil, zero value otherwise.
+func (s *SepaSctr) GetTransactionID() string {
+	if s != nil && s.TransactionID != nil {
+		return s.TransactionID.String()
+	}
+	return ""
+}
+
+// GetUnstructuredField returns the UnstructuredField field if it's non-nil, zero value otherwise.
+func (s *SepaSctr) GetUnstructuredField() string {
+	if s != nil && s.UnstructuredField != nil {
+		return *s.UnstructuredField
+	}
+	return ""
+}
+
+// GetVirtualIBANID returns the VirtualIBANID field if it's non-nil, zero value otherwise.
+func (s *SepaSctr) GetVirtualIBANID() string {
+	if s != nil && s.VirtualIBANID != nil {
+		return s.VirtualIBANID.String()
+	}
+	return ""
+}
+
+// GetWalletID returns the WalletID field if it's non-nil, zero value otherwise.
+func (s *SepaSctr) GetWalletID() string {
+	if s != nil && s.WalletID != nil {
+		return s.WalletID.String()
+	}
+	return ""
+}
+
+// GetSepaSctrs returns the SepaSctrs field.
+func (s *SepaSctrEvent) GetSepaSctrs() []*SepaSctr {
+	if s != nil {
+		return s.SepaSctrs
+	}
+	return nil
+}
+
+// GetBankaccountID returns the BankaccountID field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetBankaccountID() string {
+	if s != nil && s.BankaccountID != nil {
+		return s.BankaccountID.String()
+	}
+	return ""
+}
+
+// GetBeneficiaryID returns the BeneficiaryID field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetBeneficiaryID() string {
+	if s != nil && s.BeneficiaryID != nil {
+		return s.BeneficiaryID.String()
+	}
+	return ""
+}
+
+// GetCreditorAddress returns the CreditorAddress field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetCreditorAddress() string {
+	if s != nil && s.CreditorAddress != nil {
+		return *s.CreditorAddress
+	}
+	return ""
+}
+
+// GetCreditorCountry returns the CreditorCountry field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetCreditorCountry() string {
+	if s != nil && s.CreditorCountry != nil {
+		return *s.CreditorCountry
+	}
+	return ""
+}
+
+// GetCreditorName returns the CreditorName field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetCreditorName() string {
+	if s != nil && s.CreditorName != nil {
+		return *s.CreditorName
+	}
+	return ""
+}
+
+// GetDateOfSignature returns the DateOfSignature field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetDateOfSignature() time.Time {
+	if s != nil && s.DateOfSignature != nil {
+		return s.DateOfSignature.Time
+	}
+	return time.Time{}
+}
+
+// GetDebitorAddress returns the DebitorAddress field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetDebitorAddress() string {
+	if s != nil && s.DebitorAddress != nil {
+		return *s.DebitorAddress
+	}
+	return ""
+}
+
+// GetDebitorCountry returns the DebitorCountry field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetDebitorCountry() string {
+	if s != nil && s.DebitorCountry != nil {
+		return *s.DebitorCountry
+	}
+	return ""
+}
+
+// GetDebitorName returns the DebitorName field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetDebitorName() string {
+	if s != nil && s.DebitorName != nil {
+		return *s.DebitorName
+	}
+	return ""
+}
+
+// GetInterbankSettlementAmount returns the InterbankSettlementAmount field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetInterbankSettlementAmount() float64 {
+	if s != nil && s.InterbankSettlementAmount != nil {
+		return s.InterbankSettlementAmount.Float64()
+	}
+	return 0.0
+}
+
+// GetMandateID returns the MandateID field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetMandateID() string {
+	if s != nil && s.MandateID != nil {
+		return *s.MandateID
+	}
+	return ""
+}
+
+// GetRejectReasonCode returns the RejectReasonCode field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetRejectReasonCode() string {
+	if s != nil && s.RejectReasonCode != nil {
+		return *s.RejectReasonCode
+	}
+	return ""
+}
+
+// GetRequestedCollectionDate returns the RequestedCollectionDate field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetRequestedCollectionDate() time.Time {
+	if s != nil && s.RequestedCollectionDate != nil {
+		return s.RequestedCollectionDate.Time
+	}
+	return time.Time{}
+}
+
+// GetSepaCreditorIdentifier returns the SepaCreditorIdentifier field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetSepaCreditorIdentifier() string {
+	if s != nil && s.SepaCreditorIdentifier != nil {
+		return *s.SepaCreditorIdentifier
+	}
+	return ""
+}
+
+// GetSequenceType returns the SequenceType field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetSequenceType() string {
+	if s != nil && s.SequenceType != nil {
+		return *s.SequenceType
+	}
+	return ""
+}
+
+// GetTransactionID returns the TransactionID field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetTransactionID() string {
+	if s != nil && s.TransactionID != nil {
+		return s.TransactionID.String()
+	}
+	return ""
+}
+
+// GetUnstructuredField returns the UnstructuredField field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetUnstructuredField() string {
+	if s != nil && s.UnstructuredField != nil {
+		return *s.UnstructuredField
+	}
+	return ""
+}
+
+// GetVirtualIbanID returns the VirtualIbanID field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetVirtualIbanID() string {
+	if s != nil && s.VirtualIbanID != nil {
+		return s.VirtualIbanID.String()
+	}
+	return ""
+}
+
+// GetWalletID returns the WalletID field if it's non-nil, zero value otherwise.
+func (s *SepaSddr) GetWalletID() string {
+	if s != nil && s.WalletID != nil {
+		return s.WalletID.String()
+	}
+	return ""
+}
+
+// GetSepaSddrs returns the SepaSddrs field.
+func (s *SepaSddrEvent) GetSepaSddrs() []*SepaSddr {
+	if s != nil {
+		return s.SepaSddrs
+	}
+	return nil
+}
+
 // GetCountry returns the Country field if it's non-nil, zero value otherwise.
 func (t *TaxResidence) GetCountry() string {
 	if t != nil && t.Country != nil {
@@ -2452,6 +4189,134 @@ func (t *TaxResidence) GetUserID() int64 {
 func (t *TaxResidencesResponse) GetTaxResidences() []*TaxResidence {
 	if t != nil {
 		return t.TaxResidences
+	}
+	return nil
+}
+
+// GetAmount returns the Amount field if it's non-nil, zero value otherwise.
+func (t *Transaction) GetAmount() float64 {
+	if t != nil && t.Amount != nil {
+		return t.Amount.Float64()
+	}
+	return 0.0
+}
+
+// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
+func (t *Transaction) GetCreatedDate() time.Time {
+	if t != nil && t.CreatedDate != nil {
+		return t.CreatedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetCurrency returns the Currency field if it's non-nil, zero value otherwise.
+func (t *Transaction) GetCurrency() Currency {
+	if t != nil && t.Currency != nil {
+		return *t.Currency
+	}
+	return Currency("")
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (t *Transaction) GetDescription() string {
+	if t != nil && t.Description != nil {
+		return *t.Description
+	}
+	return ""
+}
+
+// GetExecutionDate returns the ExecutionDate field if it's non-nil, zero value otherwise.
+func (t *Transaction) GetExecutionDate() time.Time {
+	if t != nil && t.ExecutionDate != nil {
+		return t.ExecutionDate.Time
+	}
+	return time.Time{}
+}
+
+// GetForeignID returns the ForeignID field if it's non-nil, zero value otherwise.
+func (t *Transaction) GetForeignID() string {
+	if t != nil && t.ForeignID != nil {
+		return t.ForeignID.String()
+	}
+	return ""
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (t *Transaction) GetName() string {
+	if t != nil && t.Name != nil {
+		return *t.Name
+	}
+	return ""
+}
+
+// GetTotalRows returns the TotalRows field if it's non-nil, zero value otherwise.
+func (t *Transaction) GetTotalRows() int64 {
+	if t != nil && t.TotalRows != nil {
+		return t.TotalRows.Int64()
+	}
+	return 0
+}
+
+// GetTransactionID returns the TransactionID field if it's non-nil, zero value otherwise.
+func (t *Transaction) GetTransactionID() string {
+	if t != nil && t.TransactionID != nil {
+		return t.TransactionID.String()
+	}
+	return ""
+}
+
+// GetTransactionType returns the TransactionType field if it's non-nil, zero value otherwise.
+func (t *Transaction) GetTransactionType() string {
+	if t != nil && t.TransactionType != nil {
+		return *t.TransactionType
+	}
+	return ""
+}
+
+// GetValueDate returns the ValueDate field if it's non-nil, zero value otherwise.
+func (t *Transaction) GetValueDate() time.Time {
+	if t != nil && t.ValueDate != nil {
+		return t.ValueDate.Time
+	}
+	return time.Time{}
+}
+
+// GetWalletCreditBalance returns the WalletCreditBalance field if it's non-nil, zero value otherwise.
+func (t *Transaction) GetWalletCreditBalance() float64 {
+	if t != nil && t.WalletCreditBalance != nil {
+		return t.WalletCreditBalance.Float64()
+	}
+	return 0.0
+}
+
+// GetWalletCreditID returns the WalletCreditID field if it's non-nil, zero value otherwise.
+func (t *Transaction) GetWalletCreditID() string {
+	if t != nil && t.WalletCreditID != nil {
+		return t.WalletCreditID.String()
+	}
+	return ""
+}
+
+// GetWalletDebitBalance returns the WalletDebitBalance field if it's non-nil, zero value otherwise.
+func (t *Transaction) GetWalletDebitBalance() float64 {
+	if t != nil && t.WalletDebitBalance != nil {
+		return t.WalletDebitBalance.Float64()
+	}
+	return 0.0
+}
+
+// GetWalletDebitID returns the WalletDebitID field if it's non-nil, zero value otherwise.
+func (t *Transaction) GetWalletDebitID() string {
+	if t != nil && t.WalletDebitID != nil {
+		return t.WalletDebitID.String()
+	}
+	return ""
+}
+
+// GetTransactions returns the Transactions field.
+func (t *TransactionEvent) GetTransactions() []*Transaction {
+	if t != nil {
+		return t.Transactions
 	}
 	return nil
 }
@@ -2638,6 +4503,126 @@ func (t *Transfer) GetWalletTypeID() string {
 		return t.WalletTypeID.String()
 	}
 	return ""
+}
+
+// GetTransfers returns the Transfers field.
+func (t *TransferEvent) GetTransfers() []*Transfer {
+	if t != nil {
+		return t.Transfers
+	}
+	return nil
+}
+
+// GetAmount returns the Amount field if it's non-nil, zero value otherwise.
+func (t *TransferRefund) GetAmount() float64 {
+	if t != nil && t.Amount != nil {
+		return t.Amount.Float64()
+	}
+	return 0.0
+}
+
+// GetCodeStatus returns the CodeStatus field if it's non-nil, zero value otherwise.
+func (t *TransferRefund) GetCodeStatus() string {
+	if t != nil && t.CodeStatus != nil {
+		return t.CodeStatus.String()
+	}
+	return ""
+}
+
+// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
+func (t *TransferRefund) GetCreatedDate() time.Time {
+	if t != nil && t.CreatedDate != nil {
+		return t.CreatedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetCurrency returns the Currency field if it's non-nil, zero value otherwise.
+func (t *TransferRefund) GetCurrency() Currency {
+	if t != nil && t.Currency != nil {
+		return *t.Currency
+	}
+	return Currency("")
+}
+
+// GetInformationStatus returns the InformationStatus field if it's non-nil, zero value otherwise.
+func (t *TransferRefund) GetInformationStatus() string {
+	if t != nil && t.InformationStatus != nil {
+		return *t.InformationStatus
+	}
+	return ""
+}
+
+// GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
+func (t *TransferRefund) GetModifiedDate() time.Time {
+	if t != nil && t.ModifiedDate != nil {
+		return t.ModifiedDate.Time
+	}
+	return time.Time{}
+}
+
+// GetTotalRows returns the TotalRows field if it's non-nil, zero value otherwise.
+func (t *TransferRefund) GetTotalRows() int64 {
+	if t != nil && t.TotalRows != nil {
+		return t.TotalRows.Int64()
+	}
+	return 0
+}
+
+// GetTransferID returns the TransferID field if it's non-nil, zero value otherwise.
+func (t *TransferRefund) GetTransferID() string {
+	if t != nil && t.TransferID != nil {
+		return t.TransferID.String()
+	}
+	return ""
+}
+
+// GetTransferRefundDate returns the TransferRefundDate field if it's non-nil, zero value otherwise.
+func (t *TransferRefund) GetTransferRefundDate() time.Time {
+	if t != nil && t.TransferRefundDate != nil {
+		return t.TransferRefundDate.Time
+	}
+	return time.Time{}
+}
+
+// GetTransferRefundID returns the TransferRefundID field if it's non-nil, zero value otherwise.
+func (t *TransferRefund) GetTransferRefundID() string {
+	if t != nil && t.TransferRefundID != nil {
+		return t.TransferRefundID.String()
+	}
+	return ""
+}
+
+// GetTransferRefundStatus returns the TransferRefundStatus field if it's non-nil, zero value otherwise.
+func (t *TransferRefund) GetTransferRefundStatus() string {
+	if t != nil && t.TransferRefundStatus != nil {
+		return *t.TransferRefundStatus
+	}
+	return ""
+}
+
+// GetTransferRefundTag returns the TransferRefundTag field if it's non-nil, zero value otherwise.
+func (t *TransferRefund) GetTransferRefundTag() string {
+	if t != nil && t.TransferRefundTag != nil {
+		return *t.TransferRefundTag
+	}
+	return ""
+}
+
+// GetWalletID returns the WalletID field if it's non-nil, zero value otherwise.
+func (t *TransferRefund) GetWalletID() string {
+	if t != nil && t.WalletID != nil {
+		return t.WalletID.String()
+	}
+	return ""
+}
+
+// GetTransferRefunds returns the TransferRefunds field.
+func (t *TransferRefundEvent) GetTransferRefunds() []*TransferRefund {
+	if t != nil {
+		return t.TransferRefunds
+	}
+	return nil
 }
 
 // GetTransfers returns the Transfers field.
@@ -3984,6 +5969,14 @@ func (u *UserEditOptions) GetUserTag() string {
 	return ""
 }
 
+// GetUsers returns the Users field.
+func (u *UserEvent) GetUsers() []*User {
+	if u != nil {
+		return u.Users
+	}
+	return nil
+}
+
 // GetControllingPersonType returns the ControllingPersonType field.
 func (u *UserListOptions) GetControllingPersonType() *ControllingPersonType {
 	if u != nil {
@@ -4508,6 +6501,14 @@ func (w *WalletEditOptions) GetURLImage() string {
 func (w *WalletEditOptions) GetWalletTypeID() *WalletType {
 	if w != nil {
 		return w.WalletTypeID
+	}
+	return nil
+}
+
+// GetWallets returns the Wallets field.
+func (w *WalletEvent) GetWallets() []*Wallet {
+	if w != nil {
+		return w.Wallets
 	}
 	return nil
 }

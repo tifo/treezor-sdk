@@ -182,7 +182,12 @@ func (t *templateData) addArrayType(x *ast.ArrayType, receiverType, fieldName st
 	case *ast.Ident:
 		eltType = elt.String()
 	case *ast.StarExpr:
-		eltType = "*" + elt.X.(*ast.Ident).String()
+		switch xX := elt.X.(type) {
+		case *ast.Ident:
+			eltType = "*" + xX.String()
+		case *ast.SelectorExpr:
+			eltType = "*" + xX.X.(*ast.Ident).Name + "." + xX.Sel.Name
+		}
 	default:
 		logf("addArrayType: type %q, field %q: unknown elt type: %T %+v; skipping.", receiverType, fieldName, elt, elt)
 		return
@@ -262,6 +267,7 @@ func (t *templateData) addSelectorExpr(x *ast.SelectorExpr, receiverType, fieldN
 			t.Imports["net/http"] = "net/http"
 		case "types":
 			// Do not import as we are transforming each types here
+			t.Imports["github.com/tifo/treezor-sdk/internal/types"] = "github.com/tifo/treezor-sdk/internal/types"
 		default:
 			t.Imports[xX] = xX
 		}
@@ -381,3 +387,5 @@ func ({{.ReceiverVar}} *{{.ReceiverType}}) Get{{.FieldName}}() {{.FieldType}} {
 {{end}}
 {{end}}
 `
+
+// TODO: transform []*types.Identifier to []string

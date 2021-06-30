@@ -1,0 +1,104 @@
+# .golanci.yml
+run:
+  concurrency: 4
+  timeout: 1m
+  issues-exit-code: 1
+  tests: true
+  skip-dirs: []
+  skip-dirs-use-default: true
+  skip-files:
+    - "treezor_accessors.go$"
+
+linters:
+  enable:
+    - gocritic
+    - revive
+    - gci
+    - unconvert
+    - unparam
+    - errcheck
+    - structcheck
+    - typecheck
+    - varcheck
+    - deadcode
+    - ineffassign
+    - nakedret
+    - goconst
+    - gocyclo
+    - godox
+  disable-all: true
+
+linters-settings:
+  errcheck:
+    check-type-assertions: false
+    check-blank: false
+  gocyclo:
+    min-complexity: 20
+  gci:
+    local-prefixes: github.com/tifo/treezor-sdk
+  gocritic:
+    settings:
+      captLocal:
+        paramsOnly: true
+      rangeValCopy:
+        sizeThreshold: 64
+      hugeParam:
+        sizeThreshold: 256
+      rangeExprCopy:
+        sizeThreshold: 512
+        skipTestFuncs: true
+    enabled-checks:
+      - appendAssign
+      - appendCombine
+      - argOrder
+      - assignOp
+      - builtinShadow
+      - captLocal
+      - caseOrder
+      - defaultCaseOrder
+      - dupArg
+      - dupBranchBody
+      - dupCase
+      - dupImport
+      - dupSubExpr
+      - elseif
+      - emptyStringTest
+      - equalFold
+      - flagDeref
+      - hugeParam
+      - ifElseChain
+      - importShadow
+      - indexAlloc
+      - initClause
+      - newDeref
+      - nilValReturn
+      - offBy1
+      - rangeExprCopy
+      - rangeValCopy
+      - regexpMust
+      - sloppyLen
+      - sloppyReassign
+      - switchTrue
+      - typeAssertChain
+      - typeSwitchVar
+      - underef
+      - unlambda
+      - unnecessaryBlock
+      - unslice
+      - yodaStyleExpr
+  revive:
+    ignore-generated-header: true
+    severity: warning
+
+issues:
+  exclude-use-default: true
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - dupl
+        - errcheck
+        - goconst
+        - gocyclo
+        - typecheck
+        - gosec
+        - ineffassign

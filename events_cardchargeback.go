@@ -1,7 +1,6 @@
-package event
+package treezor
 
 import (
-	"github.com/tifo/treezor-sdk"
 	"github.com/tifo/treezor-sdk/internal/types"
 )
 
@@ -18,7 +17,7 @@ type Chargeback struct {
 	PayinRefundID          *types.Identifier     `json:"payinRefundId,omitempty"`
 	PaymentMethodId        *types.Identifier     `json:"paymentMethodId,omitempty"`
 	PaymentBrand           *string               `json:"paymentBrand,omitempty"`
-	Currency               *treezor.Currency     `json:"currency,omitempty"`
+	Currency               *Currency             `json:"currency,omitempty"`
 	Amount                 *string               `json:"amount,omitempty"`
 	Country                *string               `json:"country,omitempty"`
 	IsRefunded             *types.Boolean        `json:"isRefunded,omitempty"`

@@ -1,4 +1,4 @@
-package event
+package treezor
 
 import (
 	"time"

@@ -1,4 +1,4 @@
-package event
+package treezor
 
 import "github.com/tifo/treezor-sdk/internal/types"
 

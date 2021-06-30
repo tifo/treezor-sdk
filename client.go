@@ -112,8 +112,8 @@ func NewConnectClient(httpClient *http.Client, connectURL string) *ConnectClient
 // request body.
 func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Request, error) {
 
-	path := path.Join(c.BaseURL.Path, urlStr)
-	u, err := c.BaseURL.Parse(path)
+	p := path.Join(c.BaseURL.Path, urlStr)
+	u, err := c.BaseURL.Parse(p)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -167,8 +167,8 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*htt
 
 		// If the error type is *url.Error, sanitize its URL before returning.
 		if e, ok := err.(*url.Error); ok {
-			if url, err := url.Parse(e.URL); err == nil {
-				e.URL = sanitizeURL(url).String()
+			if u, err := url.Parse(e.URL); err == nil {
+				e.URL = sanitizeURL(u).String()
 				return nil, e
 			}
 		}

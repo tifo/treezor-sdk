@@ -1,4 +1,4 @@
-package event
+package treezor
 
 import (
 	"crypto/hmac"
@@ -273,5 +273,3 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 	err = json.Unmarshal(*e.RawPayload, &payload)
 	return payload, errors.WithStack(err)
 }
-
-// NOTE: Should we create a type per event type or use a common XXXEvent type as they use the same model ?

@@ -112,13 +112,11 @@ func (t *PayinAdditionalData) UnmarshalJSON(data []byte) error {
 		if _, ok := err.(*json.UnmarshalTypeError); ok {
 			if merr := json.Unmarshal(data, &t.Message); merr != nil {
 				return merr
-			} else {
-				if derr := json.Unmarshal([]byte(t.Message), &t.AdditionalData); derr != nil {
-					if _, ok := err.(*json.UnmarshalTypeError); ok {
-						return nil
-					}
-					return derr
+			} else if derr := json.Unmarshal([]byte(t.Message), &t.AdditionalData); derr != nil {
+				if _, ok := err.(*json.UnmarshalTypeError); ok {
+					return nil
 				}
+				return derr
 			}
 		} else {
 			return err
