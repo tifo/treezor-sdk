@@ -9,7 +9,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/tifo/treezor-sdk/types"
+	"github.com/tifo/treezor-sdk/internal/types"
 )
 
 // UserService handles communication with the user related

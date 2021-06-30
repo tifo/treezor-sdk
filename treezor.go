@@ -9,7 +9,7 @@ import (
 	"github.com/google/go-querystring/query"
 	"github.com/pkg/errors"
 
-	"github.com/tifo/treezor-sdk/types"
+	"github.com/tifo/treezor-sdk/internal/types"
 )
 
 type service struct {

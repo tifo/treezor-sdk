@@ -8,7 +8,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/tifo/treezor-sdk/types"
+	"github.com/tifo/treezor-sdk/internal/types"
 )
 
 // DocumentType represents the type of legal document.

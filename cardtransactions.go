@@ -7,7 +7,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/tifo/treezor-sdk/types"
+	"github.com/tifo/treezor-sdk/internal/types"
 )
 
 // CardTransactionService handles communication with the card transaction related

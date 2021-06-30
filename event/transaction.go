@@ -2,7 +2,7 @@ package event
 
 import (
 	"github.com/tifo/treezor-sdk"
-	"github.com/tifo/treezor-sdk/types"
+	"github.com/tifo/treezor-sdk/internal/types"
 )
 
 type TransactionEvent struct {

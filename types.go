@@ -3,7 +3,7 @@ package treezor
 import (
 	"time"
 
-	"github.com/tifo/treezor-sdk/types"
+	"github.com/tifo/treezor-sdk/internal/types"
 )
 
 // Bool is a helper routine that allocates a new bool value
