@@ -1,4 +1,4 @@
-//go:generate go run scripts/gen_accessors.go -v
+//go:generate go run internal/scripts/gen_accessors.go -v
 
 package treezor
 
