@@ -16,13 +16,13 @@ const (
 	ErrCodeCardBlocked      = 32111
 )
 
-// An APIErrorResponse reports one or more errors caused by an API request.
-type APIErrorResponse struct {
+// An apiErrorResponse reports one or more errors caused by an API request.
+type apiErrorResponse struct {
 	Errors []APIError `json:"errors,omitempty"` // Formatted error
 	Error  *string    `json:"error,omitempty"`  // Simple error used by liveness endpoint
 }
 
-// APIError reports more details on an individual error in an APIErrorResponse.
+// APIError reports more details on an individual error in an apiErrorResponse.
 type APIError struct {
 	Code                  int      `json:"errorCode,omitempty"`
 	Message               string   `json:"errorMessage"`
@@ -33,10 +33,10 @@ func (e *APIError) Error() string {
 	return fmt.Sprintf("%v error caused because: %v", e.Code, e.Message)
 }
 
-// Error represents an all errors APIErrorResponse as API errors (transforming simple errors to APIErrors).
+// Error represents an all errors apiErrorResponse as API errors (transforming simple errors to APIErrors).
 type Error struct {
 	Response *http.Response // HTTP response that caused this error
-	Errors   []APIError     `json:"errors"` // Formatted Errors
+	Errors   []APIError     // Formatted Errors
 }
 
 func (r *Error) Error() string {
@@ -55,7 +55,7 @@ func CheckResponse(r *http.Response) error {
 	if c := r.StatusCode; c >= http.StatusOK && c < http.StatusBadRequest {
 		return nil
 	}
-	errorResponse := &APIErrorResponse{}
+	errorResponse := &apiErrorResponse{}
 	data, err := ioutil.ReadAll(r.Body)
 	if err == nil && data != nil {
 		_ = json.Unmarshal(data, errorResponse)

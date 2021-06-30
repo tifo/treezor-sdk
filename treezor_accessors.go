@@ -5,7 +5,6 @@ package treezor
 import (
 	"encoding/json"
 	"github.com/tifo/treezor-sdk/internal/types"
-	"net/http"
 	"time"
 )
 
@@ -39,30 +38,6 @@ func (a *Access) GetAccessUserIP() string {
 		return *a.AccessUserIP
 	}
 	return ""
-}
-
-// GetAdditionalInformation returns the AdditionalInformation field.
-func (a *APIError) GetAdditionalInformation() []string {
-	if a != nil {
-		return a.AdditionalInformation
-	}
-	return nil
-}
-
-// GetError returns the Error field if it's non-nil, zero value otherwise.
-func (a *APIErrorResponse) GetError() string {
-	if a != nil && a.Error != nil {
-		return *a.Error
-	}
-	return ""
-}
-
-// GetErrors returns the Errors field.
-func (a *APIErrorResponse) GetErrors() []APIError {
-	if a != nil {
-		return a.Errors
-	}
-	return nil
 }
 
 // GetAuthorizations returns the Authorizations field if it's non-nil, zero value otherwise.
@@ -2071,22 +2046,6 @@ func (d *DocumentSendOptions) GetName() string {
 		return *d.Name
 	}
 	return ""
-}
-
-// GetErrors returns the Errors field.
-func (e *Error) GetErrors() []APIError {
-	if e != nil {
-		return e.Errors
-	}
-	return nil
-}
-
-// GetResponse returns the Response field if it's non-nil, zero value otherwise.
-func (e *Error) GetResponse() http.Response {
-	if e != nil && e.Response != nil {
-		return *e.Response
-	}
-	return http.Response{}
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.

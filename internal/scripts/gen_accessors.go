@@ -34,6 +34,8 @@ var (
 	blacklistStruct = map[string]bool{
 		"Client":        true,
 		"ConnectClient": true,
+		"APIError":      true,
+		"Error":         true,
 	}
 )
 
