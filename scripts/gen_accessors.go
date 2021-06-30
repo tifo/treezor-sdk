@@ -162,7 +162,7 @@ func (t *templateData) dump() error {
 	return ioutil.WriteFile(t.filename, clean, 0644)
 }
 
-func newGetter(receiverType, fieldName, fieldType, zeroValue string, namedStruct, slice bool) *getter {
+func newGetter(receiverType, fieldName, fieldType, zeroValue string, namedStruct, slice bool, accessor string) *getter {
 	return &getter{
 		sortVal:      strings.ToLower(receiverType) + "." + strings.ToLower(fieldName),
 		ReceiverVar:  strings.ToLower(receiverType[:1]),
@@ -172,6 +172,7 @@ func newGetter(receiverType, fieldName, fieldType, zeroValue string, namedStruct
 		ZeroValue:    zeroValue,
 		NamedStruct:  namedStruct,
 		Slice:        slice,
+		Accessor:     accessor,
 	}
 }
 
@@ -187,12 +188,14 @@ func (t *templateData) addArrayType(x *ast.ArrayType, receiverType, fieldName st
 		return
 	}
 
-	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, "[]"+eltType, "nil", false, !fromPtr))
+	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, "[]"+eltType, "nil", false, !fromPtr, ""))
 }
 
 func (t *templateData) addIdent(x *ast.Ident, receiverType, fieldName string) {
 	var zeroValue string
 	var namedStruct = false
+	var accessor = ""
+	var fieldType = x.String()
 	switch x.String() {
 	case "int", "int16", "int32", "int64":
 		zeroValue = "0"
@@ -202,26 +205,18 @@ func (t *templateData) addIdent(x *ast.Ident, receiverType, fieldName string) {
 		zeroValue = `""`
 	case "bool":
 		zeroValue = "false"
-	case "Date":
-		zeroValue = "Date{}"
-	case "TimestampParis":
-		zeroValue = "TimestampParis{}"
-	case "TimestampLondon":
-		zeroValue = "TimestampLondon{}"
+	case "KYCLevel":
+		zeroValue = "KYCLevelNone"
+	case "KYCReview":
+		zeroValue = "KYCReviewNone"
 	case "Currency":
 		zeroValue = `Currency("")`
-	case "Level":
-		zeroValue = "LevelNone"
-	case "Review":
-		zeroValue = "ReviewNone"
-	case "AdditionalDataOneOf":
-		zeroValue = "AdditionalDataOneOf{}"
 	default:
 		zeroValue = "nil"
 		namedStruct = true
 	}
 
-	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, x.String(), zeroValue, namedStruct, false))
+	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, fieldType, zeroValue, namedStruct, false, accessor))
 }
 
 func (t *templateData) addMapType(x *ast.MapType, receiverType, fieldName string) {
@@ -245,7 +240,7 @@ func (t *templateData) addMapType(x *ast.MapType, receiverType, fieldName string
 
 	fieldType := fmt.Sprintf("map[%v]%v", keyType, valueType)
 	zeroValue := fmt.Sprintf("map[%v]%v{}", keyType, valueType)
-	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, fieldType, zeroValue, false, false))
+	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, fieldType, zeroValue, false, false, ""))
 }
 
 func (t *templateData) addSelectorExpr(x *ast.SelectorExpr, receiverType, fieldName string) {
@@ -259,24 +254,59 @@ func (t *templateData) addSelectorExpr(x *ast.SelectorExpr, receiverType, fieldN
 	}
 
 	switch xX {
-	case "time", "json", "http":
+	case "time", "json", "http", "types":
 		switch xX {
 		case "json":
 			t.Imports["encoding/json"] = "encoding/json"
 		case "http":
 			t.Imports["net/http"] = "net/http"
+		case "types":
+			// Do not import as we are transforming each types here
 		default:
 			t.Imports[xX] = xX
 		}
 		fieldType := fmt.Sprintf("%v.%v", xX, x.Sel.Name)
 		zeroValue := fmt.Sprintf("%v.%v{}", xX, x.Sel.Name)
-		if xX == "time" && x.Sel.Name == "Duration" {
+		accessor := ""
+		switch {
+		case xX == "time" && x.Sel.Name == "Duration":
 			zeroValue = "0"
-		}
-		if xX == "json" && x.Sel.Name == "Number" {
+		case xX == "json" && x.Sel.Name == "Number":
 			zeroValue = `json.Number("")`
+		case xX == "types" && x.Sel.Name == "Amount":
+			zeroValue = `0.0`
+			fieldType = "float64"
+			accessor = "Float64()"
+		case xX == "types" && x.Sel.Name == "Integer":
+			zeroValue = `0`
+			fieldType = "int64"
+			accessor = "Int64()"
+		case xX == "types" && x.Sel.Name == "Boolean":
+			zeroValue = `false`
+			fieldType = "bool"
+			accessor = "Bool()"
+		case xX == "types" && x.Sel.Name == "Percentage":
+			zeroValue = `0.0`
+			fieldType = "float64"
+			accessor = "Float64()"
+		case xX == "types" && x.Sel.Name == "Identifier":
+			zeroValue = `""`
+			fieldType = "string"
+			accessor = "String()"
+		case xX == "types" && x.Sel.Name == "Date":
+			fieldType = "time.Time"
+			zeroValue = "time.Time{}"
+			accessor = "Time"
+		case xX == "types" && x.Sel.Name == "TimestampParis":
+			fieldType = "time.Time"
+			zeroValue = "time.Time{}"
+			accessor = "Time"
+		case xX == "types" && x.Sel.Name == "TimestampLondon":
+			fieldType = "time.Time"
+			zeroValue = "time.Time{}"
+			accessor = "Time"
 		}
-		t.Getters = append(t.Getters, newGetter(receiverType, fieldName, fieldType, zeroValue, false, false))
+		t.Getters = append(t.Getters, newGetter(receiverType, fieldName, fieldType, zeroValue, false, false, accessor))
 	default:
 		logf("addSelectorExpr: xX %q, type %q, field %q: unknown x=%+v; skipping.", xX, receiverType, fieldName, x)
 	}
@@ -298,6 +328,7 @@ type getter struct {
 	ZeroValue    string
 	NamedStruct  bool // Getter for named struct.
 	Slice        bool // Getter for slices.
+	Accessor     string
 }
 
 type byName []*getter
@@ -330,6 +361,14 @@ func ({{.ReceiverVar}} *{{.ReceiverType}}) Get{{.FieldName}}() *{{.FieldType}} {
 func ({{.ReceiverVar}} *{{.ReceiverType}}) Get{{.FieldName}}() {{.FieldType}} {
   if {{.ReceiverVar}} != nil {
     return {{.ReceiverVar}}.{{.FieldName}}
+  }
+  return {{.ZeroValue}}
+}
+{{else if .Accessor }}
+// Get{{.FieldName}} returns the {{.FieldName}} field if it's non-nil, zero value otherwise.
+func ({{.ReceiverVar}} *{{.ReceiverType}}) Get{{.FieldName}}() {{.FieldType}} {
+  if {{.ReceiverVar}} != nil && {{.ReceiverVar}}.{{.FieldName}} != nil {
+    return {{.ReceiverVar}}.{{.FieldName}}.{{.Accessor}}
   }
   return {{.ZeroValue}}
 }

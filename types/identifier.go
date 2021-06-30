@@ -4,6 +4,10 @@ import "encoding/json"
 
 type Identifier string
 
+func (i Identifier) String() string {
+	return string(i)
+}
+
 func (i *Identifier) UnmarshalJSON(data []byte) error {
 	var str json.Number
 	err := json.Unmarshal(data, &str)

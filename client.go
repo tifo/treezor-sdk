@@ -194,9 +194,10 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*htt
 			_, _ = io.Copy(w, resp.Body)
 		} else {
 			buf := &bytes.Buffer{}
-			buf.ReadFrom(resp.Body)
+			_, _ = buf.ReadFrom(resp.Body)
 			fmt.Println(buf.String())
 			err = json.NewDecoder(buf).Decode(v)
+			// err = json.NewDecoder(resp.Body).Decode(v)
 			if err == io.EOF {
 				err = nil // ignore EOF errors caused by empty response body
 			}

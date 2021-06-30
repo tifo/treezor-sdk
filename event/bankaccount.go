@@ -20,8 +20,8 @@ type BankAccount struct {
 	CreatedDate             *types.TimestampParis `json:"createdDate,omitempty"`
 	ModifiedDate            *types.TimestampParis `json:"modifiedDate,omitempty"`
 	TotalRows               *types.Integer        `json:"totalRows,omitempty"`
-	CodeStatus              *types.Identifier     `json:"codeStatus,omitempty"`        // NOTE: Legacy + Webhook
-	InformationStatus       *string               `json:"informationStatus,omitempty"` // NOTE: Legacy + Webhook
+	CodeStatus              *types.Identifier     `json:"codeStatus,omitempty"`        // Legacy field
+	InformationStatus       *string               `json:"informationStatus,omitempty"` // Legacy field
 }
 
 // TODO: Add BankAccount API

@@ -17,8 +17,10 @@ func (a *Amount) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (a Amount) Float64() (float64, error) {
-	return strconv.ParseFloat(string(a), 64)
+func (a Amount) Float64() float64 {
+	v, err := strconv.ParseFloat(string(a), 64)
+	if err != nil {
+		return 0.0
+	}
+	return v
 }
-
-// NOTE: an idea could be to alias "pointer type" and manage teh access directly

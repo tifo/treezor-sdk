@@ -23,7 +23,7 @@ type Chargeback struct {
 	PayinRefundID          *types.Identifier     `json:"payinRefundId,omitempty"`
 	PaymentMethodId        *types.Identifier     `json:"paymentMethodId,omitempty"`
 	PaymentBrand           *string               `json:"paymentBrand,omitempty"`
-	Currency               *types.Currency       `json:"currency,omitempty"`
+	Currency               *treezor.Currency     `json:"currency,omitempty"`
 	Amount                 *string               `json:"amount,omitempty"`
 	Country                *string               `json:"country,omitempty"`
 	IsRefunded             *types.Boolean        `json:"isRefunded,omitempty"`

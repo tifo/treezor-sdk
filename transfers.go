@@ -62,7 +62,7 @@ type Transfer struct {
 	BeneficiaryWalletTypeID    *types.Identifier     `json:"beneficiaryWalletTypeId,omitempty"` // NOTE: can be an enum
 	TransferDate               *types.Date           `json:"transferDate,omitempty"`
 	Amount                     *types.Amount         `json:"amount,omitempty"`
-	Currency                   types.Currency        `json:"currency,omitempty"`
+	Currency                   *Currency             `json:"currency,omitempty"`
 	Label                      *string               `json:"label,omitempty"`
 	PartnerFee                 *types.Amount         `json:"partnerFee,omitempty"`
 	WalletEventName            *string               `json:"walletEventName,omitempty"`
@@ -72,8 +72,8 @@ type Transfer struct {
 	CreatedDate                *types.TimestampParis `json:"createdDate,omitempty"`
 	ModifiedDate               *types.TimestampParis `json:"modifiedDate,omitempty"`
 	TotalRows                  *types.Integer        `json:"totalRows,omitempty"`
-	CodeStatus                 *types.Identifier     `json:"codeStatus,omitempty"`        // NOTE: Legacy + Webhook
-	InformationStatus          *string               `json:"informationStatus,omitempty"` // NOTE: Legacy + Webhook
+	CodeStatus                 *types.Identifier     `json:"codeStatus,omitempty"`        // Legacy field
+	InformationStatus          *string               `json:"informationStatus,omitempty"` // Legacy field
 }
 
 // Create creates a Treezor transfer. Required: WalletID, BeneficiaryWalletID,Amount,Currency(ISO 4217)

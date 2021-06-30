@@ -40,7 +40,7 @@ type Payin struct {
 	SubtotalServices     *types.Amount         `json:"subtotalServices,omitempty"`
 	SubtotalTax          *types.Amount         `json:"subtotalTax,omitempty"`
 	Amount               *types.Amount         `json:"amount,omitempty"`
-	Currency             *types.Currency       `json:"currency,omitempty"`
+	Currency             *Currency             `json:"currency,omitempty"`
 	DistributorFee       *types.Amount         `json:"distributorFee,omitempty"`
 	CreatedDate          *types.TimestampParis `json:"createdDate,omitempty"`
 	CreatedIP            *string               `json:"createdIp,omitempty"`
@@ -72,8 +72,8 @@ type Payin struct {
 	VirtualIBANReference *string               `json:"virtualIbanReference,omitempty"`
 	AdditionalData       *PayinAdditionalData
 	TotalRows            *types.Integer    `json:"totalRows,omitempty"`
-	CodeStatus           *types.Identifier `json:"codeStatus,omitempty"`        // NOTE: Legacy + Webhook
-	InformationStatus    *string           `json:"informationStatus,omitempty"` // NOTE: Legacy + Webhook
+	CodeStatus           *types.Identifier `json:"codeStatus,omitempty"`        // Legacy field
+	InformationStatus    *string           `json:"informationStatus,omitempty"` // Legacy field
 }
 
 type PayinAdditionalData struct {

@@ -4,6 +4,18 @@ import "encoding/json"
 
 type Boolean bool
 
+func (b Boolean) Bool() bool {
+	return bool(b)
+}
+
+// NOTE: should we implement accesor this way so we dont have to update gen_accessor when updating the default value of a custom type ?
+// func (b *Boolean) Bool() bool {
+// 	if b == nil {
+// 		return false
+// 	}
+// 	return bool(*b)
+// }
+
 func (b *Boolean) UnmarshalJSON(data []byte) error {
 	switch string(data) {
 	case `true`:

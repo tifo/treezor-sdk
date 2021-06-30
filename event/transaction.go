@@ -1,6 +1,9 @@
 package event
 
-import "github.com/tifo/treezor-sdk/types"
+import (
+	"github.com/tifo/treezor-sdk"
+	"github.com/tifo/treezor-sdk/types"
+)
 
 type TransactionEvent struct {
 	Transactions []*Transaction `json:"transactions"`
@@ -19,7 +22,7 @@ type Transaction struct {
 	Amount              *types.Amount         `json:"amount,omitempty"`
 	WalletDebitBalance  *types.Amount         `json:"walletDebitBalance,omitempty"`
 	WalletCreditBalance *types.Amount         `json:"walletCreditBalance,omitempty"`
-	Currency            *types.Currency       `json:"currency,omitempty"`
+	Currency            *treezor.Currency     `json:"currency,omitempty"`
 	CreatedDate         *types.TimestampParis `json:"createdDate,omitempty"`
 	TotalRows           *types.Integer        `json:"totalRows,omitempty"`
 }

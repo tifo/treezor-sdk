@@ -27,7 +27,7 @@ type Balance struct {
 	CurrentBalance    *types.Amount         `json:"currentBalance,omitempty"`
 	Authorizations    *types.Amount         `json:"authorizations,omitempty"`
 	AuthorizedBalance *types.Amount         `json:"authorizedBalance,omitempty"`
-	Currency          *types.Currency       `json:"currency,omitempty"`
+	Currency          *Currency             `json:"currency,omitempty"`
 	CalculationDate   *types.TimestampParis `json:"calculationDate,omitempty"`
 }
 

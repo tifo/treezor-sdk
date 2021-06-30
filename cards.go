@@ -11,14 +11,6 @@ import (
 	"github.com/tifo/treezor-sdk/types"
 )
 
-// Error code for given status
-const (
-	ErrCodeCardWrongPIN = 32056
-	ErrCodeCardLost     = 32095
-	ErrCodeCardStolen   = 32096
-	ErrCodeCardBlocked  = 32111
-)
-
 type CardPermissionMask int8
 
 // Available permissions for a card.
@@ -81,7 +73,7 @@ type Card struct {
 	StartDate                  *types.Date                   `json:"startDate,omitempty"`
 	EndDate                    *types.Date                   `json:"endDate,omitempty"`
 	CountryCode                *string                       `json:"countryCode,omitempty"`
-	CurrencyCode               *types.Currency               `json:"currencyCode,omitempty"`
+	CurrencyCode               *Currency                     `json:"currencyCode,omitempty"`
 	Lang                       *string                       `json:"lang,omitempty"`
 	DeliveryTitle              *string                       `json:"deliveryTitle,omitempty"`
 	DeliveryLastname           *string                       `json:"deliveryLastname,omitempty"`

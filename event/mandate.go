@@ -44,8 +44,8 @@ type Mandate struct {
 	CreatedIP                           *string               `json:"createdIp,omitempty"`
 	CreatedDate                         *types.TimestampParis `json:"createdDate,omitempty"`
 	ModifiedDate                        *types.TimestampParis `json:"modifiedDate,omitempty"`
-	CodeStatus                          *types.Identifier     `json:"codeStatus,omitempty"`        // NOTE: Legacy + Webhook
-	InformationStatus                   *string               `json:"informationStatus,omitempty"` // NOTE: Legacy + Webhook
+	CodeStatus                          *types.Identifier     `json:"codeStatus,omitempty"`        // Legacy field
+	InformationStatus                   *string               `json:"informationStatus,omitempty"` // Legacy field
 }
 
 // TODO: Add Mandate API & Models

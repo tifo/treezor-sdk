@@ -1,10 +1,11 @@
-//go:generate go run gen_accessors.go -v
+//go:generate go run scripts/gen_accessors.go -v
 
 package treezor
 
 import (
 	"net/url"
 	"reflect"
+	"time"
 
 	"github.com/google/go-querystring/query"
 	"github.com/pkg/errors"
@@ -14,37 +15,37 @@ type service struct {
 	client *Client
 }
 
+type SortOrder string
+
+const (
+	SortASC  SortOrder = "ASC"
+	SortDESC SortOrder = "DESC"
+)
+
 // ListOptions specifies the optional parameters to various List methods that
 // support pagination.
 type ListOptions struct {
 	// For paginated result sets, page of results to retrieve.
-	Page int `url:"pageNumber,omitempty"`
-
+	Page *int `url:"pageNumber,omitempty" json:"-"`
 	// For paginated result sets, the number of results to include per page.
-	PerPage int `url:"pageCount,omitempty"`
-
+	PerPage *int `url:"pageCount,omitempty" json:"-"`
 	// For paginated result sets, the resource element you want to sort the list with.
-	SortBy string `url:"sortBy,omitempty"`
-
+	SortBy *string `url:"sortBy,omitempty" json:"-"`
 	// For paginated result sets, The order you want to sort the list.
 	// Possible values: DESC and ASC.
-	SortOrder string `url:"sortOrder,omitempty"`
-
+	SortOrder *SortOrder `url:"sortOrder,omitempty" json:"-"`
 	// For paginated result sets, the creation date from which you want to filter the request result.
 	// Format: YYYY-MM-DD HH:MM:SS
-	CreatedFrom string `url:"createdDateFrom,omitempty"`
-
+	CreatedFrom *time.Time `layout:"2006-01-02 15:04:05" url:"createdDateFrom,omitempty" json:"-"` // NOTE: Should we use types.TimestampParis ?
 	// For paginated result sets, the creation date up to which you want to filter the request result.
 	// Format: YYYY-MM-DD HH:MM:SS
-	CreatedTo string `url:"createdDateFrom,omitempty"`
-
+	CreatedTo *time.Time `layout:"2006-01-02 15:04:05" url:"createdDateFrom,omitempty" json:"-"` // NOTE: Should we use types.TimestampParis ?
 	// For paginated result sets, the modification date from which you want to filter the request result.
 	// Format: YYYY-MM-DD HH:MM:SS
-	UpdatedFrom string `url:"createdDateFrom,omitempty"`
-
+	UpdatedFrom *time.Time `layout:"2006-01-02 15:04:05" url:"createdDateFrom,omitempty" json:"-"` // NOTE: Should we use types.TimestampParis ?
 	// For paginated result sets, the modification date up to which you want to filter the request result.
 	// Format: YYYY-MM-DD HH:MM:SS
-	UpdatedTo string `url:"createdDateFrom,omitempty"`
+	UpdatedTo *time.Time `layout:"2006-01-02 15:04:05" url:"createdDateFrom,omitempty" json:"-"` // NOTE: Should we use types.TimestampParis ?
 }
 
 // addOptions adds the parameters in opt as URL query parameters to s. opt
@@ -71,9 +72,14 @@ func addOptions(s string, opt interface{}) (string, error) {
 
 // Access contains global keys to all Treezor objects.
 type Access struct {
-	IdempotencyKey *string `json:"accessTag,omitempty"`
-	UserID         *string `json:"accessUserId,omitempty"`
-	UserIP         *string `json:"accessUserIp,omitempty"`
+	// AccessSignature can be mandatory for specific context. Treezor will contact you if so.
+	AccessSignature *string `url:"accessSignature,omitempty" json:"-"`
+	// AccessTag is used for idem potency query.
+	AccessTag *string `url:"accessTag,omitempty" json:"-"`
+	// AccessUserID is used for user's action restriction.
+	AccessUserID *string `url:"accessUserId,omitempty" json:"-"`
+	// AccessUserIP is used for user's action restriction.
+	AccessUserIP *string `url:"accessUserIp,omitempty" json:"-"`
 }
 
 // Origin represents who made the request.

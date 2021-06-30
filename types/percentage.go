@@ -4,22 +4,22 @@ import (
 	"encoding/json"
 )
 
-type Integer int64
+type Percentage float64
 
-func (i Integer) Int64() int64 {
-	return int64(i)
+func (p Percentage) Float64() float64 {
+	return float64(p)
 }
 
-func (i *Integer) UnmarshalJSON(data []byte) error {
+func (p *Percentage) UnmarshalJSON(data []byte) error {
 	var str json.Number
 	err := json.Unmarshal(data, &str)
 	if err != nil {
 		return err
 	}
-	v, err := str.Int64()
+	f, err := str.Float64()
 	if err != nil {
 		return err
 	}
-	*i = Integer(v)
+	*p = Percentage(f)
 	return nil
 }

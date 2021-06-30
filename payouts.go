@@ -67,13 +67,13 @@ type Payout struct {
 	BankAccountIBAN        *string               `json:"bankaccountIBAN,omitempty"`
 	Label                  *string               `json:"label,omitempty"`
 	Amount                 *types.Amount         `json:"amount,omitempty"`
-	Currency               *types.Currency       `json:"currency,omitempty"`
+	Currency               *Currency             `json:"currency,omitempty"`
 	PartnerFee             *types.Amount         `json:"partnerFee,omitempty"`
 	CreatedDate            *types.TimestampParis `json:"createdDate,omitempty"`
 	ModifiedDate           *types.TimestampParis `json:"modifiedDate,omitempty"`
 	TotalRows              *types.Integer        `json:"totalRows,omitempty"`
-	CodeStatus             *types.Identifier     `json:"codeStatus,omitempty"`        // NOTE: Legacy + Webhook
-	InformationStatus      *string               `json:"informationStatus,omitempty"` // NOTE: Legacy + Webhook
+	CodeStatus             *types.Identifier     `json:"codeStatus,omitempty"`        // Legacy field
+	InformationStatus      *string               `json:"informationStatus,omitempty"` // Legacy field
 }
 
 // Create creates a Treezor pay-out.

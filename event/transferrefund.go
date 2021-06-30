@@ -1,6 +1,9 @@
 package event
 
-import "github.com/tifo/treezor-sdk/types"
+import (
+	"github.com/tifo/treezor-sdk"
+	"github.com/tifo/treezor-sdk/types"
+)
 
 type TransferRefundEvent struct {
 	TransferRefunds []*TransferRefund `json:"transferrefunds"`
@@ -14,12 +17,12 @@ type TransferRefund struct {
 	TransferID           *types.Identifier     `json:"transferId,omitempty"`
 	TransferRefundDate   *types.TimestampParis `json:"transferrefundDate,omitempty"`
 	Amount               *types.Amount         `json:"amount,omitempty"`
-	Currency             *types.Currency       `json:"currency,omitempty"`
+	Currency             *treezor.Currency     `json:"currency,omitempty"`
 	CreatedDate          *types.TimestampParis `json:"createdDate,omitempty"`
 	ModifiedDate         *types.TimestampParis `json:"modifiedDate,omitempty"`
 	TotalRows            *types.Integer        `json:"totalRows,omitempty"`
-	CodeStatus           *types.Identifier     `json:"codeStatus,omitempty"`        // NOTE: Legacy + Webhook
-	InformationStatus    *string               `json:"informationStatus,omitempty"` // NOTE: Legacy + Webhook
+	CodeStatus           *types.Identifier     `json:"codeStatus,omitempty"`        // Legacy field
+	InformationStatus    *string               `json:"informationStatus,omitempty"` // Legacy field
 }
 
 // TODO: Add TransferRefund API

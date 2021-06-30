@@ -1,6 +1,9 @@
 package event
 
-import "github.com/tifo/treezor-sdk/types"
+import (
+	"github.com/tifo/treezor-sdk"
+	"github.com/tifo/treezor-sdk/types"
+)
 
 type RecallREvent struct {
 	RecallRs []*RecallR `json:"recallrs"`
@@ -22,7 +25,7 @@ type RecallR struct {
 	SctrID                *types.Identifier     `json:"sctr_id,omitempty"`
 	SctrTxID              *types.Identifier     `json:"sctr_tx_id,omitempty"`
 	SctrAmount            *types.Amount         `json:"sctr_amount,omitempty"`
-	SctrCurrency          *types.Currency       `json:"sctr_currency,omitempty"`
+	SctrCurrency          *treezor.Currency     `json:"sctr_currency,omitempty"`
 	// NOTE: their is a typo in the example (settelment vs settlement), we need to check which one is right with real data
 	SctrSettlementDate *types.TimestampParis `json:"sctr_settlement_date,omitempty"` // NOTE: Can be a types.Date if we add the 00:00:00 suffix
 	SctrSettelmentDate *types.TimestampParis `json:"sctr_settelment_date,omitempty"` // NOTE: Can be a types.Date if we add the 00:00:00 suffix

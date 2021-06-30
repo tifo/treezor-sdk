@@ -51,6 +51,3 @@ func (t *timestamp) UnmarshalJSON(data []byte) error {
 
 	return nil
 }
-
-// TODO(0rax): see if we want / need to move those types to a `types` subpackage and just creer helper functions like treezor.String for those types in the main package.
-// TODO(0rax): see about creating custom enums for some of the TypeId's available and use those types in root and event pkg
