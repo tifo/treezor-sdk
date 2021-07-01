@@ -65,3 +65,5 @@ func (d *Date) UnmarshalJSON(data []byte) error {
 
 	return nil
 }
+
+// NOTE: we might need to allow dates to include a time just in case we failed in setting up the type or the date includes 00:00:00

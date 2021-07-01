@@ -27,10 +27,10 @@ type WalletResponse struct {
 type WalletType int32
 
 const (
-	ElectronicMoneyWallet     WalletType = 9
-	PaymentAccountWallet      WalletType = 10
-	MirrorWallet              WalletType = 13
-	ElectronicMoneyCardWallet WalletType = 14 // Internal Only
+	WalletTypeElectronicMoney     WalletType = 9  // Electronic Money Wallet
+	WalletTypePaymentAccount      WalletType = 10 // Payment Account Wallet
+	WalletTypeMirror              WalletType = 13 // Mirror or Technical Wallet (can't be created manually)
+	WalletTypeElectronicMoneyCard WalletType = 14 // Electronic Money Card (Internal only, can't be created manually)
 )
 
 func (t *WalletType) UnmarshalJSON(data []byte) error {
@@ -51,7 +51,7 @@ func (t *WalletType) UnmarshalJSON(data []byte) error {
 type Wallet struct {
 	WalletID            *types.Identifier     `json:"walletId,omitempty"`
 	WalletTypeID        *WalletType           `json:"walletTypeId,omitempty"`
-	WalletStatus        *string               `json:"walletStatus,omitempty"` // NOTE: Can be an enum
+	WalletStatus        *string               `json:"walletStatus,omitempty"` // TODO: Can be an enum
 	WalletTag           *string               `json:"walletTag,omitempty"`
 	UserID              *types.Identifier     `json:"userId,omitempty"`
 	UserFirstname       *string               `json:"userFirstname,omitempty"`
@@ -84,12 +84,12 @@ type Wallet struct {
 type WalletCreateOptions struct {
 	Access
 
-	WalletTypeID        *WalletType `url:"-" json:"walletTypeId"`                  // Required
+	WalletTypeID        WalletType  `url:"-" json:"walletTypeId"`                  // Required
 	TariffID            *string     `url:"-" json:"tariffId"`                      // Required
 	UserID              *string     `url:"-" json:"userId"`                        // Required
 	JointUserID         *string     `url:"-" json:"jointUserId,omitempty"`         // Optional
 	WalletTag           *string     `url:"-" json:"walletTag,omitempty"`           // Optional
-	Currency            *Currency   `url:"-" json:"currency"`                      // Required
+	Currency            Currency    `url:"-" json:"currency"`                      // Required
 	EventName           *string     `url:"-" json:"eventName,omitempty"`           // Optional
 	EventAlias          *string     `url:"-" json:"eventAlias,omitempty"`          // Optional
 	EventDate           *types.Date `url:"-" json:"eventDate,omitempty"`           // Optional
@@ -149,16 +149,16 @@ type WalletListOptions struct {
 	Access
 
 	WalletID            *string          `url:"walletId,omitempty" json:"-"`
-	WalletStatus        *string          `url:"walletStatus,omitempty" json:"-"` // NOTE: can be an enum (need to see if VALIDATED or Validated)
+	WalletStatus        *string          `url:"walletStatus,omitempty" json:"-"` // TODO: can be an enum (need to see if VALIDATED or Validated)
 	UserID              *string          `url:"userId,omitempty" json:"-"`
 	ParentUserID        *string          `url:"parentUserId,omitempty" json:"-"`
 	WalletTag           *string          `url:"walletTag,omitempty" json:"-"`
-	WalletTypeID        *WalletType      `url:"walletTypeId,omitempty" json:"-"`
+	WalletTypeID        WalletType       `url:"walletTypeId,omitempty" json:"-"`
 	EventAlias          *string          `url:"eventAlias,omitempty" json:"-"`
 	EventPayinStartDate *types.Timestamp `url:"eventPayinStartDate,omitempty" json:"-"`
 	EventPayinEndDate   *types.Date      `url:"eventPayinEndDate,omitempty" json:"-"`
 	TariffID            *string          `url:"tariffId,omitempty" json:"-"`
-	PayinCount          *int             `url:"payinCount,omitempty" json:"-"`
+	PayinCount          *int64           `url:"payinCount,omitempty" json:"-"`
 
 	ListOptions
 }
@@ -184,7 +184,7 @@ func (s *WalletService) List(ctx context.Context, opts *WalletListOptions) (*Wal
 type WalletEditOptions struct {
 	Access
 
-	WalletTypeID        *WalletType `url:"-" json:"walletTypeId,omitempty"`        // Optional
+	WalletTypeID        WalletType  `url:"-" json:"walletTypeId,omitempty"`        // Optional
 	EventName           *string     `url:"-" json:"eventName,omitempty"`           // Optional
 	EventAlias          *string     `url:"-" json:"eventAlias,omitempty"`          // Optional
 	EventDate           *types.Date `url:"-" json:"eventDate,omitempty"`           // Optional

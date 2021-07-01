@@ -204,3 +204,5 @@ func (s *PayinService) Delete(ctx context.Context, payinID string) (*Payin, *htt
 	}
 	return b.Payins[0], resp, nil
 }
+
+// TODO: Update Payin API

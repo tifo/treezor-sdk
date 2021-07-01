@@ -125,3 +125,5 @@ func (s *CardTransactionService) List(ctx context.Context, opt *CardTransactions
 
 	return b, resp, errors.WithStack(err)
 }
+
+// TODO: Update CardTransaction API

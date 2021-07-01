@@ -130,10 +130,10 @@ func (t *EntityType) UnmarshalJSON(data []byte) error {
 type KYCReview int32
 
 const (
-	KYCReviewNone      KYCReview = 0
-	KYCReviewPending   KYCReview = 1
-	KYCReviewValidated KYCReview = 2
-	KYCReviewRefused   KYCReview = 3
+	KYCReviewNone      KYCReview = 0 // NONE
+	KYCReviewPending   KYCReview = 1 // PENDING
+	KYCReviewValidated KYCReview = 2 // VALIDATED
+	KYCReviewRefused   KYCReview = 3 // REFUSED
 )
 
 var kycReviewNames = map[int32]string{
@@ -169,21 +169,21 @@ func (r KYCReview) String() string {
 type KYCLevel int32
 
 const (
-	KYCLevelNone          KYCLevel = 0
-	KYCLevelPending       KYCLevel = 1
-	KYCLevelRegular       KYCLevel = 2
-	KYCLevelStrong        KYCLevel = 3
-	KYCLevelRefused       KYCLevel = 4
-	KYCLevelInvestigating KYCLevel = 5
+	KYCLevelNone          KYCLevel = 0 // NONE
+	KYCLevelPending       KYCLevel = 1 // PENDING
+	KYCLevelRegular       KYCLevel = 2 // REGULAR
+	KYCLevelStrong        KYCLevel = 3 // STRONG
+	KYCLevelRefused       KYCLevel = 4 // REFUSED
+	KYCLevelInvestigating KYCLevel = 5 // INVESTIGATING
 )
 
 var kycLevelNames = map[int32]string{
-	0: "LEVEL_NONE",
-	1: "LEVEL_PENDING",
-	2: "LEVEL_REGULAR",
-	3: "LEVEL_STRONG",
-	4: "LEVEL_REFUSED",
-	5: "LEVEL_INVESTIGATING",
+	0: "NONE",
+	1: "PENDING",
+	2: "REGULAR",
+	3: "STRONG",
+	4: "REFUSED",
+	5: "INVESTIGATING",
 }
 
 func (l *KYCLevel) UnmarshalJSON(data []byte) error {
@@ -212,7 +212,7 @@ func (l KYCLevel) String() string {
 type User struct {
 	UserID                     *types.Identifier      `json:"userId,omitempty"`
 	UserTypeID                 *UserType              `json:"userTypeId,omitempty"`
-	UserStatus                 *string                `json:"userStatus,omitempty"`
+	UserStatus                 *string                `json:"userStatus,omitempty"` // TODO: should be an enum
 	ClientID                   *types.Identifier      `json:"clientId,omitempty"`
 	UserTag                    *string                `json:"userTag,omitempty"`
 	ParentUserID               *types.Identifier      `json:"parentUserId,omitempty"`
@@ -285,56 +285,56 @@ type User struct {
 type UserCreateOptions struct {
 	Access
 
-	UserTypeID                 *UserType              `url:"-" json:"userTypeId,omitempty"`                 // Optional
-	UserTag                    *string                `url:"-" json:"userTag,omitempty"`                    // Optional
-	ParentUserID               *string                `url:"-" json:"parentUserId,omitempty"`               // Optional
-	ParentType                 *ParentType            `url:"-" json:"parentType,omitempty"`                 // Optional
-	SpecifiedUSPerson          *types.Boolean         `url:"-" json:"specifiedUSPerson,omitempty"`          // Required
-	ControllingPersonType      *ControllingPersonType `url:"-" json:"controllingPersonType,omitempty"`      // Optional
-	EmployeeType               *EmployeeType          `url:"-" json:"employeeType,omitempty"`               // Optional
-	EntityType                 *EntityType            `url:"-" json:"entityType,omitempty"`                 // Optional
-	Title                      *string                `url:"-" json:"title,omitempty"`                      // Optional
-	Firstname                  *string                `url:"-" json:"firstname,omitempty"`                  // Optional
-	Lastname                   *string                `url:"-" json:"lastname,omitempty"`                   // Optional
-	MiddleNames                *string                `url:"-" json:"middleNames,omitempty"`                // Optional
-	Birthday                   *types.Date            `url:"-" json:"birthday,omitempty"`                   // Optional
-	Email                      *string                `url:"-" json:"email,omitempty"`                      // Required
-	Address1                   *string                `url:"-" json:"address1,omitempty"`                   // Optional
-	Address2                   *string                `url:"-" json:"address2,omitempty"`                   // Optional
-	Address3                   *string                `url:"-" json:"address3,omitempty"`                   // Optional
-	Postcode                   *string                `url:"-" json:"postcode,omitempty"`                   // Optional
-	City                       *string                `url:"-" json:"city,omitempty"`                       // Optional
-	State                      *string                `url:"-" json:"state,omitempty"`                      // Optional
-	Country                    *string                `url:"-" json:"country,omitempty"`                    // Optional
-	Phone                      *string                `url:"-" json:"phone,omitempty"`                      // Optional
-	Mobile                     *string                `url:"-" json:"mobile,omitempty"`                     // Optional
-	Nationality                *string                `url:"-" json:"nationality,omitempty"`                // Optional
-	NationalityOther           *string                `url:"-" json:"nationalityOther,omitempty"`           // Optional
-	PlaceOfBirth               *string                `url:"-" json:"placeOfBirth,omitempty"`               // Optional
-	BirthCountry               *string                `url:"-" json:"birthCountry,omitempty"`               // Optional
-	Occupation                 *string                `url:"-" json:"occupation,omitempty"`                 // Optional
-	IncomeRange                *string                `url:"-" json:"incomeRange,omitempty"`                // Optional
-	LegalName                  *string                `url:"-" json:"legalName,omitempty"`                  // Optional
-	LegalRegistrationNumber    *string                `url:"-" json:"legalRegistrationNumber,omitempty"`    // Optional
-	LegalTVANumber             *string                `url:"-" json:"legalTvaNumber,omitempty"`             // Optional
-	LegalRegistrationDate      *types.Date            `url:"-" json:"legalRegistrationDate,omitempty"`      // Optional
-	LegalForm                  *string                `url:"-" json:"legalForm,omitempty"`                  // Optional
-	LegalShareCapital          *int64                 `url:"-" json:"legalShareCapital,omitempty"`          // Optional
-	LegalSector                *string                `url:"-" json:"legalSector,omitempty"`                // Optional
-	LegalAnnualTurnOver        *string                `url:"-" json:"legalAnnualTurnOver,omitempty"`        // Optional
-	LegalNetIncomeRange        *string                `url:"-" json:"legalNetIncomeRange,omitempty"`        // Optional
-	LegalNumberOfEmployeeRange *string                `url:"-" json:"legalNumberOfEmployeeRange,omitempty"` // Optional
-	EffectiveBeneficiary       *float64               `url:"-" json:"effectiveBeneficiary,omitempty"`       // Optional
-	Language                   *string                `url:"-" json:"language,omitempty"`                   // Optional
-	TaxNumber                  *string                `url:"-" json:"taxNumber,omitempty"`                  // Optional
-	TaxResidence               *string                `url:"-" json:"taxResidence,omitempty"`               // Optional
-	Position                   *string                `url:"-" json:"position,omitempty"`                   // Optional
-	PersonalAssets             *string                `url:"-" json:"personalAssets,omitempty"`             // Optional
-	ActivityOutsideEu          *types.Boolean         `url:"-" json:"activityOutsideEu,omitempty"`          // Optional
-	EconomicSanctions          *types.Boolean         `url:"-" json:"economicSanctions,omitempty"`          // Optional
-	ResidentCountriesSanctions *types.Boolean         `url:"-" json:"residentCountriesSanctions,omitempty"` // Optional
-	InvolvedSanctions          *types.Boolean         `url:"-" json:"involvedSanctions,omitempty"`          // Optional
-	Timezone                   *string                `url:"-" json:"timezone,omitempty"`                   // Optional
+	UserTypeID                 UserType              `url:"-" json:"userTypeId,omitempty"`                 // Optional
+	UserTag                    *string               `url:"-" json:"userTag,omitempty"`                    // Optional
+	ParentUserID               *string               `url:"-" json:"parentUserId,omitempty"`               // Optional
+	ParentType                 ParentType            `url:"-" json:"parentType,omitempty"`                 // Optional
+	SpecifiedUSPerson          *types.Boolean        `url:"-" json:"specifiedUSPerson,omitempty"`          // Required
+	ControllingPersonType      ControllingPersonType `url:"-" json:"controllingPersonType,omitempty"`      // Optional
+	EmployeeType               EmployeeType          `url:"-" json:"employeeType,omitempty"`               // Optional
+	EntityType                 EntityType            `url:"-" json:"entityType,omitempty"`                 // Optional
+	Title                      *string               `url:"-" json:"title,omitempty"`                      // Optional
+	Firstname                  *string               `url:"-" json:"firstname,omitempty"`                  // Optional
+	Lastname                   *string               `url:"-" json:"lastname,omitempty"`                   // Optional
+	MiddleNames                *string               `url:"-" json:"middleNames,omitempty"`                // Optional
+	Birthday                   *types.Date           `url:"-" json:"birthday,omitempty"`                   // Optional
+	Email                      *string               `url:"-" json:"email,omitempty"`                      // Required
+	Address1                   *string               `url:"-" json:"address1,omitempty"`                   // Optional
+	Address2                   *string               `url:"-" json:"address2,omitempty"`                   // Optional
+	Address3                   *string               `url:"-" json:"address3,omitempty"`                   // Optional
+	Postcode                   *string               `url:"-" json:"postcode,omitempty"`                   // Optional
+	City                       *string               `url:"-" json:"city,omitempty"`                       // Optional
+	State                      *string               `url:"-" json:"state,omitempty"`                      // Optional
+	Country                    *string               `url:"-" json:"country,omitempty"`                    // Optional
+	Phone                      *string               `url:"-" json:"phone,omitempty"`                      // Optional
+	Mobile                     *string               `url:"-" json:"mobile,omitempty"`                     // Optional
+	Nationality                *string               `url:"-" json:"nationality,omitempty"`                // Optional
+	NationalityOther           *string               `url:"-" json:"nationalityOther,omitempty"`           // Optional
+	PlaceOfBirth               *string               `url:"-" json:"placeOfBirth,omitempty"`               // Optional
+	BirthCountry               *string               `url:"-" json:"birthCountry,omitempty"`               // Optional
+	Occupation                 *string               `url:"-" json:"occupation,omitempty"`                 // Optional
+	IncomeRange                *string               `url:"-" json:"incomeRange,omitempty"`                // Optional
+	LegalName                  *string               `url:"-" json:"legalName,omitempty"`                  // Optional
+	LegalRegistrationNumber    *string               `url:"-" json:"legalRegistrationNumber,omitempty"`    // Optional
+	LegalTVANumber             *string               `url:"-" json:"legalTvaNumber,omitempty"`             // Optional
+	LegalRegistrationDate      *types.Date           `url:"-" json:"legalRegistrationDate,omitempty"`      // Optional
+	LegalForm                  *string               `url:"-" json:"legalForm,omitempty"`                  // Optional
+	LegalShareCapital          *int64                `url:"-" json:"legalShareCapital,omitempty"`          // Optional
+	LegalSector                *string               `url:"-" json:"legalSector,omitempty"`                // Optional
+	LegalAnnualTurnOver        *string               `url:"-" json:"legalAnnualTurnOver,omitempty"`        // Optional
+	LegalNetIncomeRange        *string               `url:"-" json:"legalNetIncomeRange,omitempty"`        // Optional
+	LegalNumberOfEmployeeRange *string               `url:"-" json:"legalNumberOfEmployeeRange,omitempty"` // Optional
+	EffectiveBeneficiary       *float64              `url:"-" json:"effectiveBeneficiary,omitempty"`       // Optional
+	Language                   *string               `url:"-" json:"language,omitempty"`                   // Optional
+	TaxNumber                  *string               `url:"-" json:"taxNumber,omitempty"`                  // Optional
+	TaxResidence               *string               `url:"-" json:"taxResidence,omitempty"`               // Optional
+	Position                   *string               `url:"-" json:"position,omitempty"`                   // Optional
+	PersonalAssets             *string               `url:"-" json:"personalAssets,omitempty"`             // Optional
+	ActivityOutsideEu          *types.Boolean        `url:"-" json:"activityOutsideEu,omitempty"`          // Optional
+	EconomicSanctions          *types.Boolean        `url:"-" json:"economicSanctions,omitempty"`          // Optional
+	ResidentCountriesSanctions *types.Boolean        `url:"-" json:"residentCountriesSanctions,omitempty"` // Optional
+	InvolvedSanctions          *types.Boolean        `url:"-" json:"involvedSanctions,omitempty"`          // Optional
+	Timezone                   *string               `url:"-" json:"timezone,omitempty"`                   // Optional
 }
 
 // Create creates a Treezor user.
@@ -387,17 +387,17 @@ func (s *UserService) Get(ctx context.Context, userID string, opts *UserGetOptio
 type UserListOptions struct {
 	Access
 
-	UserID                *string                `url:"userId,omitempty" json:"-"`
-	UserTypeID            *UserType              `url:"userTypeId,omitempty" json:"-"`
-	UserStatus            *string                `url:"userStatus,omitempty" json:"-"` // NOTE: can be an enum (need to see if VALIDATED or Validated)
-	UserTag               *string                `url:"userTag,omitempty" json:"-"`
-	SpecifiedUSPerson     *types.Boolean         `url:"specifiedUSPerson,omitempty" json:"-"`
-	ControllingPersonType *ControllingPersonType `url:"controllingPersonType,omitempty" json:"-"`
-	EmployeeType          *EmployeeType          `url:"employeeType,omitempty" json:"-"`
-	Email                 *string                `url:"email,omitempty" json:"-"`
-	Name                  *string                `url:"name,omitempty" json:"-"`
-	LegalName             *string                `url:"legalName,omitempty" json:"-"`
-	ParentUserID          *string                `url:"parentUserId,omitempty" json:"-"`
+	UserID                *string               `url:"userId,omitempty" json:"-"`
+	UserTypeID            *UserType             `url:"userTypeId,omitempty" json:"-"`
+	UserStatus            *string               `url:"userStatus,omitempty" json:"-"` // TODO: can be an enum (need to see if VALIDATED or Validated)
+	UserTag               *string               `url:"userTag,omitempty" json:"-"`
+	SpecifiedUSPerson     *types.Boolean        `url:"specifiedUSPerson,omitempty" json:"-"`
+	ControllingPersonType ControllingPersonType `url:"controllingPersonType,omitempty" json:"-"`
+	EmployeeType          EmployeeType          `url:"employeeType,omitempty" json:"-"`
+	Email                 *string               `url:"email,omitempty" json:"-"`
+	Name                  *string               `url:"name,omitempty" json:"-"`
+	LegalName             *string               `url:"legalName,omitempty" json:"-"`
+	ParentUserID          *string               `url:"parentUserId,omitempty" json:"-"`
 
 	ListOptions
 }
@@ -423,52 +423,52 @@ func (s *UserService) List(ctx context.Context, opts *UserListOptions) (*UserRes
 type UserEditOptions struct {
 	Access
 
-	UserTag                    *string                `url:"-" json:"userTag,omitempty"`                    // Optional
-	SpecifiedUSPerson          *types.Boolean         `url:"-" json:"specifiedUSPerson,omitempty"`          // Required
-	ControllingPersonType      *ControllingPersonType `url:"-" json:"controllingPersonType,omitempty"`      // Optional
-	EmployeeType               *EmployeeType          `url:"-" json:"employeeType,omitempty"`               // Optional
-	Title                      *string                `url:"-" json:"title,omitempty"`                      // Optional
-	Firstname                  *string                `url:"-" json:"firstname,omitempty"`                  // Optional
-	Lastname                   *string                `url:"-" json:"lastname,omitempty"`                   // Optional
-	MiddleNames                *string                `url:"-" json:"middleNames,omitempty"`                // Optional
-	Birthday                   *types.Date            `url:"-" json:"birthday,omitempty"`                   // Optional
-	Email                      *string                `url:"-" json:"email,omitempty"`                      // Optional
-	Address1                   *string                `url:"-" json:"address1,omitempty"`                   // Optional
-	Address2                   *string                `url:"-" json:"address2,omitempty"`                   // Optional
-	Address3                   *string                `url:"-" json:"address3,omitempty"`                   // Optional
-	Postcode                   *string                `url:"-" json:"postcode,omitempty"`                   // Optional
-	City                       *string                `url:"-" json:"city,omitempty"`                       // Optional
-	State                      *string                `url:"-" json:"state,omitempty"`                      // Optional
-	Country                    *string                `url:"-" json:"country,omitempty"`                    // Optional
-	Phone                      *string                `url:"-" json:"phone,omitempty"`                      // Optional
-	Mobile                     *string                `url:"-" json:"mobile,omitempty"`                     // Optional
-	Nationality                *string                `url:"-" json:"nationality,omitempty"`                // Optional
-	NationalityOther           *string                `url:"-" json:"nationalityOther,omitempty"`           // Optional
-	PlaceOfBirth               *string                `url:"-" json:"placeOfBirth,omitempty"`               // Optional
-	BirthCountry               *string                `url:"-" json:"birthCountry,omitempty"`               // Optional
-	Occupation                 *string                `url:"-" json:"occupation,omitempty"`                 // Optional
-	IncomeRange                *string                `url:"-" json:"incomeRange,omitempty"`                // Optional
-	LegalName                  *string                `url:"-" json:"legalName,omitempty"`                  // Optional
-	LegalRegistrationNumber    *string                `url:"-" json:"legalRegistrationNumber,omitempty"`    // Optional
-	LegalTVANumber             *string                `url:"-" json:"legalTvaNumber,omitempty"`             // Optional
-	LegalRegistrationDate      *types.Date            `url:"-" json:"legalRegistrationDate,omitempty"`      // Optional
-	LegalForm                  *string                `url:"-" json:"legalForm,omitempty"`                  // Optional
-	LegalShareCapital          *int64                 `url:"-" json:"legalShareCapital,omitempty"`          // Optional
-	LegalSector                *string                `url:"-" json:"legalSector,omitempty"`                // Optional
-	LegalAnnualTurnOver        *string                `url:"-" json:"legalAnnualTurnOver,omitempty"`        // Optional
-	LegalNetIncomeRange        *string                `url:"-" json:"legalNetIncomeRange,omitempty"`        // Optional
-	LegalNumberOfEmployeeRange *string                `url:"-" json:"legalNumberOfEmployeeRange,omitempty"` // Optional
-	EffectiveBeneficiary       *float64               `url:"-" json:"effectiveBeneficiary,omitempty"`       // Optional
-	Language                   *string                `url:"-" json:"language,omitempty"`                   // Optional
-	TaxNumber                  *string                `url:"-" json:"taxNumber,omitempty"`                  // Optional
-	TaxResidence               *string                `url:"-" json:"taxResidence,omitempty"`               // Optional
-	Position                   *string                `url:"-" json:"position,omitempty"`                   // Optional
-	PersonalAssets             *string                `url:"-" json:"personalAssets,omitempty"`             // Optional
-	ActivityOutsideEu          *types.Boolean         `url:"-" json:"activityOutsideEu,omitempty"`          // Optional
-	EconomicSanctions          *types.Boolean         `url:"-" json:"economicSanctions,omitempty"`          // Optional
-	ResidentCountriesSanctions *types.Boolean         `url:"-" json:"residentCountriesSanctions,omitempty"` // Optional
-	InvolvedSanctions          *types.Boolean         `url:"-" json:"involvedSanctions,omitempty"`          // Optional
-	Timezone                   *string                `url:"-" json:"timezone,omitempty"`                   // Optional
+	UserTag                    *string               `url:"-" json:"userTag,omitempty"`                    // Optional
+	SpecifiedUSPerson          *types.Boolean        `url:"-" json:"specifiedUSPerson,omitempty"`          // Required
+	ControllingPersonType      ControllingPersonType `url:"-" json:"controllingPersonType,omitempty"`      // Optional
+	EmployeeType               EmployeeType          `url:"-" json:"employeeType,omitempty"`               // Optional
+	Title                      *string               `url:"-" json:"title,omitempty"`                      // Optional
+	Firstname                  *string               `url:"-" json:"firstname,omitempty"`                  // Optional
+	Lastname                   *string               `url:"-" json:"lastname,omitempty"`                   // Optional
+	MiddleNames                *string               `url:"-" json:"middleNames,omitempty"`                // Optional
+	Birthday                   *types.Date           `url:"-" json:"birthday,omitempty"`                   // Optional
+	Email                      *string               `url:"-" json:"email,omitempty"`                      // Optional
+	Address1                   *string               `url:"-" json:"address1,omitempty"`                   // Optional
+	Address2                   *string               `url:"-" json:"address2,omitempty"`                   // Optional
+	Address3                   *string               `url:"-" json:"address3,omitempty"`                   // Optional
+	Postcode                   *string               `url:"-" json:"postcode,omitempty"`                   // Optional
+	City                       *string               `url:"-" json:"city,omitempty"`                       // Optional
+	State                      *string               `url:"-" json:"state,omitempty"`                      // Optional
+	Country                    *string               `url:"-" json:"country,omitempty"`                    // Optional
+	Phone                      *string               `url:"-" json:"phone,omitempty"`                      // Optional
+	Mobile                     *string               `url:"-" json:"mobile,omitempty"`                     // Optional
+	Nationality                *string               `url:"-" json:"nationality,omitempty"`                // Optional
+	NationalityOther           *string               `url:"-" json:"nationalityOther,omitempty"`           // Optional
+	PlaceOfBirth               *string               `url:"-" json:"placeOfBirth,omitempty"`               // Optional
+	BirthCountry               *string               `url:"-" json:"birthCountry,omitempty"`               // Optional
+	Occupation                 *string               `url:"-" json:"occupation,omitempty"`                 // Optional
+	IncomeRange                *string               `url:"-" json:"incomeRange,omitempty"`                // Optional
+	LegalName                  *string               `url:"-" json:"legalName,omitempty"`                  // Optional
+	LegalRegistrationNumber    *string               `url:"-" json:"legalRegistrationNumber,omitempty"`    // Optional
+	LegalTVANumber             *string               `url:"-" json:"legalTvaNumber,omitempty"`             // Optional
+	LegalRegistrationDate      *types.Date           `url:"-" json:"legalRegistrationDate,omitempty"`      // Optional
+	LegalForm                  *string               `url:"-" json:"legalForm,omitempty"`                  // Optional
+	LegalShareCapital          *int64                `url:"-" json:"legalShareCapital,omitempty"`          // Optional
+	LegalSector                *string               `url:"-" json:"legalSector,omitempty"`                // Optional
+	LegalAnnualTurnOver        *string               `url:"-" json:"legalAnnualTurnOver,omitempty"`        // Optional
+	LegalNetIncomeRange        *string               `url:"-" json:"legalNetIncomeRange,omitempty"`        // Optional
+	LegalNumberOfEmployeeRange *string               `url:"-" json:"legalNumberOfEmployeeRange,omitempty"` // Optional
+	EffectiveBeneficiary       *float64              `url:"-" json:"effectiveBeneficiary,omitempty"`       // Optional
+	Language                   *string               `url:"-" json:"language,omitempty"`                   // Optional
+	TaxNumber                  *string               `url:"-" json:"taxNumber,omitempty"`                  // Optional
+	TaxResidence               *string               `url:"-" json:"taxResidence,omitempty"`               // Optional
+	Position                   *string               `url:"-" json:"position,omitempty"`                   // Optional
+	PersonalAssets             *string               `url:"-" json:"personalAssets,omitempty"`             // Optional
+	ActivityOutsideEu          *types.Boolean        `url:"-" json:"activityOutsideEu,omitempty"`          // Optional
+	EconomicSanctions          *types.Boolean        `url:"-" json:"economicSanctions,omitempty"`          // Optional
+	ResidentCountriesSanctions *types.Boolean        `url:"-" json:"residentCountriesSanctions,omitempty"` // Optional
+	InvolvedSanctions          *types.Boolean        `url:"-" json:"involvedSanctions,omitempty"`          // Optional
+	Timezone                   *string               `url:"-" json:"timezone,omitempty"`                   // Optional
 }
 
 // Edit updates a user.

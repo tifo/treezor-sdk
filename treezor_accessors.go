@@ -1872,12 +1872,12 @@ func (d *Document) GetDocumentID() string {
 	return ""
 }
 
-// GetDocumentStatus returns the DocumentStatus field if it's non-nil, zero value otherwise.
-func (d *Document) GetDocumentStatus() string {
-	if d != nil && d.DocumentStatus != nil {
-		return *d.DocumentStatus
+// GetDocumentStatus returns the DocumentStatus field.
+func (d *Document) GetDocumentStatus() *DocumentStatus {
+	if d != nil {
+		return d.DocumentStatus
 	}
-	return ""
+	return nil
 }
 
 // GetDocumentTag returns the DocumentTag field if it's non-nil, zero value otherwise.

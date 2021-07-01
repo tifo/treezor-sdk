@@ -11,8 +11,8 @@ import (
 	"github.com/tifo/treezor-sdk/internal/types"
 )
 
-// Event represent an event that occurred on Treezor's infrastructure
-// and is sent as a webhook to us.
+// Event represent an event that occurred on Treezor's infrastructure and is
+// sent as a webhook to us. See https://docs.treezor.com/guide/webhooks/events-descriptions.html.
 type Event struct {
 	ID               *string          `json:"webhook_id,omitempty"`
 	Type             *string          `json:"webhook,omitempty"`
@@ -54,10 +54,9 @@ func (e *Event) Validate(secretKey []byte) (bool, error) {
 
 // ParsePayload parses the event payload. For recognized event types,
 // a value of the corresponding struct type will be returned.
-// (https://docs.treezor.com/guide/webhooks/events-descriptions.html#descriptions)
+//nolint:gocyclo
 func (e *Event) ParsePayload() (payload interface{}, err error) {
-	// switch e.GetType() {
-	switch *e.Type {
+	switch e.GetType() {
 
 	// Balance (https://docs.treezor.com/guide/wallets/events.html#balances)
 	case "balance.update":

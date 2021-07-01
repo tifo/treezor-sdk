@@ -61,3 +61,5 @@ func (s *TaxResidencesService) Edit(ctx context.Context, taxResidenceID int64, t
 	}
 	return t.TaxResidences[0], resp, nil
 }
+
+// TODO: Update TaxResidency API

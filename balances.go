@@ -58,3 +58,5 @@ func (s *BalanceService) List(ctx context.Context, opt *BalanceOptions) (*Balanc
 
 	return b, resp, errors.WithStack(err)
 }
+
+// TODO: Update Balance API

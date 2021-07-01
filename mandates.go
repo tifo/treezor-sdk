@@ -44,7 +44,4 @@ type Mandate struct {
 	InformationStatus                   *string               `json:"informationStatus,omitempty"` // Legacy field
 }
 
-// TODO: Add Mandate API & Models
-// TODO: see presence of totalRows, codeStatus and informationStatus in all models
-
-// NOTE: we might need to allow dates to include a time just in case we failed in setting up the type or the date includes 00:00:00
+// TODO: Add Mandate API

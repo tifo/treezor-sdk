@@ -142,3 +142,5 @@ func (s *BeneficiaryService) Edit(ctx context.Context, beneficiaryID string, ben
 	}
 	return b.Beneficiaries[0], resp, nil
 }
+
+// TODO: Update Beneficiary API

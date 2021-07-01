@@ -11,6 +11,15 @@ import (
 	"github.com/tifo/treezor-sdk/internal/types"
 )
 
+// DocumentStatus defines the state of a document
+type DocumentStatus string
+
+const (
+	DocumentStatusPending   DocumentStatus = "PENDING"
+	DocumentStatusCanceled  DocumentStatus = "CANCELED"
+	DocumentStatusValidated DocumentStatus = "VALIDATED"
+)
+
 // DocumentType represents the type of legal document.
 type DocumentType int32
 
@@ -27,13 +36,6 @@ func (t *DocumentType) UnmarshalJSON(data []byte) error {
 	*t = DocumentType(v)
 	return nil
 }
-
-// Treezor document status
-const (
-	DocumentStatusPending   = "PENDING"
-	DocumentStatusCanceled  = "CANCELED"
-	DocumentStatusValidated = "VALIDATED"
-)
 
 // All the types of Document Treezor accepts.
 const (
@@ -108,8 +110,8 @@ type DocumentResponse struct {
 type Document struct {
 	DocumentID        *types.Identifier     `json:"documentId,omitempty"`
 	DocumentTag       *string               `json:"documentTag,omitempty"`
-	DocumentStatus    *string               `json:"documentStatus,omitempty"` // NOTE: Can be an enum
-	DocumentTypeID    *DocumentType         `json:"documentTypeId,omitempty"` // NOTE: Can be an enum
+	DocumentStatus    *DocumentStatus       `json:"documentStatus,omitempty"`
+	DocumentTypeID    *DocumentType         `json:"documentTypeId,omitempty"`
 	DocumentType      *string               `json:"documentType,omitempty"`
 	ResidenceID       *types.Identifier     `json:"residenceId,omitempty"`
 	ClientID          *types.Identifier     `json:"clientId,omitempty"`
@@ -126,15 +128,51 @@ type Document struct {
 	InformationStatus *string               `json:"informationStatus,omitempty"`
 }
 
-type DocumentSendOptions struct {
+type DocumentCreateOptions struct {
 	Access
-	Name              *string `json:"name,omitempty"`
-	FileContentBase64 *string `json:"fileContentBase64,omitempty"`
+
+	DocumentTag       *string      `url:"-" json:"documentTag,omitempty"`       // Optional
+	UserID            *string      `url:"-" json:"userId,omitempty"`            // Required
+	ResidenceID       *string      `url:"-" json:"residenceId,omitempty"`       // Required when DocumentTypeID is set to 24 (TaxStatement) or 25 (ExemptionStatement)
+	DocumentTypeID    DocumentType `url:"-" json:"documentTypeId,omitempty"`    // Required
+	Name              *string      `url:"-" json:"name,omitempty"`              // Required
+	FileContentBase64 *string      `url:"-" json:"fileContentBase64,omitempty"` // Required
 }
 
-// Send uploads the given file to Treezor for later KYC review.
-func (s *DocumentService) Send(ctx context.Context, document *Document) (*Document, *http.Response, error) {
-	req, _ := s.client.NewRequest(http.MethodPost, "documents", document)
+// Create uploads the given file to Treezor for later KYC review.
+func (s *DocumentService) Create(ctx context.Context, opts *DocumentCreateOptions) (*Document, *http.Response, error) {
+	u := "documents"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPost, u, opts)
+
+	d := new(DocumentResponse)
+	resp, err := s.client.Do(ctx, req, d)
+	if err != nil {
+		return nil, resp, errors.WithStack(err)
+	}
+
+	if len(d.Documents) != 1 {
+		return nil, resp, errors.Errorf("API did not returned exactly one document: %d documents returned", len(d.Documents))
+	}
+	return d.Documents[0], resp, nil
+}
+
+type DocumentEditOptions struct {
+	Access
+}
+
+// Edit updates a give document.
+// NOTE: this method seems to do nothing (see https://www.treezor.com/api-documentation/#/document/putDocument)
+func (s *DocumentService) Edit(ctx context.Context, documentID string, opts *DocumentEditOptions) (*Document, *http.Response, error) {
+	u := fmt.Sprintf("documents/%s", documentID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPut, u, opts)
 
 	d := new(DocumentResponse)
 	resp, err := s.client.Do(ctx, req, d)
@@ -150,24 +188,28 @@ func (s *DocumentService) Send(ctx context.Context, document *Document) (*Docume
 
 // DocumentListOptions contains options for listing documents.
 type DocumentListOptions struct {
-	DocumentID     string `url:"documentId,omitempty"`
-	DocumentTag    string `url:"documentTag,omitempty"`
-	DocumentStatus string `url:"documentStatus,omitempty"`
-	DocumentTypeID string `url:"documentTypeId,omitempty"`
-	DocumentType   string `url:"documentType,omitempty"`
-	UserName       string `url:"userName,omitempty"`
-	UserEmail      string `url:"userEmail,omitempty"`
-	FileName       string `url:"fileName,omitempty"`
-	FileSize       string `url:"fileSize,omitempty"`
-	IsAgent        string `url:"isAgent,omitempty"`
+	Access
+
+	DocumentID     *string        `url:"documentId,omitempty" json:"-"`     // Optional
+	DocumentTag    *string        `url:"documentTag,omitempty" json:"-"`    // Optional
+	DocumentStatus DocumentStatus `url:"documentStatus,omitempty" json:"-"` // Optional
+	DocumentTypeID DocumentType   `url:"documentTypeId,omitempty" json:"-"` // Optional
+	DocumentType   *string        `url:"documentType,omitempty" json:"-"`   // Optional
+	UserID         *string        `url:"userId,omitempty" json:"-"`         // Optional
+	UserName       *string        `url:"userName,omitempty" json:"-"`       // Optional
+	UserEmail      *string        `url:"userEmail,omitempty" json:"-"`      // Optional
+	FileName       *string        `url:"fileName,omitempty" json:"-"`       // Optional
+	FileSize       *string        `url:"fileSize,omitempty" json:"-"`       // Optional
+	FileType       *string        `url:"fileType,omitempty" json:"-"`       // Optional
+	IsAgent        *string        `url:"isAgent,omitempty" json:"-"`        // Optional
 
 	ListOptions
 }
 
 // List returns a list of documents.
-func (s *DocumentService) List(ctx context.Context, opt *DocumentListOptions) (*DocumentResponse, *http.Response, error) {
+func (s *DocumentService) List(ctx context.Context, opts *DocumentListOptions) (*DocumentResponse, *http.Response, error) {
 	u := "documents"
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, errors.WithStack(err)
 	}
@@ -182,10 +224,18 @@ func (s *DocumentService) List(ctx context.Context, opt *DocumentListOptions) (*
 	return dr, resp, nil
 }
 
+type DocumentGetOptions struct {
+	Access
+}
+
 // Get fetch document info from Treezor
-func (s *DocumentService) Get(ctx context.Context, documentID string) (*Document, *http.Response, error) {
-	route := fmt.Sprintf("documents/%s", documentID)
-	req, _ := s.client.NewRequest(http.MethodGet, route, nil)
+func (s *DocumentService) Get(ctx context.Context, documentID string, opts *DocumentGetOptions) (*Document, *http.Response, error) {
+	u := fmt.Sprintf("documents/%s", documentID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodGet, u, nil)
 
 	docs := new(DocumentResponse)
 	resp, err := s.client.Do(ctx, req, docs)
@@ -199,10 +249,18 @@ func (s *DocumentService) Get(ctx context.Context, documentID string) (*Document
 	return docs.Documents[0], resp, nil
 }
 
+type DocumentDeleteOptions struct {
+	Access
+}
+
 // Delete deletes a document in treezor
-func (s *DocumentService) Delete(ctx context.Context, documentID string) (*http.Response, error) {
-	route := fmt.Sprintf("documents/%s", documentID)
-	req, _ := s.client.NewRequest(http.MethodDelete, route, nil)
+func (s *DocumentService) Delete(ctx context.Context, documentID string, opts *DocumentDeleteOptions) (*http.Response, error) {
+	u := fmt.Sprintf("documents/%s", documentID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodDelete, u, nil)
 
 	docs := new(DocumentResponse)
 	resp, err := s.client.Do(ctx, req, docs)

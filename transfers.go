@@ -54,12 +54,12 @@ type Transfer struct {
 	TransferID                 *types.Identifier     `json:"transferId,omitempty"`
 	TransferTypeID             *TransferType         `json:"transferTypeId,omitempty"`
 	TransferTag                *string               `json:"transferTag,omitempty"`
-	TransferStatus             *string               `json:"transferStatus,omitempty"` // NOTE: can be an enum
+	TransferStatus             *string               `json:"transferStatus,omitempty"` // TODO: can be an enum
 	WalletID                   *types.Identifier     `json:"walletId,omitempty"`
 	ForeignID                  *types.Identifier     `json:"foreignId,omitempty"`
-	WalletTypeID               *types.Identifier     `json:"walletTypeId,omitempty"` // NOTE: can be an enum
+	WalletTypeID               *types.Identifier     `json:"walletTypeId,omitempty"` // TODO: can be an enum
 	BeneficiaryWalletID        *types.Identifier     `json:"beneficiaryWalletId,omitempty"`
-	BeneficiaryWalletTypeID    *types.Identifier     `json:"beneficiaryWalletTypeId,omitempty"` // NOTE: can be an enum
+	BeneficiaryWalletTypeID    *types.Identifier     `json:"beneficiaryWalletTypeId,omitempty"` // TODO: can be an enum
 	TransferDate               *types.Date           `json:"transferDate,omitempty"`
 	Amount                     *types.Amount         `json:"amount,omitempty"`
 	Currency                   *Currency             `json:"currency,omitempty"`
@@ -159,3 +159,5 @@ func (s *TransferService) Delete(ctx context.Context, transferID string) (*Trans
 	}
 	return b.Transfers[0], resp, nil
 }
+
+// TODO: Update Transfer API

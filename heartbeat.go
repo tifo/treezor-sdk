@@ -30,3 +30,5 @@ func (s *HearthbeatService) Ping(ctx context.Context) (bool, *http.Response, err
 
 	return true, resp, errors.WithStack(err)
 }
+
+// TODO: Update Heartbeat API

@@ -34,7 +34,7 @@ type ListOptions struct {
 	SortBy *string `url:"sortBy,omitempty" json:"-"`
 	// For paginated result sets, The order you want to sort the list.
 	// Possible values: DESC and ASC.
-	SortOrder *SortOrder `url:"sortOrder,omitempty" json:"-"`
+	SortOrder SortOrder `url:"sortOrder,omitempty" json:"-"`
 	// For paginated result sets, the creation date from which you want to filter the request result.
 	// Format: YYYY-MM-DD HH:MM:SS
 	CreatedFrom *types.Timestamp `layout:"2006-01-02 15:04:05" url:"createdDateFrom,omitempty" json:"-"`
@@ -92,3 +92,5 @@ const (
 	// UserOrigin represents the end user.
 	UserOrigin Origin = "USER"
 )
+
+// TODO: see presence of totalRows, codeStatus and informationStatus in all models

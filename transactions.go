@@ -6,7 +6,7 @@ type Transaction struct {
 	TransactionID       *types.Identifier     `json:"transactionId,omitempty"`
 	WalletDebitID       *types.Identifier     `json:"walletDebitId,omitempty"`
 	WalletCreditID      *types.Identifier     `json:"walletCreditId,omitempty"`
-	TransactionType     *string               `json:"transactionType,omitempty"` // NOTE: Can be an enum
+	TransactionType     *string               `json:"transactionType,omitempty"` // TODO: Can be an enum
 	ForeignID           *types.Identifier     `json:"foreignId,omitempty"`
 	Name                *string               `json:"name,omitempty"`
 	Description         *string               `json:"description,omitempty"`
