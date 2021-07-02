@@ -1872,12 +1872,12 @@ func (d *Document) GetDocumentID() string {
 	return ""
 }
 
-// GetDocumentStatus returns the DocumentStatus field.
-func (d *Document) GetDocumentStatus() *DocumentStatus {
-	if d != nil {
-		return d.DocumentStatus
+// GetDocumentStatus returns the DocumentStatus field if it's non-nil, zero value otherwise.
+func (d *Document) GetDocumentStatus() DocumentStatus {
+	if d != nil && d.DocumentStatus != nil {
+		return *d.DocumentStatus
 	}
-	return nil
+	return DocumentStatus("")
 }
 
 // GetDocumentTag returns the DocumentTag field if it's non-nil, zero value otherwise.
@@ -1896,12 +1896,12 @@ func (d *Document) GetDocumentType() string {
 	return ""
 }
 
-// GetDocumentTypeID returns the DocumentTypeID field.
-func (d *Document) GetDocumentTypeID() *DocumentType {
-	if d != nil {
-		return d.DocumentTypeID
+// GetDocumentTypeID returns the DocumentTypeID field if it's non-nil, zero value otherwise.
+func (d *Document) GetDocumentTypeID() DocumentType {
+	if d != nil && d.DocumentTypeID != nil {
+		return *d.DocumentTypeID
 	}
-	return nil
+	return DocumentType(0)
 }
 
 // GetFilename returns the Filename field if it's non-nil, zero value otherwise.
@@ -4552,12 +4552,12 @@ func (u *User) GetCodeStatus() string {
 	return ""
 }
 
-// GetControllingPersonType returns the ControllingPersonType field.
-func (u *User) GetControllingPersonType() *ControllingPersonType {
-	if u != nil {
-		return u.ControllingPersonType
+// GetControllingPersonType returns the ControllingPersonType field if it's non-nil, zero value otherwise.
+func (u *User) GetControllingPersonType() ControllingPersonType {
+	if u != nil && u.ControllingPersonType != nil {
+		return *u.ControllingPersonType
 	}
-	return nil
+	return ControllingPersonType(0)
 }
 
 // GetCountry returns the Country field if it's non-nil, zero value otherwise.
@@ -4608,20 +4608,20 @@ func (u *User) GetEmail() string {
 	return ""
 }
 
-// GetEmployeeType returns the EmployeeType field.
-func (u *User) GetEmployeeType() *EmployeeType {
-	if u != nil {
-		return u.EmployeeType
+// GetEmployeeType returns the EmployeeType field if it's non-nil, zero value otherwise.
+func (u *User) GetEmployeeType() EmployeeType {
+	if u != nil && u.EmployeeType != nil {
+		return *u.EmployeeType
 	}
-	return nil
+	return EmployeeTypeNone
 }
 
-// GetEntityType returns the EntityType field.
-func (u *User) GetEntityType() *EntityType {
-	if u != nil {
-		return u.EntityType
+// GetEntityType returns the EntityType field if it's non-nil, zero value otherwise.
+func (u *User) GetEntityType() EntityType {
+	if u != nil && u.EntityType != nil {
+		return *u.EntityType
 	}
-	return nil
+	return EntityType(0)
 }
 
 // GetFirstname returns the Firstname field if it's non-nil, zero value otherwise.
@@ -4856,12 +4856,12 @@ func (u *User) GetOptInMailing() bool {
 	return false
 }
 
-// GetParentType returns the ParentType field.
-func (u *User) GetParentType() *ParentType {
-	if u != nil {
-		return u.ParentType
+// GetParentType returns the ParentType field if it's non-nil, zero value otherwise.
+func (u *User) GetParentType() ParentType {
+	if u != nil && u.ParentType != nil {
+		return *u.ParentType
 	}
-	return nil
+	return ParentType("")
 }
 
 // GetParentUserID returns the ParentUserID field if it's non-nil, zero value otherwise.
@@ -5024,12 +5024,12 @@ func (u *User) GetUserTag() string {
 	return ""
 }
 
-// GetUserTypeID returns the UserTypeID field.
-func (u *User) GetUserTypeID() *UserType {
-	if u != nil {
-		return u.UserTypeID
+// GetUserTypeID returns the UserTypeID field if it's non-nil, zero value otherwise.
+func (u *User) GetUserTypeID() UserType {
+	if u != nil && u.UserTypeID != nil {
+		return *u.UserTypeID
 	}
-	return nil
+	return UserType(0)
 }
 
 // GetWalletCount returns the WalletCount field if it's non-nil, zero value otherwise.
@@ -5288,12 +5288,12 @@ func (w *Wallet) GetWalletTag() string {
 	return ""
 }
 
-// GetWalletTypeID returns the WalletTypeID field.
-func (w *Wallet) GetWalletTypeID() *WalletType {
-	if w != nil {
-		return w.WalletTypeID
+// GetWalletTypeID returns the WalletTypeID field if it's non-nil, zero value otherwise.
+func (w *Wallet) GetWalletTypeID() WalletType {
+	if w != nil && w.WalletTypeID != nil {
+		return *w.WalletTypeID
 	}
-	return nil
+	return WalletType(0)
 }
 
 // GetWallets returns the Wallets field.

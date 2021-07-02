@@ -212,19 +212,35 @@ func (t *templateData) addIdent(x *ast.Ident, receiverType, fieldName string) {
 	var fieldType = x.String()
 	switch x.String() {
 	case "int", "int16", "int32", "int64":
-		zeroValue = "0"
+		zeroValue = `0`
 	case "float32", "float64":
-		zeroValue = "0.0"
+		zeroValue = `0.0`
 	case "string":
 		zeroValue = `""`
 	case "bool":
-		zeroValue = "false"
+		zeroValue = `false`
 	case "KYCLevel":
-		zeroValue = "KYCLevelNone"
+		zeroValue = `KYCLevelNone`
 	case "KYCReview":
-		zeroValue = "KYCReviewNone"
+		zeroValue = `KYCReviewNone`
 	case "Currency":
 		zeroValue = `Currency("")`
+	case "UserType":
+		zeroValue = `UserType(0)`
+	case "ParentType":
+		zeroValue = `ParentType("")`
+	case "ControllingPersonType":
+		zeroValue = `ControllingPersonType(0)`
+	case "EmployeeType":
+		zeroValue = `EmployeeTypeNone`
+	case "EntityType":
+		zeroValue = `EntityType(0)`
+	case "WalletType":
+		zeroValue = `WalletType(0)`
+	case "DocumentStatus":
+		zeroValue = `DocumentStatus("")`
+	case "DocumentType":
+		zeroValue = `DocumentType(0)`
 	default:
 		zeroValue = "nil"
 		namedStruct = true
