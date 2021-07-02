@@ -27,13 +27,19 @@ func String(v string) *string { return &v }
 
 // Date is a helper routine that allocates a new Date value
 // to store v and returns a pointer to it.
-func Date(date time.Time) *types.Date {
-	return types.NewDate(date)
+func Date(v time.Time) *types.Date {
+	if v.IsZero() {
+		return nil
+	}
+	return types.NewDate(v)
 }
 
 // Timestamp is a helper routine that allocates a new Timestamp value
 // to store v and returns a pointer to it.
 func Timestamp(v time.Time) *types.Timestamp {
+	if v.IsZero() {
+		return nil
+	}
 	return &types.Timestamp{
 		Time: v,
 	}
