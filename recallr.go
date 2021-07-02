@@ -24,7 +24,7 @@ type RecallR struct {
 	SctrSettelmentDate *types.TimestampParis `json:"sctr_settelment_date,omitempty"` // NOTE: Can be a types.Date if we add the 00:00:00 suffix
 	SctrDbtrName       *string               `json:"sctr_dbtr_name,omitempty"`
 	ReceivedDate       *types.TimestampParis `json:"received_date,omitempty"` // NOTE: Can be a types.Date with 00:00:00 suffix
-	PayinRefundID      *types.Identifier     `json:"payinfrefund_id,omitempty"`
+	PayinRefundID      *types.Identifier     `json:"payinrefund_id,omitempty"`
 }
 
 // TODO: Add RecallR API & Models (RecallR model in Events and API are different (snakeCase vs camlCase))
