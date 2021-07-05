@@ -11,18 +11,18 @@ import (
 	"github.com/tifo/treezor-sdk/internal/types"
 )
 
-// Event represent an event that occurred on Treezor's infrastructure and is
+// WebhookEvent represent an event that occurred on Treezor's infrastructure and is
 // sent as a webhook to us. See https://docs.treezor.com/guide/webhooks/events-descriptions.html.
-type Event struct {
-	ID               *string          `json:"webhook_id,omitempty"`
-	Type             *string          `json:"webhook,omitempty"`
-	Object           *string          `json:"object,omitempty"`
-	ObjectID         *string          `json:"object_id,omitempty"`
-	RawPayload       *json.RawMessage `json:"object_payload,omitempty"`
-	PayloadSignature *string          `json:"object_payload_signature,omitempty"`
+type WebhookEvent struct {
+	WebhookID              *string          `json:"webhook_id,omitempty"`
+	Webhook                *string          `json:"webhook,omitempty"`
+	Object                 *string          `json:"object,omitempty"`
+	ObjectID               *string          `json:"object_id,omitempty"`
+	ObjectPayload          *json.RawMessage `json:"object_payload,omitempty"`
+	ObjectPayloadSignature *string          `json:"object_payload_signature,omitempty"`
 }
 
-func (e Event) String() string {
+func (e WebhookEvent) String() string {
 	return types.Stringify(e)
 }
 
@@ -34,20 +34,20 @@ func genMAC(message, key []byte) []byte {
 	return mac.Sum(nil)
 }
 
-func (e *Event) Validate(secretKey []byte) (bool, error) {
+func (e *WebhookEvent) Validate(secretKey []byte) (bool, error) {
 
-	if e.RawPayload == nil || len(*e.RawPayload) == 0 {
+	if len(e.GetObjectPayload()) == 0 {
 		return false, errors.New("Webhook request has missing payload")
 	}
-	if e.PayloadSignature == nil || *e.PayloadSignature == "" {
+	if e.GetObjectPayloadSignature() == "" {
 		return false, errors.New("Webhook request has missing signature")
 	}
 
-	messageSignature, err := base64.StdEncoding.DecodeString(*e.PayloadSignature)
+	messageSignature, err := base64.StdEncoding.DecodeString(*e.ObjectPayloadSignature)
 	if err != nil {
-		return false, errors.Errorf("error decoding signature %q: %v", *e.PayloadSignature, err)
+		return false, errors.Errorf("error decoding signature %q: %v", *e.ObjectPayloadSignature, err)
 	}
-	expectedSignature := genMAC(*e.RawPayload, secretKey)
+	expectedSignature := genMAC(*e.ObjectPayload, secretKey)
 
 	return hmac.Equal(messageSignature, expectedSignature), nil
 }
@@ -55,8 +55,8 @@ func (e *Event) Validate(secretKey []byte) (bool, error) {
 // ParsePayload parses the event payload. For recognized event types,
 // a value of the corresponding struct type will be returned.
 //nolint:gocyclo
-func (e *Event) ParsePayload() (payload interface{}, err error) {
-	switch e.GetType() {
+func (e *WebhookEvent) ParsePayload() (payload interface{}, err error) {
+	switch e.GetWebhook() {
 
 	// Balance (https://docs.treezor.com/guide/wallets/events.html#balances)
 	case "balance.update":
@@ -269,6 +269,7 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 	case "oneclickcard.update":
 	case "oneclickcard.cancel":
 	}
-	err = json.Unmarshal(*e.RawPayload, &payload)
+
+	err = json.Unmarshal(e.GetObjectPayload(), &payload)
 	return payload, errors.WithStack(err)
 }

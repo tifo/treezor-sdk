@@ -2000,54 +2000,6 @@ func (d *DocumentResponse) GetDocuments() []*Document {
 	return nil
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
-func (e *Event) GetID() string {
-	if e != nil && e.ID != nil {
-		return *e.ID
-	}
-	return ""
-}
-
-// GetObject returns the Object field if it's non-nil, zero value otherwise.
-func (e *Event) GetObject() string {
-	if e != nil && e.Object != nil {
-		return *e.Object
-	}
-	return ""
-}
-
-// GetObjectID returns the ObjectID field if it's non-nil, zero value otherwise.
-func (e *Event) GetObjectID() string {
-	if e != nil && e.ObjectID != nil {
-		return *e.ObjectID
-	}
-	return ""
-}
-
-// GetPayloadSignature returns the PayloadSignature field if it's non-nil, zero value otherwise.
-func (e *Event) GetPayloadSignature() string {
-	if e != nil && e.PayloadSignature != nil {
-		return *e.PayloadSignature
-	}
-	return ""
-}
-
-// GetRawPayload returns the RawPayload field if it's non-nil, zero value otherwise.
-func (e *Event) GetRawPayload() json.RawMessage {
-	if e != nil && e.RawPayload != nil {
-		return *e.RawPayload
-	}
-	return json.RawMessage{}
-}
-
-// GetType returns the Type field if it's non-nil, zero value otherwise.
-func (e *Event) GetType() string {
-	if e != nil && e.Type != nil {
-		return *e.Type
-	}
-	return ""
-}
-
 // GetIdentificationID returns the IdentificationID field if it's non-nil, zero value otherwise.
 func (i *Identification) GetIdentificationID() string {
 	if i != nil && i.IdentificationID != nil {
@@ -5310,4 +5262,52 @@ func (w *WalletResponse) GetWallets() []*Wallet {
 		return w.Wallets
 	}
 	return nil
+}
+
+// GetObject returns the Object field if it's non-nil, zero value otherwise.
+func (w *WebhookEvent) GetObject() string {
+	if w != nil && w.Object != nil {
+		return *w.Object
+	}
+	return ""
+}
+
+// GetObjectID returns the ObjectID field if it's non-nil, zero value otherwise.
+func (w *WebhookEvent) GetObjectID() string {
+	if w != nil && w.ObjectID != nil {
+		return *w.ObjectID
+	}
+	return ""
+}
+
+// GetObjectPayload returns the ObjectPayload field if it's non-nil, zero value otherwise.
+func (w *WebhookEvent) GetObjectPayload() json.RawMessage {
+	if w != nil && w.ObjectPayload != nil {
+		return *w.ObjectPayload
+	}
+	return json.RawMessage{}
+}
+
+// GetObjectPayloadSignature returns the ObjectPayloadSignature field if it's non-nil, zero value otherwise.
+func (w *WebhookEvent) GetObjectPayloadSignature() string {
+	if w != nil && w.ObjectPayloadSignature != nil {
+		return *w.ObjectPayloadSignature
+	}
+	return ""
+}
+
+// GetWebhook returns the Webhook field if it's non-nil, zero value otherwise.
+func (w *WebhookEvent) GetWebhook() string {
+	if w != nil && w.Webhook != nil {
+		return *w.Webhook
+	}
+	return ""
+}
+
+// GetWebhookID returns the WebhookID field if it's non-nil, zero value otherwise.
+func (w *WebhookEvent) GetWebhookID() string {
+	if w != nil && w.WebhookID != nil {
+		return *w.WebhookID
+	}
+	return ""
 }

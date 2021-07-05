@@ -10,7 +10,7 @@ build: gen
 
 test:
 	$(info + [$(NAME)] $@)
-	go test -v ./...
+	go test -v -cover ./...
 
 fmt:
 	$(info + [$(NAME)] $@)
