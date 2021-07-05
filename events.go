@@ -18,7 +18,7 @@ type WebhookEvent struct {
 	Webhook                *string          `json:"webhook,omitempty"`
 	Object                 *string          `json:"object,omitempty"`
 	ObjectID               *string          `json:"object_id,omitempty"`
-	ObjectPayload          *json.RawMessage `json:"object_payload,omitempty"`
+	ObjectPayload          *json.RawMessage `json:"object_payload,omitempty" swaggertype:"object"`
 	ObjectPayloadSignature *string          `json:"object_payload_signature,omitempty"`
 }
 
