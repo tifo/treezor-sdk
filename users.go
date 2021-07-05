@@ -255,9 +255,9 @@ type User struct {
 	LegalNetIncomeRange        *string                `json:"legalNetIncomeRange,omitempty"`
 	LegalNumberOfEmployeeRange *string                `json:"legalNumberOfEmployeeRange,omitempty"`
 	EffectiveBeneficiary       *types.Percentage      `json:"effectiveBeneficiary,omitempty"`
-	KycLevel                   *KYCLevel              `json:"kycLevel,omitempty"`
-	KycReview                  *KYCReview             `json:"kycReview,omitempty"`
-	KycReviewComment           *string                `json:"kycReviewComment,omitempty"`
+	KYCLevel                   *KYCLevel              `json:"kycLevel,omitempty"`
+	KYCReview                  *KYCReview             `json:"kycReview,omitempty"`
+	KYCReviewComment           *string                `json:"kycReviewComment,omitempty"`
 	IsFreezed                  *types.Boolean         `json:"isFreezed,omitempty"` // Deprecated
 	IsFrozen                   *types.Boolean         `json:"isFrozen,omitempty"`
 	Language                   *string                `json:"language,omitempty"`

@@ -4624,26 +4624,26 @@ func (u *User) GetIsFrozen() bool {
 	return false
 }
 
-// GetKycLevel returns the KycLevel field if it's non-nil, zero value otherwise.
-func (u *User) GetKycLevel() KYCLevel {
-	if u != nil && u.KycLevel != nil {
-		return *u.KycLevel
+// GetKYCLevel returns the KYCLevel field if it's non-nil, zero value otherwise.
+func (u *User) GetKYCLevel() KYCLevel {
+	if u != nil && u.KYCLevel != nil {
+		return *u.KYCLevel
 	}
 	return KYCLevelNone
 }
 
-// GetKycReview returns the KycReview field if it's non-nil, zero value otherwise.
-func (u *User) GetKycReview() KYCReview {
-	if u != nil && u.KycReview != nil {
-		return *u.KycReview
+// GetKYCReview returns the KYCReview field if it's non-nil, zero value otherwise.
+func (u *User) GetKYCReview() KYCReview {
+	if u != nil && u.KYCReview != nil {
+		return *u.KYCReview
 	}
 	return KYCReviewNone
 }
 
-// GetKycReviewComment returns the KycReviewComment field if it's non-nil, zero value otherwise.
-func (u *User) GetKycReviewComment() string {
-	if u != nil && u.KycReviewComment != nil {
-		return *u.KycReviewComment
+// GetKYCReviewComment returns the KYCReviewComment field if it's non-nil, zero value otherwise.
+func (u *User) GetKYCReviewComment() string {
+	if u != nil && u.KYCReviewComment != nil {
+		return *u.KYCReviewComment
 	}
 	return ""
 }
