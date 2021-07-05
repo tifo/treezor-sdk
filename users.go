@@ -27,7 +27,7 @@ type UserResponse struct {
 type UserType int32
 
 const (
-	UserTypePhyisical                    UserType = 1 // Physical User and Anonymous User (default)
+	UserTypePhysical                     UserType = 1 // Physical User and Anonymous User (default)
 	UserTypeBusiness                     UserType = 2 // Business User
 	UserTypeNonGovernementalOrganization UserType = 3 // Non-governemental organization
 	UserTypeGovernementalOrganization    UserType = 4 // Governemental organization
