@@ -162,10 +162,6 @@ func (e *WebhookEvent) ParsePayload() (payload interface{}, err error) {
 	case "merchantIdGroup.cancel":
 		payload = &MIDRestrictionGroupEvent{}
 
-	// SepaSdde (https://docs.treezor.com/guide/transfers/events.html#sepa)
-	case "sepa.reject_sdde":
-		// NOTE: undocumented type
-
 	// SepaSddr (https://docs.treezor.com/guide/transfers/events.html#sepa)
 	case "sepa.return_sddr":
 		payload = &SepaSddrEvent{}
@@ -263,6 +259,9 @@ func (e *WebhookEvent) ParsePayload() (payload interface{}, err error) {
 		payload = &BankAccountEvent{}
 	case "bankaccount.cancel":
 		payload = &BankAccountEvent{}
+
+	// SepaSdde (Undocumented, https://docs.treezor.com/guide/transfers/events.html#sepa)
+	case "sepa.reject_sdde":
 
 	// OneClickCard (Undocumented)
 	case "oneclickcard.create":

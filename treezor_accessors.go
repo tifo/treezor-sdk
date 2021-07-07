@@ -440,10 +440,10 @@ func (b *BeneficiaryRequest) GetSDDCoreKnownUniqueMandateReference() []string {
 	return nil
 }
 
-// GetSEPACreditorIdentifier returns the SEPACreditorIdentifier field if it's non-nil, zero value otherwise.
-func (b *BeneficiaryRequest) GetSEPACreditorIdentifier() string {
-	if b != nil && b.SEPACreditorIdentifier != nil {
-		return *b.SEPACreditorIdentifier
+// GetSepaCreditorIdentifier returns the SepaCreditorIdentifier field if it's non-nil, zero value otherwise.
+func (b *BeneficiaryRequest) GetSepaCreditorIdentifier() string {
+	if b != nil && b.SepaCreditorIdentifier != nil {
+		return *b.SepaCreditorIdentifier
 	}
 	return ""
 }
@@ -2040,18 +2040,18 @@ func (k *KYCLivenessEvent) GetIdentity() *KYCLivenessIdentity {
 	return nil
 }
 
-// GetKycStatus returns the KycStatus field if it's non-nil, zero value otherwise.
-func (k *KYCLivenessEvent) GetKycStatus() string {
-	if k != nil && k.KycStatus != nil {
-		return *k.KycStatus
+// GetKYCStatus returns the KYCStatus field if it's non-nil, zero value otherwise.
+func (k *KYCLivenessEvent) GetKYCStatus() string {
+	if k != nil && k.KYCStatus != nil {
+		return *k.KYCStatus
 	}
 	return ""
 }
 
 // GetScore returns the Score field if it's non-nil, zero value otherwise.
-func (k *KYCLivenessEvent) GetScore() int {
+func (k *KYCLivenessEvent) GetScore() int64 {
 	if k != nil && k.Score != nil {
-		return *k.Score
+		return k.Score.Int64()
 	}
 	return 0
 }
@@ -2080,26 +2080,26 @@ func (k *KYCLivenessEvent) GetUserID() string {
 	return ""
 }
 
-// GetBirthDate returns the BirthDate field if it's non-nil, zero value otherwise.
-func (k *KYCLivenessIdentity) GetBirthDate() string {
-	if k != nil && k.BirthDate != nil {
-		return *k.BirthDate
+// GetBirthdate returns the Birthdate field if it's non-nil, zero value otherwise.
+func (k *KYCLivenessIdentity) GetBirthdate() string {
+	if k != nil && k.Birthdate != nil {
+		return *k.Birthdate
 	}
 	return ""
 }
 
-// GetFirstName returns the FirstName field if it's non-nil, zero value otherwise.
-func (k *KYCLivenessIdentity) GetFirstName() string {
-	if k != nil && k.FirstName != nil {
-		return *k.FirstName
+// GetFirstname returns the Firstname field if it's non-nil, zero value otherwise.
+func (k *KYCLivenessIdentity) GetFirstname() string {
+	if k != nil && k.Firstname != nil {
+		return *k.Firstname
 	}
 	return ""
 }
 
-// GetLastName returns the LastName field if it's non-nil, zero value otherwise.
-func (k *KYCLivenessIdentity) GetLastName() string {
-	if k != nil && k.LastName != nil {
-		return *k.LastName
+// GetLastname returns the Lastname field if it's non-nil, zero value otherwise.
+func (k *KYCLivenessIdentity) GetLastname() string {
+	if k != nil && k.Lastname != nil {
+		return *k.Lastname
 	}
 	return ""
 }
@@ -4432,10 +4432,10 @@ func (t *TransferResponse) GetTransfers() []*Transfer {
 	return nil
 }
 
-// GetActivityOutsideEu returns the ActivityOutsideEu field if it's non-nil, zero value otherwise.
-func (u *User) GetActivityOutsideEu() bool {
-	if u != nil && u.ActivityOutsideEu != nil {
-		return u.ActivityOutsideEu.Bool()
+// GetActivityOutsideEU returns the ActivityOutsideEU field if it's non-nil, zero value otherwise.
+func (u *User) GetActivityOutsideEU() bool {
+	if u != nil && u.ActivityOutsideEU != nil {
+		return u.ActivityOutsideEU.Bool()
 	}
 	return false
 }
@@ -4664,10 +4664,10 @@ func (u *User) GetLastname() string {
 	return ""
 }
 
-// GetLegalAnnualTurnOver returns the LegalAnnualTurnOver field if it's non-nil, zero value otherwise.
-func (u *User) GetLegalAnnualTurnOver() string {
-	if u != nil && u.LegalAnnualTurnOver != nil {
-		return *u.LegalAnnualTurnOver
+// GetLegalAnnualTurnover returns the LegalAnnualTurnover field if it's non-nil, zero value otherwise.
+func (u *User) GetLegalAnnualTurnover() string {
+	if u != nil && u.LegalAnnualTurnover != nil {
+		return *u.LegalAnnualTurnover
 	}
 	return ""
 }
@@ -4752,10 +4752,10 @@ func (u *User) GetLegalTVANumber() string {
 	return ""
 }
 
-// GetMiddleNames returns the MiddleNames field if it's non-nil, zero value otherwise.
-func (u *User) GetMiddleNames() string {
-	if u != nil && u.MiddleNames != nil {
-		return *u.MiddleNames
+// GetMiddlenames returns the Middlenames field if it's non-nil, zero value otherwise.
+func (u *User) GetMiddlenames() string {
+	if u != nil && u.Middlenames != nil {
+		return *u.Middlenames
 	}
 	return ""
 }

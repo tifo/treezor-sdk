@@ -63,7 +63,7 @@ type BeneficiaryRequest struct {
 	Address                            *string            `json:"address,omitempty"`
 	IBAN                               *string            `json:"iban,omitempty"`
 	BIC                                *string            `json:"bic,omitempty"`
-	SEPACreditorIdentifier             *string            `json:"sepaCreditorIdentifier,omitempty"`
+	SepaCreditorIdentifier             *string            `json:"sepaCreditorIdentifier,omitempty"`
 	UsableForSCT                       *bool              `json:"usableForSct,omitempty"`
 	SDDCoreKnownUniqueMandateReference *[]string          `json:"sddCoreKnownUniqueMandateReference,omitempty"`
 	SDDCoreBlacklist                   *[]string          `json:"sddCoreBlacklist,omitempty"`

@@ -224,7 +224,7 @@ type User struct {
 	Title                      *string                `json:"title,omitempty"`
 	Firstname                  *string                `json:"firstname,omitempty"`
 	Lastname                   *string                `json:"lastname,omitempty"`
-	MiddleNames                *string                `json:"middleNames,omitempty"`
+	Middlenames                *string                `json:"middleNames,omitempty"`
 	Birthday                   *types.Date            `json:"birthday,omitempty"`
 	Email                      *string                `json:"email,omitempty"`
 	Address1                   *string                `json:"address1,omitempty"`
@@ -251,7 +251,7 @@ type User struct {
 	LegalForm                  *string                `json:"legalForm,omitempty"`
 	LegalShareCapital          *types.Integer         `json:"legalShareCapital,omitempty"`
 	LegalSector                *string                `json:"legalSector,omitempty"`
-	LegalAnnualTurnOver        *string                `json:"legalAnnualTurnOver,omitempty"`
+	LegalAnnualTurnover        *string                `json:"legalAnnualTurnOver,omitempty"`
 	LegalNetIncomeRange        *string                `json:"legalNetIncomeRange,omitempty"`
 	LegalNumberOfEmployeeRange *string                `json:"legalNumberOfEmployeeRange,omitempty"`
 	EffectiveBeneficiary       *types.Percentage      `json:"effectiveBeneficiary,omitempty"`
@@ -267,7 +267,7 @@ type User struct {
 	TaxResidence               *string                `json:"taxResidence,omitempty"`
 	Position                   *string                `json:"position,omitempty"`
 	PersonalAssets             *string                `json:"personalAssets,omitempty"`
-	ActivityOutsideEu          *types.Boolean         `json:"activityOutsideEu,omitempty"`
+	ActivityOutsideEU          *types.Boolean         `json:"activityOutsideEu,omitempty"`
 	EconomicSanctions          *types.Boolean         `json:"economicSanctions,omitempty"`
 	ResidentCountriesSanctions *types.Boolean         `json:"residentCountriesSanctions,omitempty"`
 	InvolvedSanctions          *types.Boolean         `json:"involvedSanctions,omitempty"`
