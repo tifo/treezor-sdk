@@ -124,8 +124,8 @@ type Document struct {
 	CreatedDate       *types.TimestampParis `json:"createdDate,omitempty"`
 	ModifiedDate      *types.TimestampParis `json:"modifiedDate,omitempty"`
 	TotalRows         *types.Integer        `json:"totalRows,omitempty"`
-	CodeStatus        *types.Identifier     `json:"codeStatus,omitempty"`
-	InformationStatus *string               `json:"informationStatus,omitempty"`
+	CodeStatus        *types.Identifier     `json:"codeStatus,omitempty"`        // Legacy field
+	InformationStatus *string               `json:"informationStatus,omitempty"` // Legacy field
 }
 
 type DocumentCreateOptions struct {

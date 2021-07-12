@@ -2,6 +2,7 @@ package treezor
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/pkg/errors"
@@ -13,10 +14,18 @@ import (
 // Treezor API docs: https://www.treezor.com/api-documentation/#/heartbeat
 type HearthbeatService service
 
+type HeartbeatPingOptions struct {
+	Access
+}
+
 // Ping will try to reach the Treezor API. Returns true if the API is healthy, otherwise
-// it returns false.
-func (s *HearthbeatService) Ping(ctx context.Context) (bool, *http.Response, error) {
-	u := "heartbeats"
+// it returns false. (Legacy clients only)
+func (s *HearthbeatService) Ping(ctx context.Context, opts *HeartbeatPingOptions) (bool, *http.Response, error) {
+	u := fmt.Sprintf("heartbeats")
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return false, nil, errors.WithStack(err)
+	}
 	req, _ := s.client.NewRequest(http.MethodGet, u, nil)
 
 	resp, err := s.client.Do(ctx, req, nil)
@@ -31,4 +40,4 @@ func (s *HearthbeatService) Ping(ctx context.Context) (bool, *http.Response, err
 	return true, resp, errors.WithStack(err)
 }
 
-// TODO: Update Heartbeat API
+// NOTE: Heartbeats endpoint is not available for Treezor Connect
