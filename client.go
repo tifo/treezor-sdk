@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -211,12 +210,7 @@ func (c *HTTPClient) Do(ctx context.Context, req *http.Request, v interface{}) (
 		if w, ok := v.(io.Writer); ok {
 			_, _ = io.Copy(w, resp.Body)
 		} else {
-			// TODO: remove debug
-			buf := &bytes.Buffer{}
-			_, _ = buf.ReadFrom(resp.Body)
-			fmt.Println(buf.String())
-			err = json.NewDecoder(buf).Decode(v)
-			// err = json.NewDecoder(resp.Body).Decode(v)
+			err = json.NewDecoder(resp.Body).Decode(v)
 			if err == io.EOF {
 				err = nil // ignore EOF errors caused by empty response body
 			}
