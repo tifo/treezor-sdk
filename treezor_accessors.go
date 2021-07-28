@@ -2000,6 +2000,62 @@ func (d *DocumentResponse) GetDocuments() []*Document {
 	return nil
 }
 
+// GetComment returns the Comment field if it's non-nil, zero value otherwise.
+func (d *DocumentReview) GetComment() string {
+	if d != nil && d.Comment != nil {
+		return *d.Comment
+	}
+	return ""
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (d *DocumentReview) GetCreatedAt() time.Time {
+	if d != nil && d.CreatedAt != nil {
+		return *d.CreatedAt
+	}
+	return time.Time{}
+}
+
+// GetDocumentID returns the DocumentID field if it's non-nil, zero value otherwise.
+func (d *DocumentReview) GetDocumentID() string {
+	if d != nil && d.DocumentID != nil {
+		return d.DocumentID.String()
+	}
+	return ""
+}
+
+// GetDocumentType returns the DocumentType field if it's non-nil, zero value otherwise.
+func (d *DocumentReview) GetDocumentType() DocumentType {
+	if d != nil && d.DocumentType != nil {
+		return *d.DocumentType
+	}
+	return DocumentType(0)
+}
+
+// GetStatus returns the Status field.
+func (d *DocumentReview) GetStatus() *DocumentReviewStatus {
+	if d != nil {
+		return d.Status
+	}
+	return nil
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (d *DocumentReview) GetUpdatedAt() time.Time {
+	if d != nil && d.UpdatedAt != nil {
+		return *d.UpdatedAt
+	}
+	return time.Time{}
+}
+
+// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
+func (d *DocumentReview) GetUserID() string {
+	if d != nil && d.UserID != nil {
+		return d.UserID.String()
+	}
+	return ""
+}
+
 // GetIdentificationID returns the IdentificationID field if it's non-nil, zero value otherwise.
 func (i *Identification) GetIdentificationID() string {
 	if i != nil && i.IdentificationID != nil {
@@ -3448,6 +3504,30 @@ func (p *PayoutResponse) GetPayouts() []*Payout {
 	return nil
 }
 
+// GetContentType returns the ContentType field if it's non-nil, zero value otherwise.
+func (p *PreviewDocumentTarget) GetContentType() string {
+	if p != nil && p.ContentType != nil {
+		return *p.ContentType
+	}
+	return ""
+}
+
+// GetDuration returns the Duration field if it's non-nil, zero value otherwise.
+func (p *PreviewDocumentTarget) GetDuration() int {
+	if p != nil && p.Duration != nil {
+		return *p.Duration
+	}
+	return 0
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (p *PreviewDocumentTarget) GetURL() string {
+	if p != nil && p.URL != nil {
+		return *p.URL
+	}
+	return ""
+}
+
 // GetAdditionalInformation returns the AdditionalInformation field if it's non-nil, zero value otherwise.
 func (r *RecallR) GetAdditionalInformation() string {
 	if r != nil && r.AdditionalInformation != nil {
@@ -4430,6 +4510,54 @@ func (t *TransferResponse) GetTransfers() []*Transfer {
 		return t.Transfers
 	}
 	return nil
+}
+
+// GetDocumentID returns the DocumentID field if it's non-nil, zero value otherwise.
+func (u *UploadDocumentTarget) GetDocumentID() string {
+	if u != nil && u.DocumentID != nil {
+		return *u.DocumentID
+	}
+	return ""
+}
+
+// GetExpireIn returns the ExpireIn field if it's non-nil, zero value otherwise.
+func (u *UploadDocumentTarget) GetExpireIn() int32 {
+	if u != nil && u.ExpireIn != nil {
+		return *u.ExpireIn
+	}
+	return 0
+}
+
+// GetForm returns the Form field.
+func (u *UploadDocumentTarget) GetForm() *UploadDocumentTargetForm {
+	if u != nil {
+		return u.Form
+	}
+	return nil
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (u *UploadDocumentTargetForm) GetAction() string {
+	if u != nil && u.Action != nil {
+		return *u.Action
+	}
+	return ""
+}
+
+// GetEncType returns the EncType field if it's non-nil, zero value otherwise.
+func (u *UploadDocumentTargetForm) GetEncType() string {
+	if u != nil && u.EncType != nil {
+		return *u.EncType
+	}
+	return ""
+}
+
+// GetMethod returns the Method field if it's non-nil, zero value otherwise.
+func (u *UploadDocumentTargetForm) GetMethod() string {
+	if u != nil && u.Method != nil {
+		return *u.Method
+	}
+	return ""
 }
 
 // GetActivityOutsideEU returns the ActivityOutsideEU field if it's non-nil, zero value otherwise.
