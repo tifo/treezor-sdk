@@ -20,12 +20,21 @@ const (
 	userAgent                = "go-treezor/"
 )
 
+// ConnectClient allows access to both the legacy Treezor API as well as the new Connect endpoints
 type ConnectClient struct {
-	API *APIClient
-	KYC *ConnectKYCService
+	API     *apiClient
+	Connect *connectClient
 }
 
-type APIClient struct {
+// LegacyClient allows access to the legacy Treezor API
+type LegacyClient apiClient
+
+type connectClient struct {
+	common service // Reuse a single struct instead of allocating one for each service on the heap.
+	KYC    *ConnectKYCService
+}
+
+type apiClient struct {
 	common          service // Reuse a single struct instead of allocating one for each service on the heap.
 	User            *UserService
 	Wallet          *WalletService
@@ -41,10 +50,9 @@ type APIClient struct {
 	TaxResidences   *TaxResidencesService
 }
 
-func newAPIClient(httpClient *http.Client, apiBaseURL *url.URL) *APIClient {
-	c := &APIClient{}
-	hcl := &HTTPClient{client: httpClient, BaseURL: apiBaseURL, UserAgent: userAgent}
-	c.common.client = hcl
+func newAPIClient(httpClient *http.Client, apiBaseURL *url.URL) *apiClient {
+	c := &apiClient{}
+	c.common.client = &HTTPClient{client: httpClient, BaseURL: apiBaseURL, UserAgent: userAgent}
 	c.User = (*UserService)(&c.common)
 	c.Wallet = (*WalletService)(&c.common)
 	c.Card = (*CardService)(&c.common)
@@ -60,11 +68,18 @@ func newAPIClient(httpClient *http.Client, apiBaseURL *url.URL) *APIClient {
 	return c
 }
 
+func newConnectClient(httpClient *http.Client, connectBaseURL *url.URL) *connectClient {
+	c := &connectClient{}
+	c.common.client = &HTTPClient{client: httpClient, BaseURL: connectBaseURL, UserAgent: userAgent}
+	c.KYC = (*ConnectKYCService)(&c.common)
+	return c
+}
+
 // NewClient returns a new Treezor API client. If a nil httpClient is
 // provided, http.DefaultClient will be used. To use API methods which require
 // authentication, provide an http.Client that will perform the authentication
 // for you (such as that provided by the golang.org/x/oauth2 library).
-func NewClient(httpClient *http.Client, isProduction bool) *APIClient {
+func NewClient(httpClient *http.Client, isProduction bool) *LegacyClient {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
 	}
@@ -72,7 +87,7 @@ func NewClient(httpClient *http.Client, isProduction bool) *APIClient {
 	if isProduction {
 		baseURL, _ = url.Parse(defaultProductionBaseURL)
 	}
-	return newAPIClient(httpClient, baseURL)
+	return (*LegacyClient)(newAPIClient(httpClient, baseURL))
 }
 
 // NewConnectClient returns a new Treezor API client using the Base URL
@@ -91,11 +106,11 @@ func NewConnectClient(httpClient *http.Client, connectURL string) *ConnectClient
 		Path:   path.Join(baseURL.Path, "/v1/"),
 	}
 	api := newAPIClient(httpClient, apiBaseURL)
-	connect := &ConnectClient{
-		API: api,
-		KYC: (*ConnectKYCService)(&api.common),
+	connect := newConnectClient(httpClient, baseURL)
+	return &ConnectClient{
+		API:     api,
+		Connect: connect,
 	}
-	return connect
 }
 
 type HTTPClient struct {
