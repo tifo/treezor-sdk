@@ -1,6 +1,7 @@
 package types
 
 import (
+	"bytes"
 	"encoding/json"
 )
 
@@ -11,6 +12,9 @@ func (i Integer) Int64() int64 {
 }
 
 func (i *Integer) UnmarshalJSON(data []byte) error {
+	if bytes.Equal(data, []byte(`""`)) {
+		*i = Integer(0)
+	}
 	var str json.Number
 	err := json.Unmarshal(data, &str)
 	if err != nil {

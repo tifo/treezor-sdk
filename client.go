@@ -196,6 +196,7 @@ func (c *HTTPClient) Do(ctx context.Context, req *http.Request, v interface{}) (
 		if w, ok := v.(io.Writer); ok {
 			_, _ = io.Copy(w, resp.Body)
 		} else {
+			// TODO: remove debug
 			buf := &bytes.Buffer{}
 			_, _ = buf.ReadFrom(resp.Body)
 			fmt.Println(buf.String())
