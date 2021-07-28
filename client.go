@@ -21,21 +21,11 @@ const (
 )
 
 type ConnectClient struct {
-	API     *Client
-	BaseURL *url.URL
+	API *APIClient
+	KYC *ConnectKYCService
 }
 
-// A Client manages communication with the Treezor API.
-type Client struct {
-	client *http.Client // HTTP client used to communicate with the API.
-
-	// Base URL for API requests. Defaults to the public Treezor API. BaseURL should
-	// always be specified with a trailing slash.
-	BaseURL *url.URL
-
-	// User agent used when communicating with the Treezor API.
-	UserAgent string
-
+type APIClient struct {
 	common          service // Reuse a single struct instead of allocating one for each service on the heap.
 	User            *UserService
 	Wallet          *WalletService
@@ -51,9 +41,10 @@ type Client struct {
 	TaxResidences   *TaxResidencesService
 }
 
-func newAPIClient(httpClient *http.Client, apiBaseURL *url.URL) *Client {
-	c := &Client{client: httpClient, BaseURL: apiBaseURL, UserAgent: userAgent}
-	c.common.client = c
+func newAPIClient(httpClient *http.Client, apiBaseURL *url.URL) *APIClient {
+	c := &APIClient{}
+	hcl := &HTTPClient{client: httpClient, BaseURL: apiBaseURL, UserAgent: userAgent}
+	c.common.client = hcl
 	c.User = (*UserService)(&c.common)
 	c.Wallet = (*WalletService)(&c.common)
 	c.Card = (*CardService)(&c.common)
@@ -73,7 +64,7 @@ func newAPIClient(httpClient *http.Client, apiBaseURL *url.URL) *Client {
 // provided, http.DefaultClient will be used. To use API methods which require
 // authentication, provide an http.Client that will perform the authentication
 // for you (such as that provided by the golang.org/x/oauth2 library).
-func NewClient(httpClient *http.Client, isProduction bool) *Client {
+func NewClient(httpClient *http.Client, isProduction bool) *APIClient {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
 	}
@@ -99,10 +90,22 @@ func NewConnectClient(httpClient *http.Client, connectURL string) *ConnectClient
 		Host:   baseURL.Host,
 		Path:   path.Join(baseURL.Path, "/v1/"),
 	}
-	return &ConnectClient{
-		API:     newAPIClient(httpClient, apiBaseURL),
-		BaseURL: baseURL,
+	api := newAPIClient(httpClient, apiBaseURL)
+	connect := &ConnectClient{
+		API: api,
+		KYC: (*ConnectKYCService)(&api.common),
 	}
+	return connect
+}
+
+type HTTPClient struct {
+	// HTTP client used to communicate with the API.
+	client *http.Client
+	// Base URL for API requests. Defaults to the public Treezor API. BaseURL should
+	// always be specified with a trailing slash.
+	BaseURL *url.URL
+	// User agent used when communicating with the Treezor API.
+	UserAgent string
 }
 
 // NewRequest creates an API request. A relative URL can be provided in urlStr,
@@ -110,7 +113,7 @@ func NewConnectClient(httpClient *http.Client, connectURL string) *ConnectClient
 // Relative URLs should always be specified without a preceding slash. If
 // specified, the value pointed to by body is JSON encoded and included as the
 // request body.
-func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Request, error) {
+func (c *HTTPClient) NewRequest(method, urlStr string, body interface{}) (*http.Request, error) {
 
 	p := path.Join(c.BaseURL.Path, urlStr)
 	u, err := c.BaseURL.Parse(p)
@@ -152,7 +155,7 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 //
 // The provided ctx must be non-nil. If it is canceled or times out,
 // ctx.Err() will be returned.
-func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*http.Response, error) {
+func (c *HTTPClient) Do(ctx context.Context, req *http.Request, v interface{}) (*http.Response, error) {
 	req = req.WithContext(ctx)
 
 	resp, err := c.client.Do(req)

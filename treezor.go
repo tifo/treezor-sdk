@@ -13,7 +13,7 @@ import (
 )
 
 type service struct {
-	client *Client
+	client *HTTPClient
 }
 
 type SortOrder string
