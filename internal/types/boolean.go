@@ -1,6 +1,10 @@
 package types
 
-import "encoding/json"
+import (
+	"encoding/json"
+
+	"github.com/pkg/errors"
+)
 
 type Boolean bool
 
@@ -26,11 +30,11 @@ func (b *Boolean) UnmarshalJSON(data []byte) error {
 		var str json.Number
 		err := json.Unmarshal(data, &str)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "treezor.Bool")
 		}
 		v, err := str.Int64()
 		if err != nil {
-			return err
+			return errors.Wrap(err, "treezor.Bool")
 		}
 		*b = v > 0
 	}

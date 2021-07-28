@@ -1,17 +1,24 @@
 package types
 
 import (
+	"bytes"
 	"encoding/json"
 	"strconv"
+
+	"github.com/pkg/errors"
 )
 
 type Amount string
 
 func (a *Amount) UnmarshalJSON(data []byte) error {
+	if bytes.Equal(data, []byte(`""`)) {
+		*a = Amount("0.0")
+		return nil
+	}
 	var str json.Number
 	err := json.Unmarshal(data, &str)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "treezor.Amount")
 	}
 	*a = Amount(str)
 	return nil

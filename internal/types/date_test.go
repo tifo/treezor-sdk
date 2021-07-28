@@ -65,12 +65,6 @@ func TestDate_UnmarshalJSON(t *testing.T) {
 		ti := &Date{}
 
 		err := json.Unmarshal(dateByte, ti)
-		assert.Equal(t, err, &time.ParseError{
-			Layout:     "\"2006-01-02\"",
-			Value:      "\"2019-10-01 11:00:00\"",
-			LayoutElem: "\"",
-			ValueElem:  " 11:00:00\"",
-			Message:    "",
-		})
+		assert.EqualError(t, err, `treezor.Date: parsing time ""2019-10-01 11:00:00"" as ""2006-01-02"": cannot parse " 11:00:00"" as """`)
 	})
 }

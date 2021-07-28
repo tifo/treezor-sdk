@@ -2,6 +2,8 @@ package types
 
 import (
 	"time"
+
+	"github.com/pkg/errors"
 )
 
 const (
@@ -58,7 +60,7 @@ func (d *Date) UnmarshalJSON(data []byte) error {
 
 	tt, err := time.ParseInLocation(`"`+shortFormat+`"`, str, time.UTC)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "treezor.Date")
 	}
 
 	d.Time = tt
