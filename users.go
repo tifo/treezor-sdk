@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/http/httputil"
 	"strconv"
 
 	"github.com/pkg/errors"
@@ -373,6 +374,13 @@ func (s *UserService) Get(ctx context.Context, userID string, opts *UserGetOptio
 
 	ur := new(UserResponse)
 	resp, err := s.client.Do(ctx, req, ur)
+
+	r, _ := httputil.DumpRequestOut(req, false)
+	fmt.Printf("%s\n", r)
+
+	r, _ = httputil.DumpResponse(resp, false)
+	fmt.Printf("%s\n", r)
+
 	if err != nil {
 		return nil, resp, errors.WithStack(err)
 	}

@@ -1168,6 +1168,38 @@ func (c *CardImagesResponse) GetCardImages() []*CardImage {
 	return nil
 }
 
+// GetAuthorizationNote returns the AuthorizationNote field if it's non-nil, zero value otherwise.
+func (c *CardPaymentMetadata) GetAuthorizationNote() string {
+	if c != nil && c.AuthorizationNote != nil {
+		return *c.AuthorizationNote
+	}
+	return ""
+}
+
+// GetLocalAnout returns the LocalAnout field.
+func (c *CardPaymentMetadata) GetLocalAnout() *OperationAmount {
+	if c != nil {
+		return c.LocalAnout
+	}
+	return nil
+}
+
+// GetMCC returns the MCC field.
+func (c *CardPaymentMetadata) GetMCC() *MCCMetadata {
+	if c != nil {
+		return c.MCC
+	}
+	return nil
+}
+
+// GetMID returns the MID field.
+func (c *CardPaymentMetadata) GetMID() *MIDMetadata {
+	if c != nil {
+		return c.MID
+	}
+	return nil
+}
+
 // GetCards returns the Cards field.
 func (c *CardResponse) GetCards() []*Card {
 	if c != nil {
@@ -1764,6 +1796,30 @@ func (c *Chargeback) GetUserID() string {
 func (c *Chargeback) GetWalletID() string {
 	if c != nil && c.WalletID != nil {
 		return c.WalletID.String()
+	}
+	return ""
+}
+
+// GetCurrent returns the Current field if it's non-nil, zero value otherwise.
+func (c *ConnectCursor) GetCurrent() string {
+	if c != nil && c.Current != nil {
+		return *c.Current
+	}
+	return ""
+}
+
+// GetNext returns the Next field if it's non-nil, zero value otherwise.
+func (c *ConnectCursor) GetNext() string {
+	if c != nil && c.Next != nil {
+		return *c.Next
+	}
+	return ""
+}
+
+// GetPrev returns the Prev field if it's non-nil, zero value otherwise.
+func (c *ConnectCursor) GetPrev() string {
+	if c != nil && c.Prev != nil {
+		return *c.Prev
 	}
 	return ""
 }
@@ -2480,6 +2536,14 @@ func (m *MandateEvent) GetMandates() []*Mandate {
 	return nil
 }
 
+// GetCode returns the Code field if it's non-nil, zero value otherwise.
+func (m *MCCMetadata) GetCode() string {
+	if m != nil && m.Code != nil {
+		return m.Code.String()
+	}
+	return ""
+}
+
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (m *MCCRestrictionGroup) GetCreatedDate() time.Time {
 	if m != nil && m.CreatedDate != nil {
@@ -2552,6 +2616,14 @@ func (m *MCCRestrictionGroupEvent) GetMCCRestrictionGroups() []*MCCRestrictionGr
 	return nil
 }
 
+// GetValue returns the Value field if it's non-nil, zero value otherwise.
+func (m *MIDMetadata) GetValue() string {
+	if m != nil && m.Value != nil {
+		return *m.Value
+	}
+	return ""
+}
+
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (m *MIDRestrictionGroup) GetCreatedDate() time.Time {
 	if m != nil && m.CreatedDate != nil {
@@ -2620,6 +2692,126 @@ func (m *MIDRestrictionGroup) GetStatus() string {
 func (m *MIDRestrictionGroupEvent) GetMerchantIDRestrictionGroups() []*MIDRestrictionGroup {
 	if m != nil {
 		return m.MerchantIDRestrictionGroups
+	}
+	return nil
+}
+
+// GetAmount returns the Amount field.
+func (o *Operation) GetAmount() *OperationAmount {
+	if o != nil {
+		return o.Amount
+	}
+	return nil
+}
+
+// GetDate returns the Date field.
+func (o *Operation) GetDate() *OperationDate {
+	if o != nil {
+		return o.Date
+	}
+	return nil
+}
+
+// GetDirection returns the Direction field.
+func (o *Operation) GetDirection() *OperationDirection {
+	if o != nil {
+		return o.Direction
+	}
+	return nil
+}
+
+// GetExternalReference returns the ExternalReference field if it's non-nil, zero value otherwise.
+func (o *Operation) GetExternalReference() string {
+	if o != nil && o.ExternalReference != nil {
+		return *o.ExternalReference
+	}
+	return ""
+}
+
+// GetLabel returns the Label field if it's non-nil, zero value otherwise.
+func (o *Operation) GetLabel() string {
+	if o != nil && o.Label != nil {
+		return *o.Label
+	}
+	return ""
+}
+
+// GetMetadata returns the Metadata field.
+func (o *Operation) GetMetadata() *OperationMetadata {
+	if o != nil {
+		return o.Metadata
+	}
+	return nil
+}
+
+// GetObjectID returns the ObjectID field if it's non-nil, zero value otherwise.
+func (o *Operation) GetObjectID() string {
+	if o != nil && o.ObjectID != nil {
+		return o.ObjectID.String()
+	}
+	return ""
+}
+
+// GetOperationType returns the OperationType field.
+func (o *Operation) GetOperationType() *OperationType {
+	if o != nil {
+		return o.OperationType
+	}
+	return nil
+}
+
+// GetStatus returns the Status field.
+func (o *Operation) GetStatus() *OperationStatus {
+	if o != nil {
+		return o.Status
+	}
+	return nil
+}
+
+// GetWalletID returns the WalletID field if it's non-nil, zero value otherwise.
+func (o *Operation) GetWalletID() string {
+	if o != nil && o.WalletID != nil {
+		return o.WalletID.String()
+	}
+	return ""
+}
+
+// GetAmount returns the Amount field if it's non-nil, zero value otherwise.
+func (o *OperationAmount) GetAmount() int64 {
+	if o != nil && o.Amount != nil {
+		return *o.Amount
+	}
+	return 0
+}
+
+// GetCurrency returns the Currency field if it's non-nil, zero value otherwise.
+func (o *OperationAmount) GetCurrency() Currency {
+	if o != nil && o.Currency != nil {
+		return *o.Currency
+	}
+	return Currency("")
+}
+
+// GetCursor returns the Cursor field.
+func (o *OperationList) GetCursor() *ConnectCursor {
+	if o != nil {
+		return o.Cursor
+	}
+	return nil
+}
+
+// GetData returns the Data field.
+func (o *OperationList) GetData() []*Operation {
+	if o != nil {
+		return o.Data
+	}
+	return nil
+}
+
+// GetCardPayment returns the CardPayment field.
+func (o *OperationMetadata) GetCardPayment() *CardPaymentMetadata {
+	if o != nil {
+		return o.CardPayment
 	}
 	return nil
 }

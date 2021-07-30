@@ -41,6 +41,7 @@ func (s *ConnectKYCService) UploadDocument(ctx context.Context, userID string, o
 
 	d := new(UploadDocumentTarget)
 	resp, err := s.client.Do(ctx, req, d)
+
 	if err != nil {
 		return nil, resp, errors.WithStack(err)
 	}

@@ -125,10 +125,30 @@ func (t *PayinAdditionalData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+type PaymentMethod int32
+
+const (
+	PaymentMethodSCTR = 20
+)
+
+type PayinCreateOptions struct {
+	WalletID        *string       `url:"-" json:"walletId,omitempty"`
+	UserID          *string       `url:"-" json:"userId,omitempty"`
+	PaymentMethodID PaymentMethod `url:"-" json:"paymentMethodId,omitempty"`
+	Amout           *float64      `url:"-" json:"amount,omitempty"`
+	Currency        Currency      `url:"-" json:"currency,omitempty"`
+	MessageToUser   *string       `url:"-" json:"messageToUser,omitempty"`
+}
+
 // Create creates a Treezor pay-in.
 // The required field are WalletID, BeneficiaryID, Amount, Currency(ISO 4217).
-func (s *PayinService) Create(ctx context.Context, payin *Payin) (*Payin, *http.Response, error) {
-	req, _ := s.client.NewRequest(http.MethodPost, "payins", payin)
+func (s *PayinService) Create(ctx context.Context, opts *PayinCreateOptions) (*Payin, *http.Response, error) {
+	u := "payins"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPost, u, opts)
 
 	b := new(PayinResponse)
 	resp, err := s.client.Do(ctx, req, b)

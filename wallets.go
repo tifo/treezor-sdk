@@ -84,13 +84,13 @@ type Wallet struct {
 type WalletCreateOptions struct {
 	Access
 
-	WalletTypeID        WalletType  `url:"-" json:"walletTypeId"`                  // Required
-	TariffID            *string     `url:"-" json:"tariffId"`                      // Required
-	UserID              *string     `url:"-" json:"userId"`                        // Required
+	WalletTypeID        WalletType  `url:"-" json:"walletTypeId,omitempty"`        // Required
+	TariffID            *string     `url:"-" json:"tariffId,omitempty"`            // Required
+	UserID              *string     `url:"-" json:"userId,omitempty"`              // Required
 	JointUserID         *string     `url:"-" json:"jointUserId,omitempty"`         // Optional
 	WalletTag           *string     `url:"-" json:"walletTag,omitempty"`           // Optional
 	Currency            Currency    `url:"-" json:"currency"`                      // Required
-	EventName           *string     `url:"-" json:"eventName,omitempty"`           // Optional
+	EventName           *string     `url:"-" json:"eventName,omitempty"`           // Required
 	EventAlias          *string     `url:"-" json:"eventAlias,omitempty"`          // Optional
 	EventDate           *types.Date `url:"-" json:"eventDate,omitempty"`           // Optional
 	EventMessage        *string     `url:"-" json:"eventMessage,omitempty"`        // Optional

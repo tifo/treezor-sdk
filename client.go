@@ -16,7 +16,7 @@ import (
 const (
 	defaultStagingBaseURL    = "https://sandbox.treezor.com/v1/"
 	defaultProductionBaseURL = "https://treezor.com/v1/"
-	userAgent                = "go-treezor/"
+	userAgent                = "go-treezor-sdk/0.1.0"
 )
 
 // ConnectClient allows access to both the legacy Treezor API as well as the new Connect endpoints
@@ -29,8 +29,9 @@ type ConnectClient struct {
 type LegacyClient apiClient
 
 type connectClient struct {
-	common service // Reuse a single struct instead of allocating one for each service on the heap.
-	KYC    *ConnectKYCService
+	common    service // Reuse a single struct instead of allocating one for each service on the heap.
+	KYC       *ConnectKYCService
+	Operation *ConnectOperationService
 }
 
 type apiClient struct {
@@ -71,6 +72,7 @@ func newConnectClient(httpClient *http.Client, connectBaseURL *url.URL) *connect
 	c := &connectClient{}
 	c.common.client = &HTTPClient{client: httpClient, BaseURL: connectBaseURL, UserAgent: userAgent}
 	c.KYC = (*ConnectKYCService)(&c.common)
+	c.Operation = (*ConnectOperationService)(&c.common)
 	return c
 }
 

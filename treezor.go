@@ -49,6 +49,8 @@ type ListOptions struct {
 	UpdatedTo *types.Timestamp `layout:"2006-01-02 15:04:05" url:"createdDateFrom,omitempty" json:"-"`
 }
 
+// NOTE: should we rename those to exactly their API names to be consistent with the Treezor documentation ?
+
 // addOptions adds the parameters in opt as URL query parameters to s. opt
 // must be a struct whose fields may contain "url" tags.
 func addOptions(s string, opt interface{}) (string, error) {
