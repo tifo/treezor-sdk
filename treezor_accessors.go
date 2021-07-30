@@ -1176,10 +1176,10 @@ func (c *CardPaymentMetadata) GetAuthorizationNote() string {
 	return ""
 }
 
-// GetLocalAnout returns the LocalAnout field.
-func (c *CardPaymentMetadata) GetLocalAnout() *OperationAmount {
+// GetLocalAmount returns the LocalAmount field.
+func (c *CardPaymentMetadata) GetLocalAmount() *OperationAmount {
 	if c != nil {
-		return c.LocalAnout
+		return c.LocalAmount
 	}
 	return nil
 }
@@ -2756,6 +2756,14 @@ func (o *Operation) GetObjectID() string {
 func (o *Operation) GetOperationType() *OperationType {
 	if o != nil {
 		return o.OperationType
+	}
+	return nil
+}
+
+// GetSettlement returns the Settlement field.
+func (o *Operation) GetSettlement() *OperationSettlement {
+	if o != nil {
+		return o.Settlement
 	}
 	return nil
 }

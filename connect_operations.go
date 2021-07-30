@@ -19,13 +19,44 @@ type OperationAmount struct {
 
 type OperationType string
 
+// NOTE: It's not clear in the documentation if snake_case or camlCase is used here (see https://docs.treezor.com/guide/operations/introduction.html)
 const (
-	OperationTypeBankTransfer OperationType = "bank_transfer"
+	// Standard Operation
+	OperationTypeCheck           OperationType = "check"
+	OperationTypeBankTransfer    OperationType = "bankTransfer"
+	OperationTypeBankDirectDebit OperationType = "bankDirectDebit"
+	OperationTypeCardTopup       OperationType = "cardTopup"
+	OperationTypeCardTransaction OperationType = "cardTransaction"
+	// Refund Operation
+	OperationTypeCheckRefund           OperationType = "checkRefund"
+	OperationTypeBankTransferRefund    OperationType = "bankTransferRefund"
+	OperationTypeBankDirectDebitRefund OperationType = "bankDirectDebitRefund"
+	OperationTypeCardTopupRefund       OperationType = "cardTopupRefund"
+	OperationTypeCardTransactionRefund OperationType = "cardTransactionRefund"
 )
 
 type OperationDirection string
 
+const (
+	OperationDirectionDebit  OperationDirection = "DEBIT"
+	OperationDirectionCredit OperationDirection = "CREDIT"
+)
+
 type OperationStatus string
+
+const (
+	OperationStatusPending   OperationStatus = "PENDING"
+	OperationStatusCanceled  OperationStatus = "CANCELED"
+	OperationStatusConfirmed OperationStatus = "CONFIRMED"
+	OperationStatusSettled   OperationStatus = "SETTLED"
+)
+
+type OperationSettlement string
+
+const (
+	OperationSettlementConfirmed OperationSettlement = "CONFIRMED"
+	OperationSettlementSettled   OperationSettlement = "SETTLED"
+)
 
 type OperationMetadata struct {
 	CardPayment *CardPaymentMetadata `json:"cardPayment,omitempty"`
@@ -34,7 +65,7 @@ type OperationMetadata struct {
 type CardPaymentMetadata struct {
 	MCC               *MCCMetadata     `json:"mcc,omitempty"`
 	MID               *MIDMetadata     `json:"mid,omitempty"`
-	LocalAnout        *OperationAmount `json:"localAmount,omitempty"`
+	LocalAmount       *OperationAmount `json:"localAmount,omitempty"`
 	AuthorizationNote *string          `json:"authorizationNote,omitempty"`
 }
 
@@ -52,16 +83,17 @@ type OperationDate struct {
 }
 
 type Operation struct {
-	OperationType     *OperationType      `json:"operationType,omitempty"` // NOTE: can be an enum
-	Amount            *OperationAmount    `json:"amount,omitempty"`
-	WalletID          *types.Identifier   `json:"walletId,omitempty"`
-	Direction         *OperationDirection `json:"direction,omitempty"` // NOTE: can be an enum
-	ObjectID          *types.Identifier   `json:"objectId,omitempty"`
-	Label             *string             `json:"label,omitempty"`
-	ExternalReference *string             `json:"externalReference,omitempty"`
-	Metadata          *OperationMetadata  `json:"metadata,omitempty"`
-	Status            *OperationStatus    `json:"status,omitempty"`
-	Date              *OperationDate      `json:"date,omitempty"`
+	OperationType     *OperationType       `json:"operationType,omitempty"`
+	Amount            *OperationAmount     `json:"amount,omitempty"`
+	WalletID          *types.Identifier    `json:"walletId,omitempty"`
+	Settlement        *OperationSettlement `json:"settlement,omitempty"`
+	Direction         *OperationDirection  `json:"direction,omitempty"`
+	ObjectID          *types.Identifier    `json:"objectId,omitempty"`
+	Label             *string              `json:"label,omitempty"`
+	ExternalReference *string              `json:"externalReference,omitempty"`
+	Metadata          *OperationMetadata   `json:"metadata,omitempty"`
+	Status            *OperationStatus     `json:"status,omitempty"`
+	Date              *OperationDate       `json:"date,omitempty"`
 }
 
 type OperationList struct {
