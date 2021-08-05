@@ -8,7 +8,6 @@ import (
 
 	"github.com/pkg/errors"
 
-	json "github.com/tifo/treezor-sdk/internal/json"
 	"github.com/tifo/treezor-sdk/internal/types"
 )
 
@@ -126,10 +125,10 @@ type Card struct {
 }
 
 type CardRestrictionGroupLimits struct {
-	PaymentDailyLimit           *types.Amount `json:"paymentDailyLimit,omitempty"`
-	MccRestrictionGroups        *string       `json:"mccRestrictionGroups,omitempty"`        // TODO: verify model
-	CountryRestrictionGroups    *string       `json:"countryRestrictionGroups,omitempty"`    // TODO: verify model
-	MerchantIdRestrictionGroups *string       `json:"merchantIdRestrictionGroups,omitempty"` // TODO: verify model
+	PaymentDailyLimit           *types.Amount     `json:"paymentDailyLimit,omitempty"`
+	MccRestrictionGroups        *types.Identifier `json:"mccRestrictionGroups,omitempty"`        // NOTE: not sure if its an identifier or a random integer
+	CountryRestrictionGroups    *types.Identifier `json:"countryRestrictionGroups,omitempty"`    // NOTE: not sure if its an identifier or a random integer
+	MerchantIdRestrictionGroups *types.Identifier `json:"merchantIdRestrictionGroups,omitempty"` // NOTE: not sure if its an identifier or a random integer
 }
 
 type CreateVirtualCardOptions struct {
@@ -139,13 +138,6 @@ type CreateVirtualCardOptions struct {
 	// NOTE: might need to be stored in another struct as you don't need to send the whole card model when update a card status
 	LockStatus *int64 `json:"lockStatus,omitempty"`
 	// TODO: CreateCardRequest has much more field than cards and might require its own type (missing fields such as Anonymous, ...)
-}
-
-type RestrictionGroupLimits struct {
-	PaymentDailyLimit           *json.Number `json:"paymentDailyLimit,omitempty"`
-	MccRestrictionGroups        *json.Number `json:"mccRestrictionGroups,omitempty"`
-	CountryRestrictionGroups    *json.Number `json:"countryRestrictionGroups,omitempty"`
-	MerchantIdRestrictionGroups *json.Number `json:"merchantIdRestrictionGroups,omitempty"`
 }
 
 // CreateVirtual will create a virtual card.

@@ -1211,7 +1211,7 @@ func (c *CardResponse) GetCards() []*Card {
 // GetCountryRestrictionGroups returns the CountryRestrictionGroups field if it's non-nil, zero value otherwise.
 func (c *CardRestrictionGroupLimits) GetCountryRestrictionGroups() string {
 	if c != nil && c.CountryRestrictionGroups != nil {
-		return *c.CountryRestrictionGroups
+		return c.CountryRestrictionGroups.String()
 	}
 	return ""
 }
@@ -1219,7 +1219,7 @@ func (c *CardRestrictionGroupLimits) GetCountryRestrictionGroups() string {
 // GetMccRestrictionGroups returns the MccRestrictionGroups field if it's non-nil, zero value otherwise.
 func (c *CardRestrictionGroupLimits) GetMccRestrictionGroups() string {
 	if c != nil && c.MccRestrictionGroups != nil {
-		return *c.MccRestrictionGroups
+		return c.MccRestrictionGroups.String()
 	}
 	return ""
 }
@@ -1227,7 +1227,7 @@ func (c *CardRestrictionGroupLimits) GetMccRestrictionGroups() string {
 // GetMerchantIdRestrictionGroups returns the MerchantIdRestrictionGroups field if it's non-nil, zero value otherwise.
 func (c *CardRestrictionGroupLimits) GetMerchantIdRestrictionGroups() string {
 	if c != nil && c.MerchantIdRestrictionGroups != nil {
-		return *c.MerchantIdRestrictionGroups
+		return c.MerchantIdRestrictionGroups.String()
 	}
 	return ""
 }
@@ -3902,38 +3902,6 @@ func (r *RecallREvent) GetRecallRs() []*RecallR {
 		return r.RecallRs
 	}
 	return nil
-}
-
-// GetCountryRestrictionGroups returns the CountryRestrictionGroups field if it's non-nil, zero value otherwise.
-func (r *RestrictionGroupLimits) GetCountryRestrictionGroups() json.Number {
-	if r != nil && r.CountryRestrictionGroups != nil {
-		return *r.CountryRestrictionGroups
-	}
-	return json.Number("")
-}
-
-// GetMccRestrictionGroups returns the MccRestrictionGroups field if it's non-nil, zero value otherwise.
-func (r *RestrictionGroupLimits) GetMccRestrictionGroups() json.Number {
-	if r != nil && r.MccRestrictionGroups != nil {
-		return *r.MccRestrictionGroups
-	}
-	return json.Number("")
-}
-
-// GetMerchantIdRestrictionGroups returns the MerchantIdRestrictionGroups field if it's non-nil, zero value otherwise.
-func (r *RestrictionGroupLimits) GetMerchantIdRestrictionGroups() json.Number {
-	if r != nil && r.MerchantIdRestrictionGroups != nil {
-		return *r.MerchantIdRestrictionGroups
-	}
-	return json.Number("")
-}
-
-// GetPaymentDailyLimit returns the PaymentDailyLimit field if it's non-nil, zero value otherwise.
-func (r *RestrictionGroupLimits) GetPaymentDailyLimit() json.Number {
-	if r != nil && r.PaymentDailyLimit != nil {
-		return *r.PaymentDailyLimit
-	}
-	return json.Number("")
 }
 
 // GetIsRecurrent returns the IsRecurrent field if it's non-nil, zero value otherwise.

@@ -31,21 +31,19 @@ type Balance struct {
 	CalculationDate   *types.TimestampParis `json:"calculationDate,omitempty"`
 }
 
-// BalanceSerachOptions specifies the optional parameters to the BalanceService.Search.
-type BalanceSerachOptions struct {
+// BalanceSearchOptions specifies the optional parameters to the BalanceService.Search.
+type BalanceSearchOptions struct {
 	Access
 
 	WalletID string `url:"walletId,omitempty"`
 	UserID   string `url:"userId,omitempty"`
-
-	ListOptions
 }
 
 // Search the balances for the authenticated user. If WalletID is provided,
 // list one balance for the specified wallet; if UserID is provided, list all
 // the balances for the user's wallets.
 // See https://www.treezor.com/api-documentation/#/balance/getBalances
-func (s *BalanceService) Search(ctx context.Context, opts *BalanceSerachOptions) (*BalanceResponse, *http.Response, error) {
+func (s *BalanceService) Search(ctx context.Context, opts *BalanceSearchOptions) (*BalanceResponse, *http.Response, error) {
 	u := "balances"
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -65,16 +63,14 @@ func (s *BalanceService) Search(ctx context.Context, opts *BalanceSerachOptions)
 // BalanceListOptions specifies the optional parameters to the BalanceService.List.
 type BalanceListOptions struct {
 	Access
-	ListOptions
 }
 
 // List the balances for all the wallets of the specified userID.
 func (s *BalanceService) List(ctx context.Context, userID string, opts *BalanceListOptions) ([]*Balance, *http.Response, error) {
 
-	searchOpts := &BalanceSerachOptions{
-		Access:      opts.Access,
-		ListOptions: opts.ListOptions,
-		UserID:      userID,
+	searchOpts := &BalanceSearchOptions{
+		Access: opts.Access,
+		UserID: userID,
 	}
 
 	b, resp, err := s.Search(ctx, searchOpts)
@@ -93,7 +89,7 @@ type BalanceGetOptions struct {
 // Get the balances for the specified wallet.
 func (s *BalanceService) Get(ctx context.Context, walletID string, opts *BalanceGetOptions) (*Balance, *http.Response, error) {
 
-	searchOpts := &BalanceSerachOptions{
+	searchOpts := &BalanceSearchOptions{
 		Access:   opts.Access,
 		WalletID: walletID,
 	}
