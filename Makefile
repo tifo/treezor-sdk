@@ -20,9 +20,9 @@ check:
 	$(info + [$(NAME)] $@)
 	golangci-lint run
 
-gen: go-generate
-go-generate:
-	$(info + [$(NAME)] $@)
+gen: treezor_accessors.go
+treezor_accessors.go:
+	$(info + [$(NAME)] gen)
 	go generate .
 
-.PHONY: all build test fmt check gen go-generate
+.PHONY: all build test fmt check gen treezor_accessors.go
