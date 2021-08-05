@@ -64,3 +64,4 @@ jobs:
           filter_mode: diff_context
           fail_on_error: false
           tool_name: golangci-lint
+          level: warning
