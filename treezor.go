@@ -4,12 +4,11 @@ package treezor
 
 import (
 	"net/url"
-	"reflect"
+	"time"
 
-	"github.com/google/go-querystring/query"
 	"github.com/pkg/errors"
 
-	"github.com/tifo/treezor-sdk/internal/types"
+	"github.com/tifo/treezor-sdk/internal/query"
 )
 
 type service struct {
@@ -36,17 +35,13 @@ type ListOptions struct {
 	// Possible values: DESC and ASC.
 	SortOrder SortOrder `url:"sortOrder,omitempty" json:"-"`
 	// For paginated result sets, the creation date from which you want to filter the request result.
-	// Format: YYYY-MM-DD HH:MM:SS
-	CreatedFrom *types.Timestamp `layout:"2006-01-02 15:04:05" url:"createdDateFrom,omitempty" json:"-"`
+	CreatedFrom *time.Time `layout:"Treezor" loc:"Europe/Paris" url:"createdDateFrom,omitempty" json:"-"`
 	// For paginated result sets, the creation date up to which you want to filter the request result.
-	// Format: YYYY-MM-DD HH:MM:SS
-	CreatedTo *types.Timestamp `layout:"2006-01-02 15:04:05" url:"createdDateFrom,omitempty" json:"-"`
+	CreatedTo *time.Time `layout:"Treezor" loc:"Europe/Paris" url:"createdDateFrom,omitempty" json:"-"`
 	// For paginated result sets, the modification date from which you want to filter the request result.
-	// Format: YYYY-MM-DD HH:MM:SS
-	UpdatedFrom *types.Timestamp `layout:"2006-01-02 15:04:05" url:"createdDateFrom,omitempty" json:"-"`
+	UpdatedFrom *time.Time `layout:"Treezor" loc:"Europe/Paris" url:"createdDateFrom,omitempty" json:"-"`
 	// For paginated result sets, the modification date up to which you want to filter the request result.
-	// Format: YYYY-MM-DD HH:MM:SS
-	UpdatedTo *types.Timestamp `layout:"2006-01-02 15:04:05" url:"createdDateFrom,omitempty" json:"-"`
+	UpdatedTo *time.Time `layout:"Treezor" loc:"Europe/Paris" url:"createdDateFrom,omitempty" json:"-"`
 }
 
 // NOTE: should we rename those to exactly their API names to be consistent with the Treezor documentation ?
@@ -54,8 +49,11 @@ type ListOptions struct {
 // addOptions adds the parameters in opt as URL query parameters to s. opt
 // must be a struct whose fields may contain "url" tags.
 func addOptions(s string, opt interface{}) (string, error) {
-	v := reflect.ValueOf(opt)
-	if v.Kind() == reflect.Ptr && v.IsNil() {
+	qs, err := query.Values(opt)
+	if err != nil {
+		return s, errors.WithStack(err)
+	}
+	if len(qs) == 0 {
 		return s, nil
 	}
 
@@ -63,13 +61,8 @@ func addOptions(s string, opt interface{}) (string, error) {
 	if err != nil {
 		return s, errors.WithStack(err)
 	}
-
-	qs, err := query.Values(opt)
-	if err != nil {
-		return s, errors.WithStack(err)
-	}
-
 	u.RawQuery = qs.Encode()
+
 	return u.String(), nil
 }
 

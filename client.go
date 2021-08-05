@@ -3,7 +3,6 @@ package treezor
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -11,6 +10,8 @@ import (
 	"path"
 
 	"github.com/pkg/errors"
+
+	json "github.com/tifo/treezor-sdk/internal/json"
 )
 
 const (

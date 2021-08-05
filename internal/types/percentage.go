@@ -2,9 +2,10 @@ package types
 
 import (
 	"bytes"
-	"encoding/json"
 
 	"github.com/pkg/errors"
+
+	json "github.com/tifo/treezor-sdk/internal/json"
 )
 
 type Percentage float64

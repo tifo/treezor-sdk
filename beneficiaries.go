@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/pkg/errors"
 
@@ -24,22 +25,22 @@ type BeneficiaryResponse struct {
 
 // Beneficiary represents a beneficiary.
 type Beneficiary struct {
-	BeneficiaryID                      *types.Identifier     `json:"id,omitempty"`
-	Tag                                *string               `json:"tag,omitempty"`
-	UserID                             *types.Identifier     `json:"userId,omitempty"`
-	NickName                           *string               `json:"nickName,omitempty"`
-	Name                               *string               `json:"name,omitempty"`
-	Address                            *string               `json:"address,omitempty"`
-	IBAN                               *string               `json:"iban,omitempty"`
-	BIC                                *string               `json:"bic,omitempty"`
-	SepaCreditorIdentifier             *string               `json:"sepaCreditorIdentifier,omitempty"`
-	SDDB2BWhitelist                    []*SDDB2BWhitelist    `json:"sddB2bWhitelist,omitempty"`
-	SDDCoreBlacklist                   []string              `json:"sddCoreBlacklist,omitempty"`
-	UsableForSCT                       *types.Boolean        `json:"usableForSct,omitempty"`
-	SDDCoreKnownUniqueMandateReference []string              `json:"sddCoreKnownUniqueMandateReference,omitempty"`
-	IsActive                           *types.Boolean        `json:"isActive,omitempty"`
-	CreatedDate                        *types.TimestampParis `json:"createdDate,omitempty"`
-	ModifiedDate                       *types.TimestampParis `json:"modifiedDate,omitempty"`
+	BeneficiaryID                      *types.Identifier  `json:"id,omitempty"`
+	Tag                                *string            `json:"tag,omitempty"`
+	UserID                             *types.Identifier  `json:"userId,omitempty"`
+	NickName                           *string            `json:"nickName,omitempty"`
+	Name                               *string            `json:"name,omitempty"`
+	Address                            *string            `json:"address,omitempty"`
+	IBAN                               *string            `json:"iban,omitempty"`
+	BIC                                *string            `json:"bic,omitempty"`
+	SepaCreditorIdentifier             *string            `json:"sepaCreditorIdentifier,omitempty"`
+	SDDB2BWhitelist                    []*SDDB2BWhitelist `json:"sddB2bWhitelist,omitempty"`
+	SDDCoreBlacklist                   []string           `json:"sddCoreBlacklist,omitempty"`
+	UsableForSCT                       *types.Boolean     `json:"usableForSct,omitempty"`
+	SDDCoreKnownUniqueMandateReference []string           `json:"sddCoreKnownUniqueMandateReference,omitempty"`
+	IsActive                           *types.Boolean     `json:"isActive,omitempty"`
+	CreatedDate                        *time.Time         `json:"createdDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
+	ModifiedDate                       *time.Time         `json:"modifiedDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
 	// NOTE: see about totalRows, codeStatus and informationStatus
 }
 

@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"io"
 	"reflect"
+	"time"
 )
 
 var (
 	dateType            = reflect.TypeOf(Date{})
+	timestampType       = reflect.TypeOf(time.Time{})
 	timestampParisType  = reflect.TypeOf(TimestampParis{})
 	timestampLondonType = reflect.TypeOf(TimestampLondon{})
 )
@@ -53,7 +55,7 @@ func stringifyValue(w io.Writer, val reflect.Value) {
 		}
 
 		// special handling of Timestamp values
-		if v.Type() == timestampParisType || v.Type() == timestampLondonType || v.Type() == dateType {
+		if v.Type() == timestampType || v.Type() == timestampParisType || v.Type() == timestampLondonType || v.Type() == dateType {
 			fmt.Fprintf(w, "{%s}", v.Interface())
 			return
 		}

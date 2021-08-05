@@ -1,0 +1,64 @@
+name: Treezor SDK
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+env:
+  GO_VERSION: "1.16"
+
+jobs:
+  setup:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Set up Go ${{ env.GO_VERSION }}
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.GO_VERSION }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Restore go mod and tools cache
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: |
+            ~/go/pkg/mod
+          key: go-${{ runner.os }}-${{ hashFiles('**/go.mod', '**/go.sum') }}
+          restore-keys: |
+            go-${{ runner.os }}-
+      - name: Download & check dependencies
+        run: |
+          echo "::group::go mod vendor"
+          go mod vendor
+          echo "::endgroup::"
+          echo "::group::go mod tidy"
+          go mod tidy
+          if ! git diff --exit-code --stat go.mod go.sum; then
+              echo "::error::Go mod files need to be tidied before continuing (go mod tidy)"
+              exit 1
+          fi
+          echo "::endgroup::"
+      - name: Check generated files (make gen)
+        run: |
+          echo "::group::make gen"
+          make -j$(nproc) -s gen
+          echo "::endgroup::"
+          echo "::group::check gen"
+          git add -N .
+          if ! git diff --exit-code --stat; then
+              echo "::error::Some generated files need to be re-gen before continuing (make gen)"
+              exit 1
+          fi
+          echo "::endgroup::"
+      - name: Build & test (make build test)
+        run: |
+          make build test
+      - name: Run golangci-lint
+        uses: reviewdog/action-golangci-lint@v2
+        with:
+          go_version: ${{ env.GO_VERSION }}
+          golangci_lint_flags: '--config=.golangci.yaml'
+          cache: false
+          fail_on_error: false

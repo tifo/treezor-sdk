@@ -78,8 +78,8 @@ type MIDMetadata struct {
 }
 
 type OperationDate struct {
-	Creation   time.Time `json:"creation,omitempty"`
-	Settlement time.Time `json:"settlement,omitempty"`
+	Creation   time.Time `layout:"RFC3339" json:"creation,omitempty"`
+	Settlement time.Time `layout:"RFC3339" json:"settlement,omitempty"`
 }
 
 type Operation struct {
@@ -102,10 +102,10 @@ type OperationList struct {
 }
 
 type ConnectOperationListOptions struct {
-	WalletID *string   `url:"walletId,omitempty" json:"-"`                                    // Required
-	DateTo   time.Time `layout:"2006-01-02T15:04:05Z07:00" url:"dateTo,omitempty" json:"-"`   // Required
-	DateFrom time.Time `layout:"2006-01-02T15:04:05Z07:00" url:"dateFrom,omitempty" json:"-"` // Required
-	Cursor   *string   `url:"cursor,omitempty" json:"-"`                                      // Optional
+	WalletID *string   `url:"walletId,omitempty" json:"-"`                  // Required
+	DateTo   time.Time `layout:"RFC3339" url:"dateTo,omitempty" json:"-"`   // Required
+	DateFrom time.Time `layout:"RFC3339" url:"dateFrom,omitempty" json:"-"` // Required
+	Cursor   *string   `url:"cursor,omitempty" json:"-"`                    // Optional
 }
 
 func (s *ConnectOperationService) List(ctx context.Context, opts *ConnectOperationListOptions) (*OperationList, *http.Response, error) {

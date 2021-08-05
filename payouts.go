@@ -2,12 +2,13 @@ package treezor
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/pkg/errors"
 
+	json "github.com/tifo/treezor-sdk/internal/json"
 	"github.com/tifo/treezor-sdk/internal/types"
 )
 
@@ -49,31 +50,31 @@ func (t *PayoutType) UnmarshalJSON(data []byte) error {
 
 // Payout represents a pay-out to a beneficiary.
 type Payout struct {
-	PayoutID               *types.Identifier     `json:"payoutId,omitempty"`
-	PayoutTag              *string               `json:"payoutTag,omitempty"`
-	PayoutStatus           *string               `json:"payoutStatus,omitempty"` // NOTE: can be an enum
-	PayoutTypeID           *PayoutType           `json:"payoutTypeId,omitempty"`
-	PayoutType             *string               `json:"payoutType,omitempty"`
-	WalletID               *types.Identifier     `json:"walletId,omitempty"`
-	PayoutDate             *types.Date           `json:"payoutDate,omitempty"`
-	WalletEventName        *string               `json:"walletEventName,omitempty"`
-	WalletAlias            *string               `json:"walletAlias,omitempty"`
-	UserFirstname          *string               `json:"userFirstname,omitempty"`
-	UserLastname           *string               `json:"userLastname,omitempty"`
-	UserID                 *types.Identifier     `json:"userId,omitempty"`
-	BankAccountID          *types.Identifier     `json:"bankaccountId,omitempty"`
-	BeneficiaryID          *types.Identifier     `json:"beneficiaryId,omitempty"`
-	UniqueMandateReference *string               `json:"uniqueMandateReference,omitempty"`
-	BankAccountIBAN        *string               `json:"bankaccountIBAN,omitempty"`
-	Label                  *string               `json:"label,omitempty"`
-	Amount                 *types.Amount         `json:"amount,omitempty"`
-	Currency               *Currency             `json:"currency,omitempty"`
-	PartnerFee             *types.Amount         `json:"partnerFee,omitempty"`
-	CreatedDate            *types.TimestampParis `json:"createdDate,omitempty"`
-	ModifiedDate           *types.TimestampParis `json:"modifiedDate,omitempty"`
-	TotalRows              *types.Integer        `json:"totalRows,omitempty"`
-	CodeStatus             *types.Identifier     `json:"codeStatus,omitempty"`        // Legacy field
-	InformationStatus      *string               `json:"informationStatus,omitempty"` // Legacy field
+	PayoutID               *types.Identifier `json:"payoutId,omitempty"`
+	PayoutTag              *string           `json:"payoutTag,omitempty"`
+	PayoutStatus           *string           `json:"payoutStatus,omitempty"` // NOTE: can be an enum
+	PayoutTypeID           *PayoutType       `json:"payoutTypeId,omitempty"`
+	PayoutType             *string           `json:"payoutType,omitempty"`
+	WalletID               *types.Identifier `json:"walletId,omitempty"`
+	PayoutDate             *types.Date       `json:"payoutDate,omitempty"`
+	WalletEventName        *string           `json:"walletEventName,omitempty"`
+	WalletAlias            *string           `json:"walletAlias,omitempty"`
+	UserFirstname          *string           `json:"userFirstname,omitempty"`
+	UserLastname           *string           `json:"userLastname,omitempty"`
+	UserID                 *types.Identifier `json:"userId,omitempty"`
+	BankAccountID          *types.Identifier `json:"bankaccountId,omitempty"`
+	BeneficiaryID          *types.Identifier `json:"beneficiaryId,omitempty"`
+	UniqueMandateReference *string           `json:"uniqueMandateReference,omitempty"`
+	BankAccountIBAN        *string           `json:"bankaccountIBAN,omitempty"`
+	Label                  *string           `json:"label,omitempty"`
+	Amount                 *types.Amount     `json:"amount,omitempty"`
+	Currency               *Currency         `json:"currency,omitempty"`
+	PartnerFee             *types.Amount     `json:"partnerFee,omitempty"`
+	CreatedDate            *time.Time        `json:"createdDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
+	ModifiedDate           *time.Time        `json:"modifiedDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
+	TotalRows              *types.Integer    `json:"totalRows,omitempty"`
+	CodeStatus             *types.Identifier `json:"codeStatus,omitempty"`        // Legacy field
+	InformationStatus      *string           `json:"informationStatus,omitempty"` // Legacy field
 }
 
 // Create creates a Treezor pay-out.

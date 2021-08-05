@@ -2,12 +2,13 @@ package treezor
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/pkg/errors"
 
+	json "github.com/tifo/treezor-sdk/internal/json"
 	"github.com/tifo/treezor-sdk/internal/types"
 )
 
@@ -51,29 +52,29 @@ func (t *TransferType) UnmarshalJSON(data []byte) error {
 
 // Transfer represents a transfer.
 type Transfer struct {
-	TransferID                 *types.Identifier     `json:"transferId,omitempty"`
-	TransferTypeID             *TransferType         `json:"transferTypeId,omitempty"`
-	TransferTag                *string               `json:"transferTag,omitempty"`
-	TransferStatus             *string               `json:"transferStatus,omitempty"` // TODO: can be an enum
-	WalletID                   *types.Identifier     `json:"walletId,omitempty"`
-	ForeignID                  *types.Identifier     `json:"foreignId,omitempty"`
-	WalletTypeID               *types.Identifier     `json:"walletTypeId,omitempty"` // TODO: can be an enum
-	BeneficiaryWalletID        *types.Identifier     `json:"beneficiaryWalletId,omitempty"`
-	BeneficiaryWalletTypeID    *types.Identifier     `json:"beneficiaryWalletTypeId,omitempty"` // TODO: can be an enum
-	TransferDate               *types.Date           `json:"transferDate,omitempty"`
-	Amount                     *types.Amount         `json:"amount,omitempty"`
-	Currency                   *Currency             `json:"currency,omitempty"`
-	Label                      *string               `json:"label,omitempty"`
-	PartnerFee                 *types.Amount         `json:"partnerFee,omitempty"`
-	WalletEventName            *string               `json:"walletEventName,omitempty"`
-	WalletAlias                *string               `json:"walletAlias,omitempty"`
-	BeneficiaryWalletEventName *string               `json:"beneficiaryWalletEventName,omitempty"`
-	BeneficiaryWalletAlias     *string               `json:"beneficiaryWalletAlias,omitempty"`
-	CreatedDate                *types.TimestampParis `json:"createdDate,omitempty"`
-	ModifiedDate               *types.TimestampParis `json:"modifiedDate,omitempty"`
-	TotalRows                  *types.Integer        `json:"totalRows,omitempty"`
-	CodeStatus                 *types.Identifier     `json:"codeStatus,omitempty"`        // Legacy field
-	InformationStatus          *string               `json:"informationStatus,omitempty"` // Legacy field
+	TransferID                 *types.Identifier `json:"transferId,omitempty"`
+	TransferTypeID             *TransferType     `json:"transferTypeId,omitempty"`
+	TransferTag                *string           `json:"transferTag,omitempty"`
+	TransferStatus             *string           `json:"transferStatus,omitempty"` // TODO: can be an enum
+	WalletID                   *types.Identifier `json:"walletId,omitempty"`
+	ForeignID                  *types.Identifier `json:"foreignId,omitempty"`
+	WalletTypeID               *types.Identifier `json:"walletTypeId,omitempty"` // TODO: can be an enum
+	BeneficiaryWalletID        *types.Identifier `json:"beneficiaryWalletId,omitempty"`
+	BeneficiaryWalletTypeID    *types.Identifier `json:"beneficiaryWalletTypeId,omitempty"` // TODO: can be an enum
+	TransferDate               *types.Date       `json:"transferDate,omitempty"`
+	Amount                     *types.Amount     `json:"amount,omitempty"`
+	Currency                   *Currency         `json:"currency,omitempty"`
+	Label                      *string           `json:"label,omitempty"`
+	PartnerFee                 *types.Amount     `json:"partnerFee,omitempty"`
+	WalletEventName            *string           `json:"walletEventName,omitempty"`
+	WalletAlias                *string           `json:"walletAlias,omitempty"`
+	BeneficiaryWalletEventName *string           `json:"beneficiaryWalletEventName,omitempty"`
+	BeneficiaryWalletAlias     *string           `json:"beneficiaryWalletAlias,omitempty"`
+	CreatedDate                *time.Time        `json:"createdDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
+	ModifiedDate               *time.Time        `json:"modifiedDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
+	TotalRows                  *types.Integer    `json:"totalRows,omitempty"`
+	CodeStatus                 *types.Identifier `json:"codeStatus,omitempty"`        // Legacy field
+	InformationStatus          *string           `json:"informationStatus,omitempty"` // Legacy field
 }
 
 // Create creates a Treezor transfer. Required: WalletID, BeneficiaryWalletID,Amount,Currency(ISO 4217)

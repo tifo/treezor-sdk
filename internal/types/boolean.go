@@ -1,9 +1,9 @@
 package types
 
 import (
-	"encoding/json"
-
 	"github.com/pkg/errors"
+
+	json "github.com/tifo/treezor-sdk/internal/json"
 )
 
 type Boolean bool

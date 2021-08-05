@@ -2,12 +2,13 @@ package treezor
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/pkg/errors"
 
+	json "github.com/tifo/treezor-sdk/internal/json"
 	"github.com/tifo/treezor-sdk/internal/types"
 )
 
@@ -117,9 +118,9 @@ type Card struct {
 	TotalPaymentDay            *types.Amount                 `json:"totalPaymentDay,omitempty"`
 	TotalPaymentAll            *types.Amount                 `json:"totalPaymentAll,omitempty"`
 	CreatedBy                  *types.Identifier             `json:"createdBy,omitempty"`
-	CreatedDate                *types.TimestampLondon        `json:"createdDate,omitempty"`
+	CreatedDate                *time.Time                    `json:"createdDate,omitempty" layout:"Treezor" loc:"Europe/London"`
 	ModifiedBy                 *types.Identifier             `json:"modifiedBy,omitempty"`
-	ModifiedDate               *types.TimestampLondon        `json:"modifiedDate,omitempty"`
+	ModifiedDate               *time.Time                    `json:"modifiedDate,omitempty" layout:"Treezor" loc:"Europe/London"`
 	CancellationNumber         *types.Integer                `json:"cancellationNumber,omitempty"`
 	TotalRows                  *types.Integer                `json:"totalRows,omitempty"`
 }

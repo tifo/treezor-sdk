@@ -1,10 +1,11 @@
 package treezor
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	json "github.com/tifo/treezor-sdk/internal/json"
 )
 
 // Error code for given status
@@ -28,6 +29,9 @@ type APIError struct {
 	Message               string   `json:"errorMessage"`
 	AdditionalInformation []string `json:"additionalInformation,omitempty"`
 }
+
+// TODO: errors in legacy API with legacy client do not have the same format as connect ones (see https://docs.treezor.com/guide/api-basics/response-codes.html#error-attributes).
+// NOTE: we might need to decide to specialized this package for connect only, if it starts to be come a pain and rename it to `treezor-connect-sdk`.
 
 func (e *APIError) Error() string {
 	return fmt.Sprintf("%v error caused because: %v", e.Code, e.Message)

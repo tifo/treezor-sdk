@@ -2,14 +2,15 @@ package treezor
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httputil"
 	"strconv"
+	"time"
 
 	"github.com/pkg/errors"
 
+	json "github.com/tifo/treezor-sdk/internal/json"
 	"github.com/tifo/treezor-sdk/internal/types"
 )
 
@@ -209,11 +210,19 @@ func (l KYCLevel) String() string {
 	return strconv.Itoa(int(l))
 }
 
+type UserStatus string
+
+const (
+	UserStatusPending   UserStatus = "PENDING"
+	UserStatusCanceled  UserStatus = "CANCELED"
+	UserStatusValidated UserStatus = "Validated"
+)
+
 // User represents a Treezor User.
 type User struct {
 	UserID                     *types.Identifier      `json:"userId,omitempty"`
 	UserTypeID                 *UserType              `json:"userTypeId,omitempty"`
-	UserStatus                 *string                `json:"userStatus,omitempty"` // TODO: should be an enum
+	UserStatus                 *UserStatus            `json:"userStatus,omitempty"`
 	ClientID                   *types.Identifier      `json:"clientId,omitempty"`
 	UserTag                    *string                `json:"userTag,omitempty"`
 	ParentUserID               *types.Identifier      `json:"parentUserId,omitempty"`
@@ -274,8 +283,8 @@ type User struct {
 	InvolvedSanctions          *types.Boolean         `json:"involvedSanctions,omitempty"`
 	SanctionsQuestionnaireDate *types.Date            `json:"sanctionsQuestionnaireDate,omitempty"`
 	Timezone                   *string                `json:"timezone,omitempty"`
-	CreatedDate                *types.TimestampParis  `json:"createdDate,omitempty"`
-	ModifiedDate               *types.TimestampParis  `json:"modifiedDate,omitempty"`
+	CreatedDate                *time.Time             `json:"createdDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
+	ModifiedDate               *time.Time             `json:"modifiedDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
 	WalletCount                *types.Integer         `json:"walletCount,omitempty"`
 	PayinCount                 *types.Integer         `json:"payinCount,omitempty"`
 	TotalRows                  *types.Integer         `json:"totalRows,omitempty"`
@@ -396,8 +405,8 @@ type UserListOptions struct {
 	Access
 
 	UserID                *string               `url:"userId,omitempty" json:"-"`
-	UserTypeID            *UserType             `url:"userTypeId,omitempty" json:"-"`
-	UserStatus            *string               `url:"userStatus,omitempty" json:"-"` // TODO: can be an enum (need to see if VALIDATED or Validated)
+	UserTypeID            UserType              `url:"userTypeId,omitempty" json:"-"`
+	UserStatus            UserStatus            `url:"userStatus,omitempty" json:"-"`
 	UserTag               *string               `url:"userTag,omitempty" json:"-"`
 	SpecifiedUSPerson     *types.Boolean        `url:"specifiedUSPerson,omitempty" json:"-"`
 	ControllingPersonType ControllingPersonType `url:"controllingPersonType,omitempty" json:"-"`

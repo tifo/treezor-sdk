@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/pkg/errors"
 
@@ -24,59 +25,59 @@ type CardTransactionResponse struct {
 
 // CardTransaction represents a card transaction made at a PoS.
 type CardTransaction struct {
-	CardTransactionID         *types.Identifier      `json:"cardtransactionId,omitempty"`
-	CardID                    *types.Identifier      `json:"cardId,omitempty"`
-	WalletID                  *types.Identifier      `json:"walletId,omitempty"`
-	WalletCurrency            *string                `json:"walletCurrency,omitempty"` // NOTE: Numeric identifier for the Currency note the ISO Code
-	MerchantID                *string                `json:"merchantId,omitempty"`     // NOTE: MID not an identifier
-	MerchantName              *string                `json:"merchantName,omitempty"`
-	MerchantCity              *string                `json:"merchantCity,omitempty"`
-	MerchantCountry           *string                `json:"merchantCountry,omitempty"`
-	MccCode                   *string                `json:"mccCode,omitempty"`
-	PaymentLocalTime          *types.TimestampLondon `json:"paymentLocalTime,omitempty"`
-	PublicToken               *string                `json:"publicToken,omitempty"`
-	PaymentAmount             *types.Amount          `json:"paymentAmount,omitempty"`
-	PaymentCurrency           *string                `json:"paymentCurrency,omitempty"` // NOTE: Numeric identifier for the Currency note the ISO Code
-	Fees                      *types.Amount          `json:"fees,omitempty"`
-	PaymentCountry            *string                `json:"paymentCountry,omitempty"`
-	PaymentID                 *types.Identifier      `json:"paymentId,omitempty"`
-	PaymentStatus             *string                `json:"paymentStatus,omitempty"` // NOTE: can be an enum
-	PaymentLocalAmount        *types.Amount          `json:"paymentLocalAmount,omitempty"`
-	PaymentLocalDate          *types.Date            `json:"paymentLocalDate,omitempty"`
-	Is3DS                     *types.Boolean         `json:"is3DS,omitempty"`
-	PosCardholderPresence     *types.Boolean         `json:"posCardholderPresence,omitempty"`
-	PosPostcode               *string                `json:"posPostcode,omitempty"`
-	PosCountry                *string                `json:"posCountry,omitempty"`
-	PosTerminalID             *string                `json:"posTerminalId,omitempty"`
-	PosCardPresence           *types.Boolean         `json:"posCardPresence,omitempty"`
-	PanEntryMethod            *string                `json:"panEntryMethod,omitempty"` // NOTE: can be an enum
-	AuthorizationNote         *string                `json:"authorizationNote,omitempty"`
-	AuthorizationResponseCode *string                `json:"authorizationResponseCode,omitempty"`
-	AuthorizationIssuerID     *string                `json:"authorizationIssuerId,omitempty"`
-	AuthorizationIssuerTime   *types.TimestampLondon `json:"authorizationIssuerTime,omitempty"`
-	AuthorizationMTI          *string                `json:"authorizationMti,omitempty"` // NOTE: see ISO8583
-	AuthorizedBalance         *types.Amount          `json:"authorizedBalance,omitempty"`
-	LimitATMYear              *types.Integer         `json:"limitAtmYear,omitempty"`
-	LimitATMMonth             *types.Integer         `json:"limitAtmMonth,omitempty"`
-	LimitATMWeek              *types.Integer         `json:"limitAtmWeek,omitempty"`
-	LimitATMDay               *types.Integer         `json:"limitAtmDay,omitempty"`
-	LimitATMAll               *types.Integer         `json:"limitAtmAll,omitempty"`
-	LimitPaymentYear          *types.Integer         `json:"limitPaymentYear,omitempty"`
-	LimitPaymentMonth         *types.Integer         `json:"limitPaymentMonth,omitempty"`
-	LimitPaymentWeek          *types.Integer         `json:"limitPaymentWeek,omitempty"`
-	LimitPaymentDay           *types.Integer         `json:"limitPaymentDay,omitempty"`
-	LimitPaymentAll           *types.Integer         `json:"limitPaymentAll,omitempty"`
-	TotalLimitATMYear         *types.Amount          `json:"totalLimitAtmYear,omitempty"`
-	TotalLimitATMMonth        *types.Amount          `json:"totalLimitAtmMonth,omitempty"`
-	TotalLimitATMWeek         *types.Amount          `json:"totalLimitAtmWeek,omitempty"`
-	TotalLimitATMDay          *types.Amount          `json:"totalLimitAtmDay,omitempty"`
-	TotalLimitATMAll          *types.Amount          `json:"totalLimitAtmAll,omitempty"`
-	TotalLimitPaymentYear     *types.Amount          `json:"totalLimitPaymentYear,omitempty"`
-	TotalLimitPaymentMonth    *types.Amount          `json:"totalLimitPaymentMonth,omitempty"`
-	TotalLimitPaymentWeek     *types.Amount          `json:"totalLimitPaymentWeek,omitempty"`
-	TotalLimitPaymentDay      *types.Amount          `json:"totalLimitPaymentDay,omitempty"`
-	TotalLimitPaymentAll      *types.Amount          `json:"totalLimitPaymentAll,omitempty"`
-	TotalRows                 *types.Integer         `json:"totalRows,omitempty"`
+	CardTransactionID         *types.Identifier `json:"cardtransactionId,omitempty"`
+	CardID                    *types.Identifier `json:"cardId,omitempty"`
+	WalletID                  *types.Identifier `json:"walletId,omitempty"`
+	WalletCurrency            *string           `json:"walletCurrency,omitempty"` // NOTE: Numeric identifier for the Currency note the ISO Code
+	MerchantID                *string           `json:"merchantId,omitempty"`     // NOTE: MID not an identifier
+	MerchantName              *string           `json:"merchantName,omitempty"`
+	MerchantCity              *string           `json:"merchantCity,omitempty"`
+	MerchantCountry           *string           `json:"merchantCountry,omitempty"`
+	MccCode                   *string           `json:"mccCode,omitempty"`
+	PaymentLocalTime          *time.Time        `json:"paymentLocalTime,omitempty" layout:"Treezor" loc:"Europe/London"`
+	PublicToken               *string           `json:"publicToken,omitempty"`
+	PaymentAmount             *types.Amount     `json:"paymentAmount,omitempty"`
+	PaymentCurrency           *string           `json:"paymentCurrency,omitempty"` // NOTE: Numeric identifier for the Currency note the ISO Code
+	Fees                      *types.Amount     `json:"fees,omitempty"`
+	PaymentCountry            *string           `json:"paymentCountry,omitempty"`
+	PaymentID                 *types.Identifier `json:"paymentId,omitempty"`
+	PaymentStatus             *string           `json:"paymentStatus,omitempty"` // NOTE: can be an enum
+	PaymentLocalAmount        *types.Amount     `json:"paymentLocalAmount,omitempty"`
+	PaymentLocalDate          *types.Date       `json:"paymentLocalDate,omitempty"`
+	Is3DS                     *types.Boolean    `json:"is3DS,omitempty"`
+	PosCardholderPresence     *types.Boolean    `json:"posCardholderPresence,omitempty"`
+	PosPostcode               *string           `json:"posPostcode,omitempty"`
+	PosCountry                *string           `json:"posCountry,omitempty"`
+	PosTerminalID             *string           `json:"posTerminalId,omitempty"`
+	PosCardPresence           *types.Boolean    `json:"posCardPresence,omitempty"`
+	PanEntryMethod            *string           `json:"panEntryMethod,omitempty"` // NOTE: can be an enum
+	AuthorizationNote         *string           `json:"authorizationNote,omitempty"`
+	AuthorizationResponseCode *string           `json:"authorizationResponseCode,omitempty"`
+	AuthorizationIssuerID     *string           `json:"authorizationIssuerId,omitempty"`
+	AuthorizationIssuerTime   *time.Time        `json:"authorizationIssuerTime,omitempty" layout:"Treezor" loc:"Europe/London"`
+	AuthorizationMTI          *string           `json:"authorizationMti,omitempty"` // NOTE: see ISO8583
+	AuthorizedBalance         *types.Amount     `json:"authorizedBalance,omitempty"`
+	LimitATMYear              *types.Integer    `json:"limitAtmYear,omitempty"`
+	LimitATMMonth             *types.Integer    `json:"limitAtmMonth,omitempty"`
+	LimitATMWeek              *types.Integer    `json:"limitAtmWeek,omitempty"`
+	LimitATMDay               *types.Integer    `json:"limitAtmDay,omitempty"`
+	LimitATMAll               *types.Integer    `json:"limitAtmAll,omitempty"`
+	LimitPaymentYear          *types.Integer    `json:"limitPaymentYear,omitempty"`
+	LimitPaymentMonth         *types.Integer    `json:"limitPaymentMonth,omitempty"`
+	LimitPaymentWeek          *types.Integer    `json:"limitPaymentWeek,omitempty"`
+	LimitPaymentDay           *types.Integer    `json:"limitPaymentDay,omitempty"`
+	LimitPaymentAll           *types.Integer    `json:"limitPaymentAll,omitempty"`
+	TotalLimitATMYear         *types.Amount     `json:"totalLimitAtmYear,omitempty"`
+	TotalLimitATMMonth        *types.Amount     `json:"totalLimitAtmMonth,omitempty"`
+	TotalLimitATMWeek         *types.Amount     `json:"totalLimitAtmWeek,omitempty"`
+	TotalLimitATMDay          *types.Amount     `json:"totalLimitAtmDay,omitempty"`
+	TotalLimitATMAll          *types.Amount     `json:"totalLimitAtmAll,omitempty"`
+	TotalLimitPaymentYear     *types.Amount     `json:"totalLimitPaymentYear,omitempty"`
+	TotalLimitPaymentMonth    *types.Amount     `json:"totalLimitPaymentMonth,omitempty"`
+	TotalLimitPaymentWeek     *types.Amount     `json:"totalLimitPaymentWeek,omitempty"`
+	TotalLimitPaymentDay      *types.Amount     `json:"totalLimitPaymentDay,omitempty"`
+	TotalLimitPaymentAll      *types.Amount     `json:"totalLimitPaymentAll,omitempty"`
+	TotalRows                 *types.Integer    `json:"totalRows,omitempty"`
 	// NOTE: see about totalRows, codeStatus and informationStatus
 }
 

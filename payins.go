@@ -2,12 +2,13 @@ package treezor
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/pkg/errors"
 
+	json "github.com/tifo/treezor-sdk/internal/json"
 	"github.com/tifo/treezor-sdk/internal/types"
 )
 
@@ -24,52 +25,52 @@ type PayinResponse struct {
 }
 
 type Payin struct {
-	PayinID              *types.Identifier     `json:"payinId,omitempty"`
-	PayinTag             *string               `json:"payinTag,omitempty"`
-	PayinStatus          *string               `json:"payinStatus,omitempty"` // NOTE: can be an enum
-	WalletID             *types.Identifier     `json:"walletId,omitempty"`
-	UserID               *types.Identifier     `json:"userId,omitempty"`
-	CartID               *types.Identifier     `json:"cartId,omitempty"`
-	WalletEventName      *string               `json:"walletEventName,omitempty"`
-	WalletAlias          *string               `json:"walletAlias,omitempty"`
-	UserFirstname        *string               `json:"userFirstname,omitempty"`
-	UserLastname         *string               `json:"userLastname,omitempty"`
-	MessageToUser        *string               `json:"messageToUser,omitempty"`
-	PaymentMethodID      *types.Identifier     `json:"paymentMethodId,omitempty"` // NOTE: can be an enum
-	SubtotalItems        *types.Amount         `json:"subtotalItems,omitempty"`
-	SubtotalServices     *types.Amount         `json:"subtotalServices,omitempty"`
-	SubtotalTax          *types.Amount         `json:"subtotalTax,omitempty"`
-	Amount               *types.Amount         `json:"amount,omitempty"`
-	Currency             *Currency             `json:"currency,omitempty"`
-	DistributorFee       *types.Amount         `json:"distributorFee,omitempty"`
-	CreatedDate          *types.TimestampParis `json:"createdDate,omitempty"`
-	CreatedIP            *string               `json:"createdIp,omitempty"`
-	PaymentHTML          *string               `json:"paymentHtml,omitempty"`
-	PaymentLanguage      *string               `json:"paymentLanguage,omitempty"`
-	PaymentPostURL       *string               `json:"paymentPostUrl,omitempty"`
-	PaymentPostDataURL   *string               `json:"paymentPostDataUrl,omitempty"`
-	PaymentAcceptedURL   *string               `json:"paymentAcceptedUrl,omitempty"`
-	PaymentWaitingURL    *string               `json:"paymentWaitingUrl,omitempty"`
-	PaymentRefusedURL    *string               `json:"paymentRefusedUrl,omitempty"`
-	PaymentCanceledURL   *string               `json:"paymentCanceledUrl,omitempty"`
-	PaymentExceptionURL  *string               `json:"paymentExceptionUrl,omitempty"`
-	IBANFullname         *string               `json:"ibanFullname,omitempty"`
-	IBANID               *string               `json:"ibanId,omitempty"`
-	IBANBIC              *string               `json:"ibanBic,omitempty"`
-	IBANTxEndToEndID     *string               `json:"ibanTxEndToEndId,omitempty"`
-	IBANTxID             *string               `json:"ibanTxId,omitempty"`
-	RefundAmount         *types.Amount         `json:"refundAmount,omitempty"`
-	DbtrIBAN             *string               `json:"DbtrIBAN,omitempty"`
-	ForwardURL           *string               `json:"forwardUrl,omitempty"`
-	PayinDate            *types.Date           `json:"payinDate,omitempty"`
-	MandateID            *types.Identifier     `json:"mandateId,omitempty"`
-	CreditorName         *string               `json:"creditorName,omitempty"`
-	CreditorAddressLine  *string               `json:"creditorAddressLine,omitempty"`
-	CreditorCountry      *string               `json:"creditorCountry,omitempty"`
-	CreditorIBAN         *string               `json:"creditorIban,omitempty"`
-	CreditorBIC          *string               `json:"creditorBIC,omitempty"`
-	VirtualIBANID        *types.Identifier     `json:"virtualIbanId,omitempty"`
-	VirtualIBANReference *string               `json:"virtualIbanReference,omitempty"`
+	PayinID              *types.Identifier `json:"payinId,omitempty"`
+	PayinTag             *string           `json:"payinTag,omitempty"`
+	PayinStatus          *string           `json:"payinStatus,omitempty"` // NOTE: can be an enum
+	WalletID             *types.Identifier `json:"walletId,omitempty"`
+	UserID               *types.Identifier `json:"userId,omitempty"`
+	CartID               *types.Identifier `json:"cartId,omitempty"`
+	WalletEventName      *string           `json:"walletEventName,omitempty"`
+	WalletAlias          *string           `json:"walletAlias,omitempty"`
+	UserFirstname        *string           `json:"userFirstname,omitempty"`
+	UserLastname         *string           `json:"userLastname,omitempty"`
+	MessageToUser        *string           `json:"messageToUser,omitempty"`
+	PaymentMethodID      *types.Identifier `json:"paymentMethodId,omitempty"` // NOTE: can be an enum
+	SubtotalItems        *types.Amount     `json:"subtotalItems,omitempty"`
+	SubtotalServices     *types.Amount     `json:"subtotalServices,omitempty"`
+	SubtotalTax          *types.Amount     `json:"subtotalTax,omitempty"`
+	Amount               *types.Amount     `json:"amount,omitempty"`
+	Currency             *Currency         `json:"currency,omitempty"`
+	DistributorFee       *types.Amount     `json:"distributorFee,omitempty"`
+	CreatedDate          *time.Time        `json:"createdDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
+	CreatedIP            *string           `json:"createdIp,omitempty"`
+	PaymentHTML          *string           `json:"paymentHtml,omitempty"`
+	PaymentLanguage      *string           `json:"paymentLanguage,omitempty"`
+	PaymentPostURL       *string           `json:"paymentPostUrl,omitempty"`
+	PaymentPostDataURL   *string           `json:"paymentPostDataUrl,omitempty"`
+	PaymentAcceptedURL   *string           `json:"paymentAcceptedUrl,omitempty"`
+	PaymentWaitingURL    *string           `json:"paymentWaitingUrl,omitempty"`
+	PaymentRefusedURL    *string           `json:"paymentRefusedUrl,omitempty"`
+	PaymentCanceledURL   *string           `json:"paymentCanceledUrl,omitempty"`
+	PaymentExceptionURL  *string           `json:"paymentExceptionUrl,omitempty"`
+	IBANFullname         *string           `json:"ibanFullname,omitempty"`
+	IBANID               *string           `json:"ibanId,omitempty"`
+	IBANBIC              *string           `json:"ibanBic,omitempty"`
+	IBANTxEndToEndID     *string           `json:"ibanTxEndToEndId,omitempty"`
+	IBANTxID             *string           `json:"ibanTxId,omitempty"`
+	RefundAmount         *types.Amount     `json:"refundAmount,omitempty"`
+	DbtrIBAN             *string           `json:"DbtrIBAN,omitempty"`
+	ForwardURL           *string           `json:"forwardUrl,omitempty"`
+	PayinDate            *types.Date       `json:"payinDate,omitempty"`
+	MandateID            *types.Identifier `json:"mandateId,omitempty"`
+	CreditorName         *string           `json:"creditorName,omitempty"`
+	CreditorAddressLine  *string           `json:"creditorAddressLine,omitempty"`
+	CreditorCountry      *string           `json:"creditorCountry,omitempty"`
+	CreditorIBAN         *string           `json:"creditorIban,omitempty"`
+	CreditorBIC          *string           `json:"creditorBIC,omitempty"`
+	VirtualIBANID        *types.Identifier `json:"virtualIbanId,omitempty"`
+	VirtualIBANReference *string           `json:"virtualIbanReference,omitempty"`
 	AdditionalData       *PayinAdditionalData
 	TotalRows            *types.Integer    `json:"totalRows,omitempty"`
 	CodeStatus           *types.Identifier `json:"codeStatus,omitempty"`        // Legacy field

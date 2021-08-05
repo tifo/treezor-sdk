@@ -2,12 +2,13 @@ package treezor
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/pkg/errors"
 
+	json "github.com/tifo/treezor-sdk/internal/json"
 	"github.com/tifo/treezor-sdk/internal/types"
 )
 
@@ -108,24 +109,24 @@ type DocumentResponse struct {
 
 // Document represents a KYC document.
 type Document struct {
-	DocumentID        *types.Identifier     `json:"documentId,omitempty"`
-	DocumentTag       *string               `json:"documentTag,omitempty"`
-	DocumentStatus    *DocumentStatus       `json:"documentStatus,omitempty"`
-	DocumentTypeID    *DocumentType         `json:"documentTypeId,omitempty"`
-	DocumentType      *string               `json:"documentType,omitempty"`
-	ResidenceID       *types.Identifier     `json:"residenceId,omitempty"`
-	ClientID          *types.Identifier     `json:"clientId,omitempty"`
-	UserID            *types.Identifier     `json:"userId,omitempty"`
-	UserLastname      *string               `json:"userLastname,omitempty"`
-	UserFirstname     *string               `json:"userFirstname,omitempty"`
-	Filename          *string               `json:"fileName,omitempty"`
-	TemporaryURL      *string               `json:"temporaryUrl,omitempty"`
-	TemporaryURLThumb *string               `json:"temporaryUrlThumb,omitempty"`
-	CreatedDate       *types.TimestampParis `json:"createdDate,omitempty"`
-	ModifiedDate      *types.TimestampParis `json:"modifiedDate,omitempty"`
-	TotalRows         *types.Integer        `json:"totalRows,omitempty"`
-	CodeStatus        *types.Identifier     `json:"codeStatus,omitempty"`        // Legacy field
-	InformationStatus *string               `json:"informationStatus,omitempty"` // Legacy field
+	DocumentID        *types.Identifier `json:"documentId,omitempty"`
+	DocumentTag       *string           `json:"documentTag,omitempty"`
+	DocumentStatus    *DocumentStatus   `json:"documentStatus,omitempty"`
+	DocumentTypeID    *DocumentType     `json:"documentTypeId,omitempty"`
+	DocumentType      *string           `json:"documentType,omitempty"`
+	ResidenceID       *types.Identifier `json:"residenceId,omitempty"`
+	ClientID          *types.Identifier `json:"clientId,omitempty"`
+	UserID            *types.Identifier `json:"userId,omitempty"`
+	UserLastname      *string           `json:"userLastname,omitempty"`
+	UserFirstname     *string           `json:"userFirstname,omitempty"`
+	Filename          *string           `json:"fileName,omitempty"`
+	TemporaryURL      *string           `json:"temporaryUrl,omitempty"`
+	TemporaryURLThumb *string           `json:"temporaryUrlThumb,omitempty"`
+	CreatedDate       *time.Time        `json:"createdDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
+	ModifiedDate      *time.Time        `json:"modifiedDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
+	TotalRows         *types.Integer    `json:"totalRows,omitempty"`
+	CodeStatus        *types.Identifier `json:"codeStatus,omitempty"`        // Legacy field
+	InformationStatus *string           `json:"informationStatus,omitempty"` // Legacy field
 }
 
 type DocumentCreateOptions struct {

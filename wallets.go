@@ -2,12 +2,13 @@ package treezor
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/pkg/errors"
 
+	json "github.com/tifo/treezor-sdk/internal/json"
 	"github.com/tifo/treezor-sdk/internal/types"
 )
 
@@ -47,38 +48,46 @@ func (t *WalletType) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+type WalletStatus string
+
+const (
+	WalletStatusPending   WalletStatus = "PENDING"
+	WalletStatusCanceled  WalletStatus = "CANCELED"
+	WalletStatusValidated WalletStatus = "Validated"
+)
+
 // Wallet represents a Treezor wallet.
 type Wallet struct {
-	WalletID            *types.Identifier     `json:"walletId,omitempty"`
-	WalletTypeID        *WalletType           `json:"walletTypeId,omitempty"`
-	WalletStatus        *string               `json:"walletStatus,omitempty"` // TODO: Can be an enum
-	WalletTag           *string               `json:"walletTag,omitempty"`
-	UserID              *types.Identifier     `json:"userId,omitempty"`
-	UserFirstname       *string               `json:"userFirstname,omitempty"`
-	UserLastname        *string               `json:"userLastname,omitempty"`
-	JointUserID         *types.Identifier     `json:"jointUserId,omitempty"`
-	TariffID            *types.Identifier     `json:"tariffId,omitempty"`
-	EventName           *string               `json:"eventName,omitempty"`
-	EventAlias          *string               `json:"eventAlias,omitempty"`
-	EventMessage        *string               `json:"eventMessage,omitempty"`
-	EventDate           *types.Date           `json:"eventDate,omitempty"`
-	EventPayinEndDate   *types.Date           `json:"eventPayinEndDate,omitempty"`
-	EventPayinStartDate *types.Date           `json:"eventPayinStartDate,omitempty"`
-	ContractSigned      *types.Boolean        `json:"contractSigned,omitempty"`
-	BIC                 *string               `json:"bic,omitempty"`
-	IBAN                *string               `json:"iban,omitempty"`
-	URLImage            *string               `json:"urlImage,omitempty"`
-	Currency            *Currency             `json:"currency,omitempty"`
-	CreatedDate         *types.TimestampParis `json:"createdDate,omitempty"`
-	ModifiedDate        *types.TimestampParis `json:"modifiedDate,omitempty"`
-	PayinCount          *types.Integer        `json:"payinCount,omitempty"`
-	PayoutCount         *types.Integer        `json:"payoutCount,omitempty"`
-	TransferCount       *types.Integer        `json:"transferCount,omitempty"`
-	Solde               *types.Amount         `json:"solde,omitempty"`
-	AuthorizedBalance   *types.Amount         `json:"authorizedBalance,omitempty"`
-	TotalRows           *types.Integer        `json:"totalRows,omitempty"`
-	CodeStatus          *types.Identifier     `json:"codeStatus,omitempty"`        // Legacy field
-	InformationStatus   *string               `json:"informationStatus,omitempty"` // Legacy field
+	WalletID            *types.Identifier `json:"walletId,omitempty"`
+	WalletTypeID        *WalletType       `json:"walletTypeId,omitempty"`
+	WalletStatus        *WalletStatus     `json:"walletStatus,omitempty"`
+	WalletTag           *string           `json:"walletTag,omitempty"`
+	UserID              *types.Identifier `json:"userId,omitempty"`
+	UserFirstname       *string           `json:"userFirstname,omitempty"`
+	UserLastname        *string           `json:"userLastname,omitempty"`
+	JointUserID         *types.Identifier `json:"jointUserId,omitempty"`
+	TariffID            *types.Identifier `json:"tariffId,omitempty"`
+	EventName           *string           `json:"eventName,omitempty"`
+	EventAlias          *string           `json:"eventAlias,omitempty"`
+	EventMessage        *string           `json:"eventMessage,omitempty"`
+	EventDate           *types.Date       `json:"eventDate,omitempty"`
+	EventPayinEndDate   *types.Date       `json:"eventPayinEndDate,omitempty"`
+	EventPayinStartDate *types.Date       `json:"eventPayinStartDate,omitempty"`
+	ContractSigned      *types.Boolean    `json:"contractSigned,omitempty"`
+	BIC                 *string           `json:"bic,omitempty"`
+	IBAN                *string           `json:"iban,omitempty"`
+	URLImage            *string           `json:"urlImage,omitempty"`
+	Currency            *Currency         `json:"currency,omitempty"`
+	CreatedDate         *time.Time        `json:"createdDate,omitempty" layout:"Treezor" loc:"Europe/Paris" `
+	ModifiedDate        *time.Time        `json:"modifiedDate,omitempty" layout:"Treezor" loc:"Europe/Paris" `
+	PayinCount          *types.Integer    `json:"payinCount,omitempty"`
+	PayoutCount         *types.Integer    `json:"payoutCount,omitempty"`
+	TransferCount       *types.Integer    `json:"transferCount,omitempty"`
+	Solde               *types.Amount     `json:"solde,omitempty"`
+	AuthorizedBalance   *types.Amount     `json:"authorizedBalance,omitempty"`
+	TotalRows           *types.Integer    `json:"totalRows,omitempty"`
+	CodeStatus          *types.Identifier `json:"codeStatus,omitempty"`        // Legacy field
+	InformationStatus   *string           `json:"informationStatus,omitempty"` // Legacy field
 }
 
 type WalletCreateOptions struct {
@@ -148,17 +157,17 @@ func (s *WalletService) Get(ctx context.Context, walletID string, opts *WalletGe
 type WalletListOptions struct {
 	Access
 
-	WalletID            *string          `url:"walletId,omitempty" json:"-"`
-	WalletStatus        *string          `url:"walletStatus,omitempty" json:"-"` // TODO: can be an enum (need to see if VALIDATED or Validated)
-	UserID              *string          `url:"userId,omitempty" json:"-"`
-	ParentUserID        *string          `url:"parentUserId,omitempty" json:"-"`
-	WalletTag           *string          `url:"walletTag,omitempty" json:"-"`
-	WalletTypeID        WalletType       `url:"walletTypeId,omitempty" json:"-"`
-	EventAlias          *string          `url:"eventAlias,omitempty" json:"-"`
-	EventPayinStartDate *types.Timestamp `url:"eventPayinStartDate,omitempty" json:"-"`
-	EventPayinEndDate   *types.Date      `url:"eventPayinEndDate,omitempty" json:"-"`
-	TariffID            *string          `url:"tariffId,omitempty" json:"-"`
-	PayinCount          *int64           `url:"payinCount,omitempty" json:"-"`
+	WalletID            *string      `url:"walletId,omitempty" json:"-"`
+	WalletStatus        WalletStatus `url:"walletStatus,omitempty" json:"-"`
+	UserID              *string      `url:"userId,omitempty" json:"-"`
+	ParentUserID        *string      `url:"parentUserId,omitempty" json:"-"`
+	WalletTag           *string      `url:"walletTag,omitempty" json:"-"`
+	WalletTypeID        WalletType   `url:"walletTypeId,omitempty" json:"-"`
+	EventAlias          *string      `url:"eventAlias,omitempty" json:"-"`
+	EventPayinStartDate *time.Time   `url:"eventPayinStartDate,omitempty" json:"-" layout:"Treezor" loc:"Europe/Paris"`
+	EventPayinEndDate   *types.Date  `url:"eventPayinEndDate,omitempty" json:"-"`
+	TariffID            *string      `url:"tariffId,omitempty" json:"-"`
+	PayinCount          *int64       `url:"payinCount,omitempty" json:"-"`
 
 	ListOptions
 }

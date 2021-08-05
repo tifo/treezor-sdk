@@ -3,8 +3,8 @@
 package treezor
 
 import (
-	"encoding/json"
-	"github.com/tifo/treezor-sdk/internal/types"
+	json "github.com/tifo/treezor-sdk/internal/json"
+	types "github.com/tifo/treezor-sdk/internal/types"
 	"time"
 )
 
@@ -179,7 +179,7 @@ func (b *BankAccount) GetCodeStatus() string {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (b *BankAccount) GetCreatedDate() time.Time {
 	if b != nil && b.CreatedDate != nil {
-		return b.CreatedDate.Time
+		return *b.CreatedDate
 	}
 	return time.Time{}
 }
@@ -195,7 +195,7 @@ func (b *BankAccount) GetInformationStatus() string {
 // GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
 func (b *BankAccount) GetModifiedDate() time.Time {
 	if b != nil && b.ModifiedDate != nil {
-		return b.ModifiedDate.Time
+		return *b.ModifiedDate
 	}
 	return time.Time{}
 }
@@ -259,7 +259,7 @@ func (b *Beneficiary) GetBIC() string {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (b *Beneficiary) GetCreatedDate() time.Time {
 	if b != nil && b.CreatedDate != nil {
-		return b.CreatedDate.Time
+		return *b.CreatedDate
 	}
 	return time.Time{}
 }
@@ -283,7 +283,7 @@ func (b *Beneficiary) GetIsActive() bool {
 // GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
 func (b *Beneficiary) GetModifiedDate() time.Time {
 	if b != nil && b.ModifiedDate != nil {
-		return b.ModifiedDate.Time
+		return *b.ModifiedDate
 	}
 	return time.Time{}
 }
@@ -539,7 +539,7 @@ func (c *Card) GetCreatedBy() string {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (c *Card) GetCreatedDate() time.Time {
 	if c != nil && c.CreatedDate != nil {
-		return c.CreatedDate.Time
+		return *c.CreatedDate
 	}
 	return time.Time{}
 }
@@ -819,7 +819,7 @@ func (c *Card) GetModifiedBy() string {
 // GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
 func (c *Card) GetModifiedDate() time.Time {
 	if c != nil && c.ModifiedDate != nil {
-		return c.ModifiedDate.Time
+		return *c.ModifiedDate
 	}
 	return time.Time{}
 }
@@ -1251,7 +1251,7 @@ func (c *CardTransaction) GetAuthorizationIssuerID() string {
 // GetAuthorizationIssuerTime returns the AuthorizationIssuerTime field if it's non-nil, zero value otherwise.
 func (c *CardTransaction) GetAuthorizationIssuerTime() time.Time {
 	if c != nil && c.AuthorizationIssuerTime != nil {
-		return c.AuthorizationIssuerTime.Time
+		return *c.AuthorizationIssuerTime
 	}
 	return time.Time{}
 }
@@ -1499,7 +1499,7 @@ func (c *CardTransaction) GetPaymentLocalDate() time.Time {
 // GetPaymentLocalTime returns the PaymentLocalTime field if it's non-nil, zero value otherwise.
 func (c *CardTransaction) GetPaymentLocalTime() time.Time {
 	if c != nil && c.PaymentLocalTime != nil {
-		return c.PaymentLocalTime.Time
+		return *c.PaymentLocalTime
 	}
 	return time.Time{}
 }
@@ -1691,7 +1691,7 @@ func (c *Chargeback) GetAmount() string {
 // GetChargebackCreatedDate returns the ChargebackCreatedDate field if it's non-nil, zero value otherwise.
 func (c *Chargeback) GetChargebackCreatedDate() time.Time {
 	if c != nil && c.ChargebackCreatedDate != nil {
-		return c.ChargebackCreatedDate.Time
+		return *c.ChargebackCreatedDate
 	}
 	return time.Time{}
 }
@@ -1731,7 +1731,7 @@ func (c *Chargeback) GetIsRefunded() bool {
 // GetPayinCreatedDate returns the PayinCreatedDate field if it's non-nil, zero value otherwise.
 func (c *Chargeback) GetPayinCreatedDate() time.Time {
 	if c != nil && c.PayinCreatedDate != nil {
-		return c.PayinCreatedDate.Time
+		return *c.PayinCreatedDate
 	}
 	return time.Time{}
 }
@@ -1747,7 +1747,7 @@ func (c *Chargeback) GetPayinID() string {
 // GetPayinRefundCreatedDate returns the PayinRefundCreatedDate field if it's non-nil, zero value otherwise.
 func (c *Chargeback) GetPayinRefundCreatedDate() time.Time {
 	if c != nil && c.PayinRefundCreatedDate != nil {
-		return c.PayinRefundCreatedDate.Time
+		return *c.PayinRefundCreatedDate
 	}
 	return time.Time{}
 }
@@ -1835,7 +1835,7 @@ func (c *CountryRestrictionGroup) GetCountries() []*types.Identifier {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (c *CountryRestrictionGroup) GetCreatedDate() time.Time {
 	if c != nil && c.CreatedDate != nil {
-		return c.CreatedDate.Time
+		return *c.CreatedDate
 	}
 	return time.Time{}
 }
@@ -1859,7 +1859,7 @@ func (c *CountryRestrictionGroup) GetIsWhitelist() bool {
 // GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
 func (c *CountryRestrictionGroup) GetModifiedDate() time.Time {
 	if c != nil && c.ModifiedDate != nil {
-		return c.ModifiedDate.Time
+		return *c.ModifiedDate
 	}
 	return time.Time{}
 }
@@ -1875,7 +1875,7 @@ func (c *CountryRestrictionGroup) GetName() string {
 // GetStartDate returns the StartDate field if it's non-nil, zero value otherwise.
 func (c *CountryRestrictionGroup) GetStartDate() time.Time {
 	if c != nil && c.StartDate != nil {
-		return c.StartDate.Time
+		return *c.StartDate
 	}
 	return time.Time{}
 }
@@ -1915,7 +1915,7 @@ func (d *Document) GetCodeStatus() string {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (d *Document) GetCreatedDate() time.Time {
 	if d != nil && d.CreatedDate != nil {
-		return d.CreatedDate.Time
+		return *d.CreatedDate
 	}
 	return time.Time{}
 }
@@ -1979,7 +1979,7 @@ func (d *Document) GetInformationStatus() string {
 // GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
 func (d *Document) GetModifiedDate() time.Time {
 	if d != nil && d.ModifiedDate != nil {
-		return d.ModifiedDate.Time
+		return *d.ModifiedDate
 	}
 	return time.Time{}
 }
@@ -2243,7 +2243,7 @@ func (m *Mandate) GetContractIdentificationNumber() string {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (m *Mandate) GetCreatedDate() time.Time {
 	if m != nil && m.CreatedDate != nil {
-		return m.CreatedDate.Time
+		return *m.CreatedDate
 	}
 	return time.Time{}
 }
@@ -2443,7 +2443,7 @@ func (m *Mandate) GetMandateStatus() string {
 // GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
 func (m *Mandate) GetModifiedDate() time.Time {
 	if m != nil && m.ModifiedDate != nil {
-		return m.ModifiedDate.Time
+		return *m.ModifiedDate
 	}
 	return time.Time{}
 }
@@ -2547,7 +2547,7 @@ func (m *MCCMetadata) GetCode() string {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (m *MCCRestrictionGroup) GetCreatedDate() time.Time {
 	if m != nil && m.CreatedDate != nil {
-		return m.CreatedDate.Time
+		return *m.CreatedDate
 	}
 	return time.Time{}
 }
@@ -2579,7 +2579,7 @@ func (m *MCCRestrictionGroup) GetMerchants() []*types.Identifier {
 // GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
 func (m *MCCRestrictionGroup) GetModifiedDate() time.Time {
 	if m != nil && m.ModifiedDate != nil {
-		return m.ModifiedDate.Time
+		return *m.ModifiedDate
 	}
 	return time.Time{}
 }
@@ -2595,7 +2595,7 @@ func (m *MCCRestrictionGroup) GetName() string {
 // GetStartDate returns the StartDate field if it's non-nil, zero value otherwise.
 func (m *MCCRestrictionGroup) GetStartDate() time.Time {
 	if m != nil && m.StartDate != nil {
-		return m.StartDate.Time
+		return *m.StartDate
 	}
 	return time.Time{}
 }
@@ -2627,7 +2627,7 @@ func (m *MIDMetadata) GetValue() string {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (m *MIDRestrictionGroup) GetCreatedDate() time.Time {
 	if m != nil && m.CreatedDate != nil {
-		return m.CreatedDate.Time
+		return *m.CreatedDate
 	}
 	return time.Time{}
 }
@@ -2659,7 +2659,7 @@ func (m *MIDRestrictionGroup) GetMerchants() []*types.Identifier {
 // GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
 func (m *MIDRestrictionGroup) GetModifiedDate() time.Time {
 	if m != nil && m.ModifiedDate != nil {
-		return m.ModifiedDate.Time
+		return *m.ModifiedDate
 	}
 	return time.Time{}
 }
@@ -2675,7 +2675,7 @@ func (m *MIDRestrictionGroup) GetName() string {
 // GetStartDate returns the StartDate field if it's non-nil, zero value otherwise.
 func (m *MIDRestrictionGroup) GetStartDate() time.Time {
 	if m != nil && m.StartDate != nil {
-		return m.StartDate.Time
+		return *m.StartDate
 	}
 	return time.Time{}
 }
@@ -2859,7 +2859,7 @@ func (p *Payin) GetCodeStatus() string {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (p *Payin) GetCreatedDate() time.Time {
 	if p != nil && p.CreatedDate != nil {
-		return p.CreatedDate.Time
+		return *p.CreatedDate
 	}
 	return time.Time{}
 }
@@ -3251,7 +3251,7 @@ func (p *PayinRefund) GetCodeStatus() string {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (p *PayinRefund) GetCreatedDate() time.Time {
 	if p != nil && p.CreatedDate != nil {
-		return p.CreatedDate.Time
+		return *p.CreatedDate
 	}
 	return time.Time{}
 }
@@ -3275,7 +3275,7 @@ func (p *PayinRefund) GetInformationStatus() string {
 // GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
 func (p *PayinRefund) GetModifiedDate() time.Time {
 	if p != nil && p.ModifiedDate != nil {
-		return p.ModifiedDate.Time
+		return *p.ModifiedDate
 	}
 	return time.Time{}
 }
@@ -3403,7 +3403,7 @@ func (p *Payout) GetCodeStatus() string {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (p *Payout) GetCreatedDate() time.Time {
 	if p != nil && p.CreatedDate != nil {
-		return p.CreatedDate.Time
+		return *p.CreatedDate
 	}
 	return time.Time{}
 }
@@ -3435,7 +3435,7 @@ func (p *Payout) GetLabel() string {
 // GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
 func (p *Payout) GetModifiedDate() time.Time {
 	if p != nil && p.ModifiedDate != nil {
-		return p.ModifiedDate.Time
+		return *p.ModifiedDate
 	}
 	return time.Time{}
 }
@@ -3579,7 +3579,7 @@ func (p *PayoutRefund) GetCodeStatus() string {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (p *PayoutRefund) GetCreatedDate() time.Time {
 	if p != nil && p.CreatedDate != nil {
-		return p.CreatedDate.Time
+		return *p.CreatedDate
 	}
 	return time.Time{}
 }
@@ -3603,7 +3603,7 @@ func (p *PayoutRefund) GetInformationStatus() string {
 // GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
 func (p *PayoutRefund) GetModifiedDate() time.Time {
 	if p != nil && p.ModifiedDate != nil {
-		return p.ModifiedDate.Time
+		return *p.ModifiedDate
 	}
 	return time.Time{}
 }
@@ -3651,7 +3651,7 @@ func (p *PayoutRefund) GetRefundCurrency() Currency {
 // GetRefundDate returns the RefundDate field if it's non-nil, zero value otherwise.
 func (p *PayoutRefund) GetRefundDate() time.Time {
 	if p != nil && p.RefundDate != nil {
-		return p.RefundDate.Time
+		return *p.RefundDate
 	}
 	return time.Time{}
 }
@@ -3771,7 +3771,7 @@ func (r *RecallR) GetReasonCode() string {
 // GetReceivedDate returns the ReceivedDate field if it's non-nil, zero value otherwise.
 func (r *RecallR) GetReceivedDate() time.Time {
 	if r != nil && r.ReceivedDate != nil {
-		return r.ReceivedDate.Time
+		return *r.ReceivedDate
 	}
 	return time.Time{}
 }
@@ -3811,7 +3811,7 @@ func (r *RecallR) GetSctrID() string {
 // GetSctrSettelmentDate returns the SctrSettelmentDate field if it's non-nil, zero value otherwise.
 func (r *RecallR) GetSctrSettelmentDate() time.Time {
 	if r != nil && r.SctrSettelmentDate != nil {
-		return r.SctrSettelmentDate.Time
+		return *r.SctrSettelmentDate
 	}
 	return time.Time{}
 }
@@ -3819,7 +3819,7 @@ func (r *RecallR) GetSctrSettelmentDate() time.Time {
 // GetSctrSettlementDate returns the SctrSettlementDate field if it's non-nil, zero value otherwise.
 func (r *RecallR) GetSctrSettlementDate() time.Time {
 	if r != nil && r.SctrSettlementDate != nil {
-		return r.SctrSettlementDate.Time
+		return *r.SctrSettlementDate
 	}
 	return time.Time{}
 }
@@ -3875,7 +3875,7 @@ func (r *RecallR) GetUserStatusID() string {
 // GetWalletActivationDate returns the WalletActivationDate field if it's non-nil, zero value otherwise.
 func (r *RecallR) GetWalletActivationDate() time.Time {
 	if r != nil && r.WalletActivationDate != nil {
-		return r.WalletActivationDate.Time
+		return *r.WalletActivationDate
 	}
 	return time.Time{}
 }
@@ -4283,7 +4283,7 @@ func (t *Transaction) GetAmount() float64 {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (t *Transaction) GetCreatedDate() time.Time {
 	if t != nil && t.CreatedDate != nil {
-		return t.CreatedDate.Time
+		return *t.CreatedDate
 	}
 	return time.Time{}
 }
@@ -4451,7 +4451,7 @@ func (t *Transfer) GetCodeStatus() string {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (t *Transfer) GetCreatedDate() time.Time {
 	if t != nil && t.CreatedDate != nil {
-		return t.CreatedDate.Time
+		return *t.CreatedDate
 	}
 	return time.Time{}
 }
@@ -4491,7 +4491,7 @@ func (t *Transfer) GetLabel() string {
 // GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
 func (t *Transfer) GetModifiedDate() time.Time {
 	if t != nil && t.ModifiedDate != nil {
-		return t.ModifiedDate.Time
+		return *t.ModifiedDate
 	}
 	return time.Time{}
 }
@@ -4611,7 +4611,7 @@ func (t *TransferRefund) GetCodeStatus() string {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (t *TransferRefund) GetCreatedDate() time.Time {
 	if t != nil && t.CreatedDate != nil {
-		return t.CreatedDate.Time
+		return *t.CreatedDate
 	}
 	return time.Time{}
 }
@@ -4635,7 +4635,7 @@ func (t *TransferRefund) GetInformationStatus() string {
 // GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
 func (t *TransferRefund) GetModifiedDate() time.Time {
 	if t != nil && t.ModifiedDate != nil {
-		return t.ModifiedDate.Time
+		return *t.ModifiedDate
 	}
 	return time.Time{}
 }
@@ -4659,7 +4659,7 @@ func (t *TransferRefund) GetTransferID() string {
 // GetTransferRefundDate returns the TransferRefundDate field if it's non-nil, zero value otherwise.
 func (t *TransferRefund) GetTransferRefundDate() time.Time {
 	if t != nil && t.TransferRefundDate != nil {
-		return t.TransferRefundDate.Time
+		return *t.TransferRefundDate
 	}
 	return time.Time{}
 }
@@ -4859,7 +4859,7 @@ func (u *User) GetCountryName() string {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (u *User) GetCreatedDate() time.Time {
 	if u != nil && u.CreatedDate != nil {
-		return u.CreatedDate.Time
+		return *u.CreatedDate
 	}
 	return time.Time{}
 }
@@ -5099,7 +5099,7 @@ func (u *User) GetMobile() string {
 // GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
 func (u *User) GetModifiedDate() time.Time {
 	if u != nil && u.ModifiedDate != nil {
-		return u.ModifiedDate.Time
+		return *u.ModifiedDate
 	}
 	return time.Time{}
 }
@@ -5288,12 +5288,12 @@ func (u *User) GetUserID() string {
 	return ""
 }
 
-// GetUserStatus returns the UserStatus field if it's non-nil, zero value otherwise.
-func (u *User) GetUserStatus() string {
-	if u != nil && u.UserStatus != nil {
-		return *u.UserStatus
+// GetUserStatus returns the UserStatus field.
+func (u *User) GetUserStatus() *UserStatus {
+	if u != nil {
+		return u.UserStatus
 	}
-	return ""
+	return nil
 }
 
 // GetUserTag returns the UserTag field if it's non-nil, zero value otherwise.
@@ -5371,7 +5371,7 @@ func (w *Wallet) GetContractSigned() bool {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (w *Wallet) GetCreatedDate() time.Time {
 	if w != nil && w.CreatedDate != nil {
-		return w.CreatedDate.Time
+		return *w.CreatedDate
 	}
 	return time.Time{}
 }
@@ -5459,7 +5459,7 @@ func (w *Wallet) GetJointUserID() string {
 // GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
 func (w *Wallet) GetModifiedDate() time.Time {
 	if w != nil && w.ModifiedDate != nil {
-		return w.ModifiedDate.Time
+		return *w.ModifiedDate
 	}
 	return time.Time{}
 }
@@ -5552,12 +5552,12 @@ func (w *Wallet) GetWalletID() string {
 	return ""
 }
 
-// GetWalletStatus returns the WalletStatus field if it's non-nil, zero value otherwise.
-func (w *Wallet) GetWalletStatus() string {
-	if w != nil && w.WalletStatus != nil {
-		return *w.WalletStatus
+// GetWalletStatus returns the WalletStatus field.
+func (w *Wallet) GetWalletStatus() *WalletStatus {
+	if w != nil {
+		return w.WalletStatus
 	}
-	return ""
+	return nil
 }
 
 // GetWalletTag returns the WalletTag field if it's non-nil, zero value otherwise.
