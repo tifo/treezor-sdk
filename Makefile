@@ -4,7 +4,7 @@ NAME	:= treezor-sdk
 
 all: gen build test
 
-build: gen
+build:
 	$(info + [$(NAME)] $@)
 	go build -v ./...
 

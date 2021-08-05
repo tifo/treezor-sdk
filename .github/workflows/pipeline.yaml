@@ -10,7 +10,7 @@ env:
   GO_VERSION: "1.16"
 
 jobs:
-  setup:
+  build-lint:
     runs-on: ubuntu-20.04
     steps:
       - name: Set up Go ${{ env.GO_VERSION }}
@@ -19,7 +19,7 @@ jobs:
           go-version: ${{ env.GO_VERSION }}
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Restore go mod and tools cache
+      - name: Restore go mod cache
         uses: actions/cache@v2
         id: cache
         with:
@@ -30,8 +30,8 @@ jobs:
             go-${{ runner.os }}-
       - name: Download & check dependencies
         run: |
-          echo "::group::go mod vendor"
-          go mod vendor
+          echo "::group::go mod download"
+          go mod download
           echo "::endgroup::"
           echo "::group::go mod tidy"
           go mod tidy
@@ -55,10 +55,12 @@ jobs:
       - name: Build & test (make build test)
         run: |
           make build test
-      - name: Run golangci-lint
+      - name: Lint via golangci-lint
         uses: reviewdog/action-golangci-lint@v2
         with:
           go_version: ${{ env.GO_VERSION }}
           golangci_lint_flags: '--config=.golangci.yaml'
           cache: false
+          filter_mode: diff_context
           fail_on_error: false
+          tool_name: golangci-lint

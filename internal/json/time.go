@@ -22,11 +22,12 @@ func (e *TimeExtension) UpdateStructDescriptor(sd *jsoniter.StructDescriptor) {
 		var isPtr bool
 
 		typeName := binding.Field.Type().String()
-		if typeName == "time.Time" {
+		switch typeName {
+		case "time.Time":
 			isPtr = false
-		} else if typeName == "*time.Time" {
+		case "*time.Time":
 			isPtr = true
-		} else {
+		default:
 			continue
 		}
 
@@ -79,7 +80,7 @@ func (ed *timeEncoderDecoder) Encode(ptr unsafe.Pointer, stream *jsoniter.Stream
 		str := lt.Format(ed.fmt)
 		stream.WriteString(str)
 	} else {
-		stream.Write([]byte("null"))
+		stream.WriteString("null")
 	}
 }
 

@@ -33,7 +33,7 @@ linters-settings:
     check-type-assertions: false
     check-blank: false
   gocyclo:
-    min-complexity: 20
+    min-complexity: 25
   gci:
     local-prefixes: github.com/tifo/treezor-sdk
   gocritic:
