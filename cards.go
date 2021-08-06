@@ -174,8 +174,11 @@ func (s *CardService) RequestPhysical(ctx context.Context, card *Card) (*Card, *
 
 // CardGetImagesOptions contains options when getting a card image.
 type CardGetImagesOptions struct {
-	CardID string `url:"cardId,omitempty"`
+	Access
+	CardID *string `url:"cardId,omitempty"` // Required
 }
+
+// NOTE: should we just pass CardID to the GetImage function even though it doesnt follow the API definition ?
 
 // CardImagesResponse contains a list of virtual card images.
 type CardImagesResponse struct {
@@ -211,9 +214,16 @@ func (s *CardService) GetImage(ctx context.Context, opt *CardGetImagesOptions) (
 	return c.CardImages[0], resp, errors.WithStack(err)
 }
 
+type CardGetOptions struct {
+}
+
 // Get returns a card (virtual or physical).
-func (s *CardService) Get(ctx context.Context, cardID string) (*Card, *http.Response, error) {
+func (s *CardService) Get(ctx context.Context, cardID string, opts *CardGetOptions) (*Card, *http.Response, error) {
 	u := fmt.Sprintf("cards/%s", cardID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
 	req, _ := s.client.NewRequest(http.MethodGet, u, nil)
 
 	c := new(CardResponse)
