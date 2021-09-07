@@ -185,7 +185,7 @@ func reflectValue(values url.Values, val reflect.Value, scope string) error {
 		}
 
 		if sv.Type() == timeType {
-			s, err := valueString(sv.Index(i), opts, sf)
+			s, err := valueString(sv, opts, sf)
 			if err != nil {
 				return err
 			}

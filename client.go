@@ -33,6 +33,7 @@ type connectClient struct {
 	common    service // Reuse a single struct instead of allocating one for each service on the heap.
 	KYC       *ConnectKYCService
 	Operation *ConnectOperationService
+	Statement *ConnectStatementService
 }
 
 type apiClient struct {
@@ -74,6 +75,7 @@ func newConnectClient(httpClient *http.Client, connectBaseURL *url.URL) *connect
 	c.common.client = &HTTPClient{client: httpClient, BaseURL: connectBaseURL, UserAgent: userAgent}
 	c.KYC = (*ConnectKYCService)(&c.common)
 	c.Operation = (*ConnectOperationService)(&c.common)
+	c.Statement = (*ConnectStatementService)(&c.common)
 	return c
 }
 

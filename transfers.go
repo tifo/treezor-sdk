@@ -77,9 +77,25 @@ type Transfer struct {
 	InformationStatus          *string           `json:"informationStatus,omitempty"` // Legacy field
 }
 
+type TransferCreateOptions struct {
+	Access
+
+	WalletID            *string  `url:"-" json:"walletId,omitempty"`            // Required
+	BeneficiaryWalletID *string  `url:"-" json:"beneficiaryWalletId,omitempty"` // Required
+	Amount              *float64 `url:"-" json:"amount,omitempty"`              // Required
+	Currency            Currency `url:"-" json:"currency,omitempty"`            // Required
+	Label               *string  `url:"-" json:"label,omitempty"`               // Optional
+	TransferTypeID      *int64   `url:"-" json:"transferTypeId,omitempty"`      // Optional // TODO: create enum
+}
+
 // Create creates a Treezor transfer. Required: WalletID, BeneficiaryWalletID,Amount,Currency(ISO 4217)
-func (s *TransferService) Create(ctx context.Context, transfer *Transfer) (*Transfer, *http.Response, error) {
-	req, _ := s.client.NewRequest(http.MethodPost, "transfers", transfer)
+func (s *TransferService) Create(ctx context.Context, opts *TransferCreateOptions) (*Transfer, *http.Response, error) {
+	u := "transfers"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPost, u, opts)
 
 	b := new(TransferResponse)
 	resp, err := s.client.Do(ctx, req, b)

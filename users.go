@@ -315,13 +315,13 @@ type UserCreateOptions struct {
 	Postcode                   *string               `url:"-" json:"postcode,omitempty"`                   // Optional
 	City                       *string               `url:"-" json:"city,omitempty"`                       // Optional
 	State                      *string               `url:"-" json:"state,omitempty"`                      // Optional
-	Country                    *string               `url:"-" json:"country,omitempty"`                    // Optional
+	Country                    *string               `url:"-" json:"country,omitempty"`                    // Optional, format:  ISO 3166-1 alpha-2
 	Phone                      *string               `url:"-" json:"phone,omitempty"`                      // Optional
 	Mobile                     *string               `url:"-" json:"mobile,omitempty"`                     // Optional
 	Nationality                *string               `url:"-" json:"nationality,omitempty"`                // Optional
 	NationalityOther           *string               `url:"-" json:"nationalityOther,omitempty"`           // Optional
 	PlaceOfBirth               *string               `url:"-" json:"placeOfBirth,omitempty"`               // Optional
-	BirthCountry               *string               `url:"-" json:"birthCountry,omitempty"`               // Optional
+	BirthCountry               *string               `url:"-" json:"birthCountry,omitempty"`               // Optional, format:  ISO 3166-1 alpha-2
 	Occupation                 *string               `url:"-" json:"occupation,omitempty"`                 // Optional
 	IncomeRange                *string               `url:"-" json:"incomeRange,omitempty"`                // Optional
 	LegalName                  *string               `url:"-" json:"legalName,omitempty"`                  // Optional

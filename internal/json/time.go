@@ -92,7 +92,10 @@ func (ed *timeEncoderDecoder) Decode(ptr unsafe.Pointer, iter *jsoniter.Iterator
 
 	str := iter.ReadString()
 	var t *time.Time
-	if str != "" {
+	switch str {
+	case "0000-00-00 00:00:00", "":
+		t = nil
+	default:
 		var err error
 		var tmp time.Time
 		if ed.loc != nil {
@@ -105,8 +108,6 @@ func (ed *timeEncoderDecoder) Decode(ptr unsafe.Pointer, iter *jsoniter.Iterator
 			return
 		}
 		t = &tmp
-	} else {
-		t = nil
 	}
 
 	if ed.isPtr {

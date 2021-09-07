@@ -49,6 +49,24 @@ func (s *ConnectKYCService) UploadDocument(ctx context.Context, userID string, o
 	return d, resp, nil
 }
 
+type ConnectKYCPreReviewUser struct{}
+
+func (s *ConnectKYCService) PreReviewUser(ctx context.Context, userID string, opts *ConnectKYCPreReviewUser) (*http.Response, error) {
+	u := fmt.Sprintf("core-connect/users/%s/kyc-review", userID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPut, u, nil)
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, errors.WithStack(err)
+	}
+
+	return resp, nil
+}
+
 type ConnectKYCPreviewDocumentOptions struct{}
 
 type PreviewDocumentTarget struct {
@@ -63,7 +81,7 @@ func (s *ConnectKYCService) PreviewDocument(ctx context.Context, documentID stri
 	if err != nil {
 		return nil, nil, errors.WithStack(err)
 	}
-	req, _ := s.client.NewRequest(http.MethodPut, u, opts)
+	req, _ := s.client.NewRequest(http.MethodPut, u, nil)
 
 	d := new(PreviewDocumentTarget)
 	resp, err := s.client.Do(ctx, req, d)
