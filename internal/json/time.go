@@ -1,6 +1,7 @@
 package json
 
 import (
+	"strings"
 	"time"
 	"unsafe"
 
@@ -92,8 +93,11 @@ func (ed *timeEncoderDecoder) Decode(ptr unsafe.Pointer, iter *jsoniter.Iterator
 
 	str := iter.ReadString()
 	var t *time.Time
-	switch str {
-	case "0000-00-00 00:00:00", "":
+	switch {
+	case str == "" || str == "0000-00-00 00:00:00":
+		t = nil
+	case strings.HasPrefix(str, "-0001-"):
+		// NOTE: failsafe when a negative time is returned
 		t = nil
 	default:
 		var err error

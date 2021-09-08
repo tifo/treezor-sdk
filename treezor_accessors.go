@@ -1824,6 +1824,54 @@ func (c *ConnectCursor) GetPrev() string {
 	return ""
 }
 
+// GetComment returns the Comment field if it's non-nil, zero value otherwise.
+func (c *ConnectKYCDocument) GetComment() string {
+	if c != nil && c.Comment != nil {
+		return *c.Comment
+	}
+	return ""
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *ConnectKYCDocument) GetCreatedAt() time.Time {
+	if c != nil && c.CreatedAt != nil {
+		return *c.CreatedAt
+	}
+	return time.Time{}
+}
+
+// GetDocumentID returns the DocumentID field if it's non-nil, zero value otherwise.
+func (c *ConnectKYCDocument) GetDocumentID() string {
+	if c != nil && c.DocumentID != nil {
+		return *c.DocumentID
+	}
+	return ""
+}
+
+// GetDocumentType returns the DocumentType field if it's non-nil, zero value otherwise.
+func (c *ConnectKYCDocument) GetDocumentType() DocumentType {
+	if c != nil && c.DocumentType != nil {
+		return *c.DocumentType
+	}
+	return DocumentType(0)
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (c *ConnectKYCDocument) GetUpdatedAt() time.Time {
+	if c != nil && c.UpdatedAt != nil {
+		return *c.UpdatedAt
+	}
+	return time.Time{}
+}
+
+// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
+func (c *ConnectKYCDocument) GetUserID() string {
+	if c != nil && c.UserID != nil {
+		return c.UserID.String()
+	}
+	return ""
+}
+
 // GetCountries returns the Countries field.
 func (c *CountryRestrictionGroup) GetCountries() []*types.Identifier {
 	if c != nil {
@@ -2054,62 +2102,6 @@ func (d *DocumentResponse) GetDocuments() []*Document {
 		return d.Documents
 	}
 	return nil
-}
-
-// GetComment returns the Comment field if it's non-nil, zero value otherwise.
-func (d *DocumentReview) GetComment() string {
-	if d != nil && d.Comment != nil {
-		return *d.Comment
-	}
-	return ""
-}
-
-// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (d *DocumentReview) GetCreatedAt() time.Time {
-	if d != nil && d.CreatedAt != nil {
-		return *d.CreatedAt
-	}
-	return time.Time{}
-}
-
-// GetDocumentID returns the DocumentID field if it's non-nil, zero value otherwise.
-func (d *DocumentReview) GetDocumentID() string {
-	if d != nil && d.DocumentID != nil {
-		return d.DocumentID.String()
-	}
-	return ""
-}
-
-// GetDocumentType returns the DocumentType field if it's non-nil, zero value otherwise.
-func (d *DocumentReview) GetDocumentType() DocumentType {
-	if d != nil && d.DocumentType != nil {
-		return *d.DocumentType
-	}
-	return DocumentType(0)
-}
-
-// GetStatus returns the Status field.
-func (d *DocumentReview) GetStatus() *DocumentReviewStatus {
-	if d != nil {
-		return d.Status
-	}
-	return nil
-}
-
-// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (d *DocumentReview) GetUpdatedAt() time.Time {
-	if d != nil && d.UpdatedAt != nil {
-		return *d.UpdatedAt
-	}
-	return time.Time{}
-}
-
-// GetUserID returns the UserID field if it's non-nil, zero value otherwise.
-func (d *DocumentReview) GetUserID() string {
-	if d != nil && d.UserID != nil {
-		return d.UserID.String()
-	}
-	return ""
 }
 
 // GetIdentificationID returns the IdentificationID field if it's non-nil, zero value otherwise.

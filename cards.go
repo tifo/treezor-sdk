@@ -89,7 +89,7 @@ type Card struct {
 	PermsGroup                 *string                       `json:"permsGroup,omitempty"` // NOTE: could be a custom type using CardPermissionMask
 	CardDesign                 *string                       `json:"cardDesign,omitempty"`
 	VirtualConverted           *types.Boolean                `json:"virtualConverted,omitempty"`
-	Physical                   *types.Boolean                `json:"physical,string,omitempty"`
+	Physical                   *types.Boolean                `json:"physical,omitempty"`
 	OptionATM                  *types.Boolean                `json:"optionAtm,omitempty"`
 	OptionForeign              *types.Boolean                `json:"optionForeign,omitempty"`
 	OptionOnline               *types.Boolean                `json:"optionOnline,omitempty"`
