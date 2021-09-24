@@ -22,9 +22,9 @@ func (b Boolean) Bool() bool {
 
 func (b *Boolean) UnmarshalJSON(data []byte) error {
 	switch string(data) {
-	case `true`:
+	case `true`, `1`:
 		*b = true
-	case `false`:
+	case `false`, `0`:
 		*b = false
 	default:
 		var str json.Number

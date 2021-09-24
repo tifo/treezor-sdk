@@ -89,7 +89,7 @@ type Card struct {
 	PermsGroup                 *string                       `json:"permsGroup,omitempty"` // NOTE: could be a custom type using CardPermissionMask
 	CardDesign                 *string                       `json:"cardDesign,omitempty"`
 	VirtualConverted           *types.Boolean                `json:"virtualConverted,omitempty"`
-	Physical                   *types.Boolean                `json:"physical,string,omitempty"`
+	Physical                   *types.Boolean                `json:"physical,omitempty"`
 	OptionATM                  *types.Boolean                `json:"optionAtm,omitempty"`
 	OptionForeign              *types.Boolean                `json:"optionForeign,omitempty"`
 	OptionOnline               *types.Boolean                `json:"optionOnline,omitempty"`
@@ -133,17 +133,24 @@ type CardRestrictionGroupLimits struct {
 
 type CreateVirtualCardOptions struct {
 	// Card.CreateVirtual / Card.RequestPhysical only data
-	CardPrint *string `json:"cardPrint,omitempty"`
-	PIN       *string `json:"pin,omitempty"`
+	UserID     *string `url:"-" json:"userId,omitempty"`
+	WalletID   *string `url:"-" json:"walletId,omitempty"`
+	CardPrint  *string `url:"-" json:"cardPrint,omitempty"`
+	PIN        *string `url:"-" json:"pin,omitempty"`
+	PermsGroup *string `url:"-" json:"permsGroup,omitempty"`
 	// NOTE: might need to be stored in another struct as you don't need to send the whole card model when update a card status
-	LockStatus *int64 `json:"lockStatus,omitempty"`
+	//	LockStatus *int64 `json:"lockStatus,omitempty"`
 	// TODO: CreateCardRequest has much more field than cards and might require its own type (missing fields such as Anonymous, ...)
 }
 
 // CreateVirtual will create a virtual card.
-func (s *CardService) CreateVirtual(ctx context.Context, card *Card) (*Card, *http.Response, error) {
-	req, _ := s.client.NewRequest(http.MethodPost, "cards/CreateVirtual", card)
-
+func (s *CardService) CreateVirtual(ctx context.Context, opts *CreateVirtualCardOptions) (*Card, *http.Response, error) {
+	u := "cards/CreateVirtual"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPost, u, opts)
 	c := new(CardResponse)
 	resp, err := s.client.Do(ctx, req, c)
 	if err != nil {
@@ -225,7 +232,6 @@ func (s *CardService) Get(ctx context.Context, cardID string, opts *CardGetOptio
 		return nil, nil, errors.WithStack(err)
 	}
 	req, _ := s.client.NewRequest(http.MethodGet, u, nil)
-
 	c := new(CardResponse)
 	resp, err := s.client.Do(ctx, req, c)
 	if err != nil {
