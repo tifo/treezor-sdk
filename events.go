@@ -14,12 +14,25 @@ import (
 // WebhookEvent represent an event that occurred on Treezor's infrastructure and is
 // sent as a webhook to us. See https://docs.treezor.com/guide/webhooks/events-descriptions.html.
 type WebhookEvent struct {
-	WebhookID              *string          `json:"webhook_id,omitempty"`
 	Webhook                *string          `json:"webhook,omitempty"`
+	WebhookID              *string          `json:"webhook_id,omitempty"`
 	Object                 *string          `json:"object,omitempty"`
 	ObjectID               *string          `json:"object_id,omitempty"`
 	ObjectPayload          *json.RawMessage `json:"object_payload,omitempty" swaggertype:"object"`
 	ObjectPayloadSignature *string          `json:"object_payload_signature,omitempty"`
+}
+
+// NewWebhookEvent creates a new event programatically instead of being unmarshalled. This can be used to emulate events or when custom parsing is required
+func NewWebhookEvent(webhook, webhookID, object, objectID string, payload []byte, payloadSignature string) *WebhookEvent {
+	pl := json.RawMessage(payload)
+	return &WebhookEvent{
+		WebhookID:              &webhookID,
+		Webhook:                &webhook,
+		Object:                 &object,
+		ObjectID:               &objectID,
+		ObjectPayload:          &pl,
+		ObjectPayloadSignature: &payloadSignature,
+	}
 }
 
 func (e WebhookEvent) String() string {
@@ -56,6 +69,7 @@ func (e *WebhookEvent) Validate(secretKey []byte) (bool, error) {
 // a value of the corresponding struct type will be returned.
 //nolint:gocyclo
 func (e *WebhookEvent) ParsePayload() (payload interface{}, err error) {
+	// NOTE: should use e.GetObject() which contains the type
 	switch e.GetWebhook() {
 
 	// Balance (https://docs.treezor.com/guide/wallets/events.html#balances)
@@ -269,6 +283,11 @@ func (e *WebhookEvent) ParsePayload() (payload interface{}, err error) {
 	case "oneclickcard.cancel":
 	}
 
-	err = json.Unmarshal(e.GetObjectPayload(), &payload)
+	err = e.ParsePayloadAs(payload)
 	return payload, errors.WithStack(err)
+}
+
+func (e *WebhookEvent) ParsePayloadAs(payloadType interface{}) error {
+	err := json.Unmarshal(e.GetObjectPayload(), &payloadType)
+	return errors.WithStack(err)
 }

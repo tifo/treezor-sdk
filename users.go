@@ -171,21 +171,19 @@ func (r KYCReview) String() string {
 type KYCLevel int32
 
 const (
-	KYCLevelNone          KYCLevel = 0 // NONE
-	KYCLevelPending       KYCLevel = 1 // PENDING
-	KYCLevelRegular       KYCLevel = 2 // REGULAR
-	KYCLevelStrong        KYCLevel = 3 // STRONG
-	KYCLevelRefused       KYCLevel = 4 // REFUSED
-	KYCLevelInvestigating KYCLevel = 5 // INVESTIGATING
+	KYCLevelNone    KYCLevel = 0 // NONE
+	KYCLevelLight   KYCLevel = 1 // LIGHT
+	KYCLevelRegular KYCLevel = 2 // REGULAR
+	KYCLevelStrong  KYCLevel = 3 // STRONG
+	KYCLevelRefused KYCLevel = 4 // REFUSED
 )
 
 var kycLevelNames = map[int32]string{
 	0: "NONE",
-	1: "PENDING",
+	1: "LIGHT",
 	2: "REGULAR",
 	3: "STRONG",
 	4: "REFUSED",
-	5: "INVESTIGATING",
 }
 
 func (l *KYCLevel) UnmarshalJSON(data []byte) error {
@@ -215,8 +213,15 @@ type UserStatus string
 const (
 	UserStatusPending   UserStatus = "PENDING"
 	UserStatusCanceled  UserStatus = "CANCELED"
-	UserStatusValidated UserStatus = "Validated"
+	UserStatusValidated UserStatus = "VALIDATED"
 )
+
+func (st *UserStatus) String() string {
+	if st == nil {
+		return ""
+	}
+	return string(*st)
+}
 
 // User represents a Treezor User.
 type User struct {
@@ -514,7 +519,7 @@ func (s *UserService) Edit(ctx context.Context, userID string, opts *UserEditOpt
 type UserCancelOptions struct {
 	Access
 
-	Origin *Origin `url:"origin"` // Required
+	Origin Origin `url:"origin"` // Required
 }
 
 // Cancel makes a User cancelled, meaning all future operation for that user
