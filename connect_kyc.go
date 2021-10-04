@@ -40,7 +40,7 @@ const (
 )
 
 type ConnectKYCDocument struct {
-	DocumentID   *string           `json:"doumentId"`
+	DocumentID   *string           `json:"documentId"`
 	DocumentType *DocumentType     `json:"documentType"`
 	Status       KYCDocumentStatus `json:"status"` // Cest un nombre pas un document status standard :issou:
 	UserID       *types.Identifier `json:"userId"`
