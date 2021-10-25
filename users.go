@@ -62,7 +62,9 @@ const (
 type ControllingPersonType int32
 
 const (
+	ControllingPersonTypeNone                ControllingPersonType = 0 // None
 	ControllingPersonTypeShareholder         ControllingPersonType = 1 // Shareholder of a Business User
+	ControllingPersonTypeOther               ControllingPersonType = 2 // Other relationship
 	ControllingPersonTypeLegalRepresentative ControllingPersonType = 3 // Legal representative of a Business User
 )
 
