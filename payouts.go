@@ -77,21 +77,39 @@ type Payout struct {
 	InformationStatus      *string           `json:"informationStatus,omitempty"` // Legacy field
 }
 
+type PayoutCreateOptions struct {
+	Access
+
+	PayoutTag       *string  `url:"-" json:"payoutTag,omitempty"`
+	WalletID        string   `url:"-" json:"walletId"`
+	BankAccountID   *string  `url:"-" json:"bankaccountId,omitempty"`
+	BeneficiaryID   *string  `url:"-" json:"beneficiaryId,omitempty"`
+	Label           *string  `url:"-" json:"label,omitempty"`
+	Amount          float64  `url:"-" json:"amount"`
+	Currency        Currency `url:"-" json:"currency"`
+	SupportFileLink *string  `url:"-" json:"supportingFileLink,omitempty"`
+}
+
 // Create creates a Treezor pay-out.
 // The required field are WalletID, BeneficiaryID, Amount, Currency(ISO 4217).
-func (s *PayoutService) Create(ctx context.Context, payout *Payout) (*Payout, *http.Response, error) {
-	req, _ := s.client.NewRequest(http.MethodPost, "payouts", payout)
+func (s *PayoutService) Create(ctx context.Context, opts *PayoutCreateOptions) (*Payout, *http.Response, error) {
+	u := "payouts"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPost, u, opts)
 
-	b := new(PayoutResponse)
-	resp, err := s.client.Do(ctx, req, b)
+	p := new(PayoutResponse)
+	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
 		return nil, resp, errors.WithStack(err)
 	}
 
-	if len(b.Payouts) != 1 {
-		return nil, resp, errors.Errorf("API did not returned exactly one pay-out: %d pay-outs returned", len(b.Payouts))
+	if len(p.Payouts) != 1 {
+		return nil, resp, errors.Errorf("API did not returned exactly one pay-out: %d pay-outs returned", len(p.Payouts))
 	}
-	return b.Payouts[0], resp, nil
+	return p.Payouts[0], resp, nil
 }
 
 // Get returns a pay-out.
