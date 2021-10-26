@@ -81,11 +81,11 @@ type PayoutCreateOptions struct {
 	Access
 
 	PayoutTag       *string  `url:"-" json:"payoutTag,omitempty"`
-	WalletID        *string  `url:"-" json:"walletId"`
+	WalletID        string   `url:"-" json:"walletId"`
 	BankAccountID   *string  `url:"-" json:"bankaccountId,omitempty"`
 	BeneficiaryID   *string  `url:"-" json:"beneficiaryId,omitempty"`
 	Label           *string  `url:"-" json:"label,omitempty"`
-	Amount          *float64 `url:"-" json:"amount"`
+	Amount          float64  `url:"-" json:"amount"`
 	Currency        Currency `url:"-" json:"currency"`
 	SupportFileLink *string  `url:"-" json:"supportingFileLink,omitempty"`
 }
