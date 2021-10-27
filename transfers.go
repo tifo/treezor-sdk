@@ -80,12 +80,12 @@ type Transfer struct {
 type TransferCreateOptions struct {
 	Access
 
-	WalletID            *string  `url:"-" json:"walletId,omitempty"`            // Required
-	BeneficiaryWalletID *string  `url:"-" json:"beneficiaryWalletId,omitempty"` // Required
-	Amount              *float64 `url:"-" json:"amount,omitempty"`              // Required
-	Currency            Currency `url:"-" json:"currency,omitempty"`            // Required
-	Label               *string  `url:"-" json:"label,omitempty"`               // Optional
-	TransferTypeID      *int64   `url:"-" json:"transferTypeId,omitempty"`      // Optional // TODO: create enum
+	WalletID            *string       `url:"-" json:"walletId,omitempty"`            // Required
+	BeneficiaryWalletID *string       `url:"-" json:"beneficiaryWalletId,omitempty"` // Required
+	Amount              *float64      `url:"-" json:"amount,omitempty"`              // Required
+	Currency            Currency      `url:"-" json:"currency,omitempty"`            // Required
+	Label               *string       `url:"-" json:"label,omitempty"`               // Optional
+	TransferTypeID      *TransferType `url:"-" json:"transferTypeId,omitempty"`      // Optional // TODO: create enum
 }
 
 // Create creates a Treezor transfer. Required: WalletID, BeneficiaryWalletID,Amount,Currency(ISO 4217)
