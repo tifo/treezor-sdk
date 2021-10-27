@@ -28,12 +28,12 @@ type TransferResponse struct {
 type TransferType int32
 
 const (
-	// Wallet2WalletTransfer is a transfer type used for peer-to-peer transaction.
-	Wallet2WalletTransfer TransferType = 1
-	// ClientFeesTransfer is transfer type used for client fees.
-	ClientFeesTransfer TransferType = 3
-	// CreditNoteTransfer is a transfer type used for credit note.
-	CreditNoteTransfer TransferType = 4
+	// TransferTypeWallet2Wallet is a transfer type used for peer-to-peer transaction.
+	TransferTypeWallet2Wallet TransferType = 1
+	// TransferTypeClientFees is transfer type used for client fees.
+	TransferTypeClientFees TransferType = 3
+	// TransferTypeCreditNote is a transfer type used for credit note.
+	TransferTypeCreditNote TransferType = 4
 )
 
 func (t *TransferType) UnmarshalJSON(data []byte) error {
@@ -80,12 +80,12 @@ type Transfer struct {
 type TransferCreateOptions struct {
 	Access
 
-	WalletID            *string  `url:"-" json:"walletId,omitempty"`            // Required
-	BeneficiaryWalletID *string  `url:"-" json:"beneficiaryWalletId,omitempty"` // Required
-	Amount              *float64 `url:"-" json:"amount,omitempty"`              // Required
-	Currency            Currency `url:"-" json:"currency,omitempty"`            // Required
-	Label               *string  `url:"-" json:"label,omitempty"`               // Optional
-	TransferTypeID      *int64   `url:"-" json:"transferTypeId,omitempty"`      // Optional // TODO: create enum
+	WalletID            *string      `url:"-" json:"walletId,omitempty"`            // Required
+	BeneficiaryWalletID *string      `url:"-" json:"beneficiaryWalletId,omitempty"` // Required
+	Amount              *float64     `url:"-" json:"amount,omitempty"`              // Required
+	Currency            Currency     `url:"-" json:"currency,omitempty"`            // Required
+	Label               *string      `url:"-" json:"label,omitempty"`               // Optional
+	TransferTypeID      TransferType `url:"-" json:"transferTypeId,omitempty"`      // Optional // TODO: create enum
 }
 
 // Create creates a Treezor transfer. Required: WalletID, BeneficiaryWalletID,Amount,Currency(ISO 4217)
