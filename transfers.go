@@ -28,12 +28,12 @@ type TransferResponse struct {
 type TransferType int32
 
 const (
-	// Wallet2WalletTransfer is a transfer type used for peer-to-peer transaction.
-	Wallet2WalletTransfer TransferType = 1
-	// ClientFeesTransfer is transfer type used for client fees.
-	ClientFeesTransfer TransferType = 3
-	// CreditNoteTransfer is a transfer type used for credit note.
-	CreditNoteTransfer TransferType = 4
+	// TransferTypeWallet2Wallet is a transfer type used for peer-to-peer transaction.
+	TransferTypeWallet2Wallet TransferType = 1
+	// TransferTypeClientFees is transfer type used for client fees.
+	TransferTypeClientFees TransferType = 3
+	// TransferTypeCreditNote is a transfer type used for credit note.
+	TransferTypeCreditNote TransferType = 4
 )
 
 func (t *TransferType) UnmarshalJSON(data []byte) error {
