@@ -4819,7 +4819,7 @@ func (u *User) GetCountryName() string {
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
 func (u *User) GetCreatedDate() time.Time {
 	if u != nil && u.CreatedDate != nil {
-		return *u.CreatedDate
+		return u.CreatedDate.Time
 	}
 	return time.Time{}
 }
@@ -5059,7 +5059,7 @@ func (u *User) GetMobile() string {
 // GetModifiedDate returns the ModifiedDate field if it's non-nil, zero value otherwise.
 func (u *User) GetModifiedDate() time.Time {
 	if u != nil && u.ModifiedDate != nil {
-		return *u.ModifiedDate
+		return u.ModifiedDate.Time
 	}
 	return time.Time{}
 }

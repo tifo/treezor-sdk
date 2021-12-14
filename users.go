@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"strconv"
-	"time"
 
 	"github.com/pkg/errors"
 
@@ -288,10 +287,10 @@ type User struct {
 	EconomicSanctions          *types.Boolean         `json:"economicSanctions,omitempty"`
 	ResidentCountriesSanctions *types.Boolean         `json:"residentCountriesSanctions,omitempty"`
 	InvolvedSanctions          *types.Boolean         `json:"involvedSanctions,omitempty"`
-	SanctionsQuestionnaireDate *types.Date            `json:"sanctionsQuestionnaireDate,omitempty"`
+	SanctionsQuestionnaireDate *types.Timestamp       `json:"sanctionsQuestionnaireDate,omitempty"`
 	Timezone                   *string                `json:"timezone,omitempty"`
-	CreatedDate                *time.Time             `json:"createdDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
-	ModifiedDate               *time.Time             `json:"modifiedDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
+	CreatedDate                *types.Timestamp       `json:"createdDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
+	ModifiedDate               *types.Timestamp       `json:"modifiedDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
 	WalletCount                *types.Integer         `json:"walletCount,omitempty"`
 	PayinCount                 *types.Integer         `json:"payinCount,omitempty"`
 	TotalRows                  *types.Integer         `json:"totalRows,omitempty"`
