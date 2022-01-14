@@ -3720,6 +3720,46 @@ func (p *PreviewDocumentTarget) GetURL() string {
 	return ""
 }
 
+// GetBalanceEnd returns the BalanceEnd field.
+func (r *RawStatement) GetBalanceEnd() *StatementBalance {
+	if r != nil {
+		return r.BalanceEnd
+	}
+	return nil
+}
+
+// GetBalanceStart returns the BalanceStart field.
+func (r *RawStatement) GetBalanceStart() *StatementBalance {
+	if r != nil {
+		return r.BalanceStart
+	}
+	return nil
+}
+
+// GetOperations returns the Operations field.
+func (r *RawStatement) GetOperations() []*Operation {
+	if r != nil {
+		return r.Operations
+	}
+	return nil
+}
+
+// GetUser returns the User field.
+func (r *RawStatement) GetUser() *User {
+	if r != nil {
+		return r.User
+	}
+	return nil
+}
+
+// GetWallet returns the Wallet field.
+func (r *RawStatement) GetWallet() *Wallet {
+	if r != nil {
+		return r.Wallet
+	}
+	return nil
+}
+
 // GetAdditionalInformation returns the AdditionalInformation field if it's non-nil, zero value otherwise.
 func (r *RecallR) GetAdditionalInformation() string {
 	if r != nil && r.AdditionalInformation != nil {
@@ -4182,6 +4222,38 @@ func (s *SepaSddrEvent) GetSepaSddrs() []*SepaSddr {
 		return s.SepaSddrs
 	}
 	return nil
+}
+
+// GetAmount returns the Amount field if it's non-nil, zero value otherwise.
+func (s *StatementBalance) GetAmount() int64 {
+	if s != nil && s.Amount != nil {
+		return *s.Amount
+	}
+	return 0
+}
+
+// GetCurrency returns the Currency field if it's non-nil, zero value otherwise.
+func (s *StatementBalance) GetCurrency() Currency {
+	if s != nil && s.Currency != nil {
+		return *s.Currency
+	}
+	return Currency("")
+}
+
+// GetDate returns the Date field if it's non-nil, zero value otherwise.
+func (s *StatementBalance) GetDate() time.Time {
+	if s != nil && s.Date != nil {
+		return s.Date.Time
+	}
+	return time.Time{}
+}
+
+// GetDirection returns the Direction field if it's non-nil, zero value otherwise.
+func (s *StatementBalance) GetDirection() string {
+	if s != nil && s.Direction != nil {
+		return *s.Direction
+	}
+	return ""
 }
 
 // GetCountry returns the Country field if it's non-nil, zero value otherwise.
