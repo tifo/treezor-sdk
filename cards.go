@@ -50,6 +50,15 @@ type CardResponse struct {
 	Cards []*Card `json:"cards"`
 }
 
+type CardStatus string
+
+const (
+	CardStatusUnlock CardStatus = "UNLOCK"
+	CardStatusLock   CardStatus = "LOCK"
+	CardStatusLost   CardStatus = "LOST"
+	CardStatusStolen CardStatus = "STOLEN"
+)
+
 // Card represents a physical or virtual card.
 type Card struct {
 	CardID                     *types.Identifier             `json:"cardId,omitempty"`
@@ -63,7 +72,7 @@ type Card struct {
 	EventAlias                 *string                       `json:"eventAlias,omitempty"`
 	PublicToken                *string                       `json:"publicToken,omitempty"`
 	CardTag                    *string                       `json:"cardTag,omitempty"`
-	StatusCode                 *string                       `json:"statusCode,omitempty"`
+	StatusCode                 *CardStatus                   `json:"statusCode,omitempty"`
 	IsLive                     *types.Boolean                `json:"isLive,omitempty"`
 	PINTryExceeds              *types.Boolean                `json:"pinTryExceeds,omitempty"`
 	MaskedPan                  *string                       `json:"maskedPan,omitempty"`
