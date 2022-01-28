@@ -912,12 +912,12 @@ func (c *Card) GetStartDate() time.Time {
 	return time.Time{}
 }
 
-// GetStatusCode returns the StatusCode field if it's non-nil, zero value otherwise.
-func (c *Card) GetStatusCode() string {
-	if c != nil && c.StatusCode != nil {
-		return *c.StatusCode
+// GetStatusCode returns the StatusCode field.
+func (c *Card) GetStatusCode() *CardStatus {
+	if c != nil {
+		return c.StatusCode
 	}
-	return ""
+	return nil
 }
 
 // GetTotalATMAll returns the TotalATMAll field if it's non-nil, zero value otherwise.
@@ -4264,12 +4264,36 @@ func (t *TaxResidence) GetCountry() string {
 	return ""
 }
 
+// GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
+func (t *TaxResidence) GetCreatedDate() string {
+	if t != nil && t.CreatedDate != nil {
+		return *t.CreatedDate
+	}
+	return ""
+}
+
+// GetDeletedDate returns the DeletedDate field if it's non-nil, zero value otherwise.
+func (t *TaxResidence) GetDeletedDate() string {
+	if t != nil && t.DeletedDate != nil {
+		return *t.DeletedDate
+	}
+	return ""
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (t *TaxResidence) GetID() int64 {
 	if t != nil && t.ID != nil {
 		return *t.ID
 	}
 	return 0
+}
+
+// GetLastUpdate returns the LastUpdate field if it's non-nil, zero value otherwise.
+func (t *TaxResidence) GetLastUpdate() string {
+	if t != nil && t.LastUpdate != nil {
+		return *t.LastUpdate
+	}
+	return ""
 }
 
 // GetLiabilityWaiver returns the LiabilityWaiver field if it's non-nil, zero value otherwise.
