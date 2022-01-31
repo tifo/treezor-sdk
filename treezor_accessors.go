@@ -4281,11 +4281,11 @@ func (t *TaxResidence) GetDeletedDate() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (t *TaxResidence) GetID() int64 {
+func (t *TaxResidence) GetID() string {
 	if t != nil && t.ID != nil {
 		return *t.ID
 	}
-	return 0
+	return ""
 }
 
 // GetLastUpdate returns the LastUpdate field if it's non-nil, zero value otherwise.
@@ -4313,11 +4313,11 @@ func (t *TaxResidence) GetTaxPayerID() string {
 }
 
 // GetUserID returns the UserID field if it's non-nil, zero value otherwise.
-func (t *TaxResidence) GetUserID() int64 {
+func (t *TaxResidence) GetUserID() string {
 	if t != nil && t.UserID != nil {
 		return *t.UserID
 	}
-	return 0
+	return ""
 }
 
 // GetTaxResidences returns the TaxResidences field.

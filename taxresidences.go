@@ -16,8 +16,8 @@ type TaxResidencesService service
 
 // TaxResidence represents a kyc TaxResidences
 type TaxResidence struct {
-	ID              *int64  `json:"id,omitempty"`
-	UserID          *int64  `json:"userId,omitempty"`
+	ID              *string `json:"id,omitempty"`
+	UserID          *string `json:"userId,omitempty"`
 	Country         *string `json:"country,omitempty"`
 	TaxPayerID      *string `json:"taxPayerId,omitempty"`
 	LiabilityWaiver *bool   `json:"liabilityWaiver,omitempty"`
@@ -36,7 +36,7 @@ type TaxResidencesResponse struct {
 type TaxResidenceCreateOptions struct {
 	Access
 
-	UserID          *int64  `url:"-" json:"userId,omitempty"`          // Required
+	UserID          *string `url:"-" json:"userId,omitempty"`          // Required
 	Country         *string `url:"-" json:"country,omitempty"`         // Required
 	TaxPayerID      *string `url:"-" json:"taxPayerId,omitempty"`      // Optional
 	LiabilityWaiver *bool   `url:"-" json:"liabilityWaiver,omitempty"` // Optional
@@ -66,8 +66,8 @@ func (s *TaxResidencesService) Create(ctx context.Context, opts *TaxResidenceCre
 type TaxResidenceGetOptions struct {
 	Access
 
-	ID     *int64 `url:"-" json:"id,omitempty"`     // Optional
-	UserID *int64 `url:"-" json:"userId,omitempty"` // Optional
+	ID     *string `url:"-" json:"id,omitempty"`     // Optional
+	UserID *string `url:"-" json:"userId,omitempty"` // Optional
 }
 
 // Get tax residences in Treezor.
@@ -95,16 +95,15 @@ func (s *TaxResidencesService) Get(ctx context.Context, opts *TaxResidenceGetOpt
 type TaxResidenceEditOptions struct {
 	Access
 
-	ID              *int64  `url:"-" json:"id,omitempty"`              // Required
-	UserID          *int64  `url:"-" json:"userId,omitempty"`          // Optional
+	UserID          *string `url:"-" json:"userId,omitempty"`          // Optional
 	Country         *string `url:"-" json:"country,omitempty"`         // Optional
 	TaxPayerID      *string `url:"-" json:"taxPayerId,omitempty"`      // Optional
 	LiabilityWaiver *bool   `url:"-" json:"liabilityWaiver,omitempty"` // Optional
 }
 
 // Edit tax residences in Treezor.
-func (s *TaxResidencesService) Edit(ctx context.Context, taxResidenceID int64, opts *TaxResidenceEditOptions) (*TaxResidence, *http.Response, error) {
-	u := fmt.Sprintf("taxResidences/%d", taxResidenceID)
+func (s *TaxResidencesService) Edit(ctx context.Context, taxResidenceID string, opts *TaxResidenceEditOptions) (*TaxResidence, *http.Response, error) {
+	u := fmt.Sprintf("taxResidences/%s", taxResidenceID)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, errors.WithStack(err)
@@ -128,8 +127,8 @@ type TaxResidenceDeleteOptions struct {
 }
 
 // Delete tax residences in Treezor.
-func (s *TaxResidencesService) Delete(ctx context.Context, taxResidenceID int64, opts *TaxResidenceDeleteOptions) (*TaxResidence, *http.Response, error) {
-	u := fmt.Sprintf("taxResidences/%d", taxResidenceID)
+func (s *TaxResidencesService) Delete(ctx context.Context, taxResidenceID string, opts *TaxResidenceDeleteOptions) (*TaxResidence, *http.Response, error) {
+	u := fmt.Sprintf("taxResidences/%s", taxResidenceID)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, errors.WithStack(err)
