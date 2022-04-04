@@ -4265,35 +4265,35 @@ func (t *TaxResidence) GetCountry() string {
 }
 
 // GetCreatedDate returns the CreatedDate field if it's non-nil, zero value otherwise.
-func (t *TaxResidence) GetCreatedDate() string {
+func (t *TaxResidence) GetCreatedDate() time.Time {
 	if t != nil && t.CreatedDate != nil {
 		return *t.CreatedDate
 	}
-	return ""
+	return time.Time{}
 }
 
 // GetDeletedDate returns the DeletedDate field if it's non-nil, zero value otherwise.
-func (t *TaxResidence) GetDeletedDate() string {
+func (t *TaxResidence) GetDeletedDate() time.Time {
 	if t != nil && t.DeletedDate != nil {
 		return *t.DeletedDate
 	}
-	return ""
+	return time.Time{}
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (t *TaxResidence) GetID() string {
 	if t != nil && t.ID != nil {
-		return *t.ID
+		return t.ID.String()
 	}
 	return ""
 }
 
 // GetLastUpdate returns the LastUpdate field if it's non-nil, zero value otherwise.
-func (t *TaxResidence) GetLastUpdate() string {
+func (t *TaxResidence) GetLastUpdate() time.Time {
 	if t != nil && t.LastUpdate != nil {
 		return *t.LastUpdate
 	}
-	return ""
+	return time.Time{}
 }
 
 // GetLiabilityWaiver returns the LiabilityWaiver field if it's non-nil, zero value otherwise.
@@ -4315,7 +4315,7 @@ func (t *TaxResidence) GetTaxPayerID() string {
 // GetUserID returns the UserID field if it's non-nil, zero value otherwise.
 func (t *TaxResidence) GetUserID() string {
 	if t != nil && t.UserID != nil {
-		return *t.UserID
+		return t.UserID.String()
 	}
 	return ""
 }

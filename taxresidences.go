@@ -4,8 +4,11 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/pkg/errors"
+
+	"github.com/tifo/treezor-sdk/internal/types"
 )
 
 // TaxResidencesService handles the communication with
@@ -16,15 +19,15 @@ type TaxResidencesService service
 
 // TaxResidence represents a kyc TaxResidences
 type TaxResidence struct {
-	ID              *string `json:"id,omitempty"`
-	UserID          *string `json:"userId,omitempty"`
-	Country         *string `json:"country,omitempty"`
-	TaxPayerID      *string `json:"taxPayerId,omitempty"`
-	LiabilityWaiver *bool   `json:"liabilityWaiver,omitempty"`
+	ID              *types.Identifier `json:"id,omitempty"`
+	UserID          *types.Identifier `json:"userId,omitempty"`
+	Country         *string           `json:"country,omitempty"`
+	TaxPayerID      *string           `json:"taxPayerId,omitempty"`
+	LiabilityWaiver *bool             `json:"liabilityWaiver,omitempty"`
 
-	CreatedDate *string `json:"createdDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
-	LastUpdate  *string `json:"lastUpdate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
-	DeletedDate *string `json:"deletedDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
+	CreatedDate *time.Time `json:"createdDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
+	LastUpdate  *time.Time `json:"lastUpdate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
+	DeletedDate *time.Time `json:"deletedDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
 }
 
 // TaxResidencesResponse returns an array of TaxResidence. Array
