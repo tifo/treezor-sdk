@@ -140,16 +140,33 @@ type CardRestrictionGroupLimits struct {
 	MerchantIdRestrictionGroups *types.Identifier `json:"merchantIdRestrictionGroups,omitempty"` // NOTE: not sure if its an identifier or a random integer
 }
 
+type CardRestrictionGroups struct {
+	MCCRestrictionGroupID      *string `url:"-" json:"mccRestrictionGroupId,omitempty"`
+	MerchantRestrictionGroupID *string `url:"-" json:"merchantRestrictionGroupId,omitempty"`
+	CountryRestrictionGroupID  *string `url:"-" json:"countryRestrictionGroupId,omitempty"`
+}
+
 type CreateVirtualCardOptions struct {
-	// Card.CreateVirtual / Card.RequestPhysical only data
-	UserID     *string `url:"-" json:"userId,omitempty"`
-	WalletID   *string `url:"-" json:"walletId,omitempty"`
-	CardPrint  *string `url:"-" json:"cardPrint,omitempty"`
-	PIN        *string `url:"-" json:"pin,omitempty"`
-	PermsGroup *string `url:"-" json:"permsGroup,omitempty"`
-	// NOTE: might need to be stored in another struct as you don't need to send the whole card model when update a card status
-	//	LockStatus *int64 `json:"lockStatus,omitempty"`
-	// TODO: CreateCardRequest has much more field than cards and might require its own type (missing fields such as Anonymous, ...)
+	Access
+
+	UserID       *string        `url:"-" json:"userId"`     // Required
+	WalletID     *string        `url:"-" json:"walletId"`   // Required
+	PermsGroup   *string        `url:"-" json:"permsGroup"` // Required
+	CardPrint    *string        `url:"-" json:"cardPrint"`  // Required
+	CardTag      *string        `url:"-" json:"cardTag,omitempty"`
+	PIN          *string        `url:"-" json:"pin,omitempty"`
+	Anonymous    *types.Boolean `url:"-" json:"anonymous,omitempty"`
+	SendToParent *types.Boolean `url:"-" json:"sendToParent,omitempty"`
+
+	CardLimits
+	CardRestrictionGroups
+
+	EmbossLegalName *types.Boolean `url:"-" json:"embossLegalName,omitempty"`
+	LogoID          *string        `url:"-" json:"logoId,omitempty"`
+	DesignCode      *string        `url:"-" json:"designCode,omitempty"`
+	PackageID       *string        `url:"-" json:"packageId,omitempty"`
+	CustomizedInfo  *string        `url:"-" json:"customizedInfo,omitempty"`
+	CardLanguages   *string        `url:"-" json:"cardLanguages,omitempty"`
 }
 
 // CreateVirtual will create a virtual card.
@@ -172,9 +189,37 @@ func (s *CardService) CreateVirtual(ctx context.Context, opts *CreateVirtualCard
 	return c.Cards[0], resp, nil
 }
 
+type RequestPhysicalCardOptions struct {
+	Access
+
+	UserID       *string        `url:"-" json:"userId"`     // Required
+	WalletID     *string        `url:"-" json:"walletId"`   // Required
+	PermsGroup   *string        `url:"-" json:"permsGroup"` // Required
+	CardPrint    *string        `url:"-" json:"cardPrint"`  // Required
+	CardTag      *string        `url:"-" json:"cardTag,omitempty"`
+	PIN          *string        `url:"-" json:"pin,omitempty"`
+	Anonymous    *types.Boolean `url:"-" json:"anonymous,omitempty"`
+	SendToParent *types.Boolean `url:"-" json:"sendToParent,omitempty"`
+
+	CardLimits
+	CardRestrictionGroups
+
+	EmbossLegalName *types.Boolean `url:"-" json:"embossLegalName,omitempty"`
+	LogoID          *string        `url:"-" json:"logoId,omitempty"`
+	DesignCode      *string        `url:"-" json:"designCode,omitempty"`
+	PackageID       *string        `url:"-" json:"packageId,omitempty"`
+	CustomizedInfo  *string        `url:"-" json:"customizedInfo,omitempty"`
+	CardLanguages   *string        `url:"-" json:"cardLanguages,omitempty"`
+}
+
 // RequestPhysical will request a physical card that will be sent to the user's address.
-func (s *CardService) RequestPhysical(ctx context.Context, card *Card) (*Card, *http.Response, error) {
-	req, _ := s.client.NewRequest(http.MethodPost, "cards/RequestPhysical", card)
+func (s *CardService) RequestPhysical(ctx context.Context, opts *RequestPhysicalCardOptions) (*Card, *http.Response, error) {
+	u := "cards/RequestPhysical"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPost, u, opts)
 
 	c := new(CardResponse)
 	resp, err := s.client.Do(ctx, req, c)
@@ -191,10 +236,10 @@ func (s *CardService) RequestPhysical(ctx context.Context, card *Card) (*Card, *
 // CardGetImagesOptions contains options when getting a card image.
 type CardGetImagesOptions struct {
 	Access
-	CardID *string `url:"cardId,omitempty"` // Required
+	CardID              *string `url:"cardId,omitempty" json:"-"` // Required
+	EncryptionMethod    *string `url:"encryptionMethod,omitempty" json:"-"`
+	EncryptionPublicKey *string `url:"encryptionPublicKey,omitempty" json:"-"`
 }
-
-// NOTE: should we just pass CardID to the GetImage function even though it doesnt follow the API definition ?
 
 // CardImagesResponse contains a list of virtual card images.
 type CardImagesResponse struct {
@@ -203,7 +248,7 @@ type CardImagesResponse struct {
 
 // CardImage represents a virtual card image.
 type CardImage struct {
-	ID     *string `json:"id,omitempty"`
+	ID     *string `json:"id"` // Required
 	CardID *string `json:"cardId,omitempty"`
 	File   *string `json:"file,omitempty"`
 }
@@ -255,6 +300,20 @@ func (s *CardService) Get(ctx context.Context, cardID string, opts *CardGetOptio
 
 // CardListOptions contains URL options for listing cards.
 type CardListOptions struct {
+	Access
+
+	CardID                     *string        `url:"cardId,omitempty" json:"-"`
+	UserID                     *string        `url:"userId,omitempty" json:"-"`
+	EmbossedName               *string        `url:"embossedName,omitempty" json:"-"`
+	PublicToken                *string        `url:"publicToken,omitempty" json:"-"`
+	PermsGroup                 *string        `url:"permsGroup,omitempty" json:"-"`
+	IsPhysical                 *types.Boolean `url:"isPhysical,omitempty" json:"-"`
+	IsConverted                *types.Boolean `url:"isConverted,omitempty" json:"-"`
+	LockStatus                 *LockStatus    `url:"lockStatus,omitempty" json:"-"`
+	MCCRestrictionGroupID      *string        `url:"mccRestrictionGroupId,omitempty" json:"-"`
+	MerchantRestrictionGroupID *string        `url:"merchantRestrictionGroupId,omitempty" json:"-"`
+	CountryRestrictionGroupID  *string        `url:"countryRestrictionGroupId,omitempty" json:"-"`
+
 	ListOptions
 }
 
@@ -536,5 +595,3 @@ func (s *CardService) Register3DSecure(ctx context.Context, cardID *Card3DS) (*C
 	}*/
 	return card, resp, nil
 }
-
-// TODO: Update Card API
