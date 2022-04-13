@@ -1144,12 +1144,12 @@ func (c *CardImage) GetCardID() string {
 	return ""
 }
 
-// GetFile returns the File field if it's non-nil, zero value otherwise.
-func (c *CardImage) GetFile() string {
-	if c != nil && c.File != nil {
-		return *c.File
+// GetFile returns the File field.
+func (c *CardImage) GetFile() []byte {
+	if c != nil {
+		return c.File
 	}
-	return ""
+	return nil
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
@@ -1238,6 +1238,30 @@ func (c *CardRestrictionGroupLimits) GetPaymentDailyLimit() float64 {
 		return c.PaymentDailyLimit.Float64()
 	}
 	return 0.0
+}
+
+// GetCountryRestrictionGroupID returns the CountryRestrictionGroupID field if it's non-nil, zero value otherwise.
+func (c *CardRestrictionGroups) GetCountryRestrictionGroupID() string {
+	if c != nil && c.CountryRestrictionGroupID != nil {
+		return *c.CountryRestrictionGroupID
+	}
+	return ""
+}
+
+// GetMCCRestrictionGroupID returns the MCCRestrictionGroupID field if it's non-nil, zero value otherwise.
+func (c *CardRestrictionGroups) GetMCCRestrictionGroupID() string {
+	if c != nil && c.MCCRestrictionGroupID != nil {
+		return *c.MCCRestrictionGroupID
+	}
+	return ""
+}
+
+// GetMerchantRestrictionGroupID returns the MerchantRestrictionGroupID field if it's non-nil, zero value otherwise.
+func (c *CardRestrictionGroups) GetMerchantRestrictionGroupID() string {
+	if c != nil && c.MerchantRestrictionGroupID != nil {
+		return *c.MerchantRestrictionGroupID
+	}
+	return ""
 }
 
 // GetAuthorizationIssuerID returns the AuthorizationIssuerID field if it's non-nil, zero value otherwise.

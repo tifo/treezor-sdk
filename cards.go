@@ -250,7 +250,7 @@ type CardImagesResponse struct {
 type CardImage struct {
 	ID     *string `json:"id"` // Required
 	CardID *string `json:"cardId,omitempty"`
-	File   *string `json:"file,omitempty"`
+	File   []byte  `json:"file,omitempty"`
 }
 
 // GetImage returns the provided virtual card image.
