@@ -378,19 +378,22 @@ const (
 	Locked
 	Lost
 	Stolen
+	Destroyed
 )
 
 type CardLockUnlockOptions struct {
-	LockStatus *int64 `json:"lockStatus,omitempty"`
+	Access
+	LockStatus LockStatus `url:"-" json:"lockStatus"`
 }
 
-// LockUnlock toggle the lock or unlock state of a card. If the card is locked, calling this function
-// will unlock the card, and vice versa.
-func (s *CardService) LockUnlock(ctx context.Context, cardID string, lockStatus LockStatus) (*Card, *http.Response, error) {
+// LockUnlock updates a card status
+func (s *CardService) LockUnlock(ctx context.Context, cardID string, opts *CardLockUnlockOptions) (*Card, *http.Response, error) {
 	u := fmt.Sprintf("cards/%s/LockUnlock/", cardID)
-	req, _ := s.client.NewRequest(http.MethodPut, u, &CardLockUnlockOptions{
-		LockStatus: Int64(int64(lockStatus)),
-	})
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPut, u, opts)
 
 	c := new(CardResponse)
 	resp, err := s.client.Do(ctx, req, c)
@@ -398,8 +401,8 @@ func (s *CardService) LockUnlock(ctx context.Context, cardID string, lockStatus 
 		return nil, resp, errors.WithStack(err)
 	}
 
-	if len(c.Cards) < 1 {
-		return nil, resp, errors.New("API returned no card")
+	if len(c.Cards) != 1 {
+		return nil, resp, errors.Errorf("API did not returned exactly one card: %d cards returned", len(c.Cards))
 	}
 	return c.Cards[0], resp, nil
 }
@@ -566,10 +569,19 @@ func (s *CardService) UnblockPIN(ctx context.Context, cardID string) (*Card, *ht
 	return c.Cards[0], resp, nil
 }
 
-// Deactivate deactivates a card permanently.
-func (s *CardService) Deactivate(ctx context.Context, cardID string) (*Card, *http.Response, error) {
-	u := fmt.Sprintf("cards/%s", cardID)
-	req, _ := s.client.NewRequest(http.MethodDelete, u, nil)
+// Card3DS is used to make register a 3D Secure card.
+type RegisterCard3DSOptions struct {
+	CardID *string `url:"-" json:"cardId"`
+}
+
+// Register3DS will register a card to 3DS
+func (s *CardService) Register3DS(ctx context.Context, opts *RegisterCard3DSOptions) (*Card, *http.Response, error) {
+	u := "card/Register3DS"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPost, u, opts)
 
 	c := new(CardResponse)
 	resp, err := s.client.Do(ctx, req, c)
@@ -581,30 +593,4 @@ func (s *CardService) Deactivate(ctx context.Context, cardID string) (*Card, *ht
 		return nil, resp, errors.Errorf("API did not returned exactly one card: %d cards returned", len(c.Cards))
 	}
 	return c.Cards[0], resp, nil
-}
-
-// Card3DS is used to make register a 3D Secure card.
-type Card3DS struct {
-	CardID *string `json:"cardId,omitempty"`
-}
-
-// Register3DSecure will register a card to 3DSecure
-func (s *CardService) Register3DSecure(ctx context.Context, cardID *Card3DS) (*Card, *http.Response, error) {
-	card := &Card{}
-	req, _ := s.client.NewRequest(http.MethodPost, "cards/Register3DS", cardID)
-
-	c := new(CardResponse)
-	resp, err := s.client.Do(ctx, req, c)
-	if err != nil {
-		return nil, resp, errors.WithStack(err)
-	}
-
-	// TODO: Make sure the response is actually a single card or an empty array
-	if len(c.GetCards()) > 0 {
-		card = c.GetCards()[len(c.GetCards())-1]
-	}
-	/*if len(c.Cards) != 1 {
-		return nil, resp, errors.Errorf("API did not returned exactly one card: %d cards returned", len(c.Cards))
-	}*/
-	return card, resp, nil
 }

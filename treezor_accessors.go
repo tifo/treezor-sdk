@@ -1040,14 +1040,6 @@ func (c *Card) GetWalletID() string {
 	return ""
 }
 
-// GetCardID returns the CardID field if it's non-nil, zero value otherwise.
-func (c *Card3DS) GetCardID() string {
-	if c != nil && c.CardID != nil {
-		return *c.CardID
-	}
-	return ""
-}
-
 // GetChargebacks returns the Chargebacks field.
 func (c *CardChargebackEvent) GetChargebacks() []*Chargeback {
 	if c != nil {
@@ -3958,6 +3950,14 @@ func (r *RecallREvent) GetRecallRs() []*RecallR {
 		return r.RecallRs
 	}
 	return nil
+}
+
+// GetCardID returns the CardID field if it's non-nil, zero value otherwise.
+func (r *RegisterCard3DSOptions) GetCardID() string {
+	if r != nil && r.CardID != nil {
+		return *r.CardID
+	}
+	return ""
 }
 
 // GetIsRecurrent returns the IsRecurrent field if it's non-nil, zero value otherwise.
