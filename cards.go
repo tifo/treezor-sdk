@@ -494,17 +494,20 @@ func (s *CardService) ConvertVirtual(ctx context.Context, cardID string) (*Card,
 	return c.Cards[0], resp, nil
 }
 
-// PIN is used to make PIN modification operations.
-type PIN struct {
-	Current      string `json:"currentPIN,omitempty"`
-	New          string `json:"newPIN,omitempty"`
-	Confirmation string `json:"confirmPIN,omitempty"`
+type ChangePINOptions struct {
+	CurrentPIN string `url:"-" json:"currentPIN,omitempty"`
+	NewPIN     string `url:"-" json:"newPIN,omitempty"`
+	ConfirmPIN string `url:"-" json:"confirmPIN,omitempty"`
 }
 
 // ChangePIN changes the card PIN. It needs the current PIN, the new one and a confirmation one.
-func (s *CardService) ChangePIN(ctx context.Context, cardID string, pin *PIN) (*Card, *http.Response, error) {
+func (s *CardService) ChangePIN(ctx context.Context, cardID string, opts *ChangePINOptions) (*Card, *http.Response, error) {
 	u := fmt.Sprintf("cards/%s/ChangePIN/", cardID)
-	req, _ := s.client.NewRequest(http.MethodPut, u, pin)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPut, u, opts)
 
 	c := new(CardResponse)
 	resp, err := s.client.Do(ctx, req, c)
@@ -518,11 +521,21 @@ func (s *CardService) ChangePIN(ctx context.Context, cardID string, pin *PIN) (*
 	return c.Cards[0], resp, nil
 }
 
+type SetPINOptions struct {
+	Access
+	NewPIN     string `url:"-" json:"newPIN,omitempty"`
+	ConfirmPIN string `url:"-" json:"confirmPIN,omitempty"`
+}
+
 // SetPIN sets the card PIN. It needs the the new PIN and a confirmation one. It is solely used by operators,
 // not users.
-func (s *CardService) SetPIN(ctx context.Context, cardID string, pin *PIN) (*Card, *http.Response, error) {
+func (s *CardService) SetPIN(ctx context.Context, cardID string, opts *SetPINOptions) (*Card, *http.Response, error) {
 	u := fmt.Sprintf("cards/%s/setPIN/", cardID)
-	req, _ := s.client.NewRequest(http.MethodPut, u, pin)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPut, u, opts)
 
 	c := new(CardResponse)
 	resp, err := s.client.Do(ctx, req, c)
