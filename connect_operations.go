@@ -17,22 +17,20 @@ type OperationAmount struct {
 	Currency *Currency `json:"currency,omitempty"`
 }
 
-type OperationType string
-
 // NOTE: It's not clear in the documentation if snake_case or camlCase is used here (see https://docs.treezor.com/guide/operations/introduction.html)
 const (
 	// Standard Operation
-	OperationTypeCheck           OperationType = "check"
-	OperationTypeBankTransfer    OperationType = "bankTransfer"
-	OperationTypeBankDirectDebit OperationType = "bankDirectDebit"
-	OperationTypeCardTopup       OperationType = "cardTopup"
-	OperationTypeCardTransaction OperationType = "cardTransaction"
+	OperationTypeCheck           = "check"
+	OperationTypeBankTransfer    = "bankTransfer"
+	OperationTypeBankDirectDebit = "bankDirectDebit"
+	OperationTypeCardTopup       = "cardTopup"
+	OperationTypeCardTransaction = "cardTransaction"
 	// Refund Operation
-	OperationTypeCheckRefund           OperationType = "checkRefund"
-	OperationTypeBankTransferRefund    OperationType = "bankTransferRefund"
-	OperationTypeBankDirectDebitRefund OperationType = "bankDirectDebitRefund"
-	OperationTypeCardTopupRefund       OperationType = "cardTopupRefund"
-	OperationTypeCardTransactionRefund OperationType = "cardTransactionRefund"
+	OperationTypeCheckRefund           = "checkRefund"
+	OperationTypeBankTransferRefund    = "bankTransferRefund"
+	OperationTypeBankDirectDebitRefund = "bankDirectDebitRefund"
+	OperationTypeCardTopupRefund       = "cardTopupRefund"
+	OperationTypeCardTransactionRefund = "cardTransactionRefund"
 )
 
 type OperationDirection string
@@ -83,7 +81,7 @@ type OperationDate struct {
 }
 
 type Operation struct {
-	OperationType     *OperationType       `json:"operationType,omitempty"`
+	OperationType     *string              `json:"operationType,omitempty"`
 	Amount            *OperationAmount     `json:"amount,omitempty"`
 	WalletID          *types.Identifier    `json:"walletId,omitempty"`
 	Settlement        *OperationSettlement `json:"settlement,omitempty"`

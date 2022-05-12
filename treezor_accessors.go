@@ -2760,12 +2760,12 @@ func (o *Operation) GetObjectID() string {
 	return ""
 }
 
-// GetOperationType returns the OperationType field.
-func (o *Operation) GetOperationType() *OperationType {
-	if o != nil {
-		return o.OperationType
+// GetOperationType returns the OperationType field if it's non-nil, zero value otherwise.
+func (o *Operation) GetOperationType() string {
+	if o != nil && o.OperationType != nil {
+		return *o.OperationType
 	}
-	return nil
+	return ""
 }
 
 // GetSettlement returns the Settlement field.
