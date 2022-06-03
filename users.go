@@ -573,7 +573,7 @@ func (s *UserService) ReviewKYC(ctx context.Context, userID string, opts *UserRe
 type UserRequestKYCLivenessOptions struct {
 	Access
 
-	RedirectURL *string `url:"-" json:"redirect_url"`
+	RedirectURL *string `url:"-" json:"redirectUrl"`
 }
 
 // IdentificationResponse represent a list of identification
