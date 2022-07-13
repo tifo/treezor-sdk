@@ -434,16 +434,16 @@ func (s *CardService) ChangeOptions(ctx context.Context, cardID string, options 
 
 // CardLimits contains a card limit.
 type CardLimits struct {
-	LimitATMYear      int64 `json:"limitAtmYear,omitempty"`
-	LimitATMMonth     int64 `json:"limitAtmMonth,omitempty"`
-	LimitATMWeek      int64 `json:"limitAtmWeek,omitempty"`
-	LimitATMDay       int64 `json:"limitAtmDay,omitempty"`
-	LimitATMAll       int64 `json:"limitAtmAll,omitempty"`
-	LimitPaymentYear  int64 `json:"limitPaymentYear,omitempty"`
-	LimitPaymentMonth int64 `json:"limitPaymentMonth,omitempty"`
-	LimitPaymentWeek  int64 `json:"limitPaymentWeek,omitempty"`
-	LimitPaymentDay   int64 `json:"limitPaymentDay,omitempty"`
-	LimitPaymentAll   int64 `json:"limitPaymentAng,omitempty"`
+	LimitATMYear      int64 `url:"-" json:"limitAtmYear,omitempty"`
+	LimitATMMonth     int64 `url:"-" json:"limitAtmMonth,omitempty"`
+	LimitATMWeek      int64 `url:"-" json:"limitAtmWeek,omitempty"`
+	LimitATMDay       int64 `url:"-" json:"limitAtmDay,omitempty"`
+	LimitATMAll       int64 `url:"-" json:"limitAtmAll,omitempty"`
+	LimitPaymentYear  int64 `url:"-" json:"limitPaymentYear,omitempty"`
+	LimitPaymentMonth int64 `url:"-" json:"limitPaymentMonth,omitempty"`
+	LimitPaymentWeek  int64 `url:"-" json:"limitPaymentWeek,omitempty"`
+	LimitPaymentDay   int64 `url:"-" json:"limitPaymentDay,omitempty"`
+	LimitPaymentAll   int64 `url:"-" json:"limitPaymentAng,omitempty"`
 }
 
 // ChangeLimits change a card' limits with the provided limits.
