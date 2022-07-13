@@ -15,9 +15,9 @@ import (
 )
 
 const (
-	defaultStagingBaseURL    = "https://sandbox.treezor.com/v1/"
-	defaultProductionBaseURL = "https://treezor.com/v1/"
-	userAgent                = "go-treezor-sdk/0.1.0"
+	// defaultStagingBaseURL    = "https://sandbox.treezor.com/v1/"
+	// defaultProductionBaseURL = "https://treezor.com/v1/"
+	userAgent = "go-treezor-sdk/0.1.0"
 )
 
 // ConnectClient allows access to both the legacy Treezor API as well as the new Connect endpoints
@@ -79,20 +79,20 @@ func newConnectClient(httpClient *http.Client, connectBaseURL *url.URL) *connect
 	return c
 }
 
-// NewClient returns a new Treezor API client. If a nil httpClient is
-// provided, http.DefaultClient will be used. To use API methods which require
-// authentication, provide an http.Client that will perform the authentication
-// for you (such as that provided by the golang.org/x/oauth2 library).
-func NewClient(httpClient *http.Client, isProduction bool) *LegacyClient {
-	if httpClient == nil {
-		httpClient = http.DefaultClient
-	}
-	baseURL, _ := url.Parse(defaultStagingBaseURL)
-	if isProduction {
-		baseURL, _ = url.Parse(defaultProductionBaseURL)
-	}
-	return (*LegacyClient)(newAPIClient(httpClient, baseURL))
-}
+// // NewClient returns a new Treezor API client. If a nil httpClient is
+// // provided, http.DefaultClient will be used. To use API methods which require
+// // authentication, provide an http.Client that will perform the authentication
+// // for you (such as that provided by the golang.org/x/oauth2 library).
+// func NewClient(httpClient *http.Client, isProduction bool) *LegacyClient {
+// 	if httpClient == nil {
+// 		httpClient = http.DefaultClient
+// 	}
+// 	baseURL, _ := url.Parse(defaultStagingBaseURL)
+// 	if isProduction {
+// 		baseURL, _ = url.Parse(defaultProductionBaseURL)
+// 	}
+// 	return (*LegacyClient)(newAPIClient(httpClient, baseURL))
+// }
 
 // NewConnectClient returns a new Treezor API client using the Base URL
 // passed as parameters. If a nil httpClient is provided, http.DefaultClient
