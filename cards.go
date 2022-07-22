@@ -576,7 +576,7 @@ type RegisterCard3DSOptions struct {
 
 // Register3DS will register a card to 3DS
 func (s *CardService) Register3DS(ctx context.Context, opts *RegisterCard3DSOptions) (*Card, *http.Response, error) {
-	u := "card/Register3DS"
+	u := "cards/Register3DS"
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, errors.WithStack(err)
