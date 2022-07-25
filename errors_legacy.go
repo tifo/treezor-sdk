@@ -2,7 +2,6 @@ package treezor
 
 import (
 	"fmt"
-	"net/http"
 )
 
 // Error code for given status
@@ -29,16 +28,4 @@ type APIError struct {
 
 func (e *APIError) Error() string {
 	return fmt.Sprintf("%v error caused because: %v", e.Code, e.Message)
-}
-
-// Error represents an all errors apiErrorResponse as API errors (transforming simple errors to APIErrors).
-type Error struct {
-	Response *http.Response // HTTP response that caused this error
-	Errors   []APIError     // Formatted Errors
-}
-
-func (r *Error) Error() string {
-	return fmt.Sprintf("%v %v: %d %+v",
-		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
-		r.Response.StatusCode, r.Errors)
 }

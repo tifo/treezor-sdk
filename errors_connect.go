@@ -7,8 +7,8 @@ import (
 
 // connectErrorResponse reports one or more errors caused by an API request.
 type connectErrorResponse struct {
-	Errors []APIError `json:"errors,omitempty"`
-	Error  *string    `json:"error,omitempty"`
+	Errors []ConnectAPIError `json:"errors,omitempty"`
+	Error  *string           `json:"error,omitempty"`
 }
 
 // ConnectAPIError reports more details on an individual error in an connectApiErrorResponse.
