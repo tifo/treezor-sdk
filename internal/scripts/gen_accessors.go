@@ -14,6 +14,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"regexp"
 	"sort"
 	"strings"
 	"text/template"
@@ -30,9 +31,11 @@ var (
 
 	// blacklistStructMethod lists "struct.method" combos to skip.
 	blacklistStructMethod = map[string]bool{}
-	// blacklistStruct lists structs to skip.
-	blacklistStruct = map[string]bool{
-		"Client": true,
+	// blacklistStructPattern define a list of struct name pattern to skip.
+	blacklistStructPattern = []*regexp.Regexp{
+		regexp.MustCompile("^[a-zA-Z]*Client$"),
+		regexp.MustCompile("^[a-zA-Z]*Error$"),
+		regexp.MustCompile("^[a-zA-Z]+Options$"),
 	}
 )
 
@@ -82,18 +85,25 @@ func (t *templateData) processAST(f *ast.File) error {
 			if !ok {
 				continue
 			}
+			// Check that the type is indeed a struct
+			st, ok := ts.Type.(*ast.StructType)
+			if !ok {
+				continue
+			}
 			// Skip unexported identifiers.
 			if !ts.Name.IsExported() {
 				logf("Struct %v is unexported; skipping.", ts.Name)
 				continue
 			}
 			// Check if the struct is blacklisted.
-			if blacklistStruct[ts.Name.Name] {
-				logf("Struct %v is blacklisted; skipping.", ts.Name)
-				continue
+			blacklisted := false
+			for _, re := range blacklistStructPattern {
+				if re.MatchString(ts.Name.Name) {
+					blacklisted = true
+				}
 			}
-			st, ok := ts.Type.(*ast.StructType)
-			if !ok {
+			if blacklisted {
+				logf("Struct %v is blacklisted; skipping.", ts.Name)
 				continue
 			}
 			for _, field := range st.Fields.List {
@@ -161,7 +171,7 @@ func (t *templateData) dump() error {
 	return ioutil.WriteFile(t.filename, clean, 0644)
 }
 
-func newGetter(receiverType, fieldName, fieldType, zeroValue string, namedStruct, slice bool) *getter {
+func newGetter(receiverType, fieldName, fieldType, zeroValue string, namedStruct, slice bool, accessor string) *getter {
 	return &getter{
 		sortVal:      strings.ToLower(receiverType) + "." + strings.ToLower(fieldName),
 		ReceiverVar:  strings.ToLower(receiverType[:1]),
@@ -171,6 +181,7 @@ func newGetter(receiverType, fieldName, fieldType, zeroValue string, namedStruct
 		ZeroValue:    zeroValue,
 		NamedStruct:  namedStruct,
 		Slice:        slice,
+		Accessor:     accessor,
 	}
 }
 
@@ -180,47 +191,62 @@ func (t *templateData) addArrayType(x *ast.ArrayType, receiverType, fieldName st
 	case *ast.Ident:
 		eltType = elt.String()
 	case *ast.StarExpr:
-		eltType = "*" + elt.X.(*ast.Ident).String()
+		switch xX := elt.X.(type) {
+		case *ast.Ident:
+			eltType = "*" + xX.String()
+		case *ast.SelectorExpr:
+			eltType = "*" + xX.X.(*ast.Ident).Name + "." + xX.Sel.Name
+		}
 	default:
 		logf("addArrayType: type %q, field %q: unknown elt type: %T %+v; skipping.", receiverType, fieldName, elt, elt)
 		return
 	}
 
-	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, "[]"+eltType, "nil", false, !fromPtr))
+	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, "[]"+eltType, "nil", false, !fromPtr, ""))
 }
 
 func (t *templateData) addIdent(x *ast.Ident, receiverType, fieldName string) {
 	var zeroValue string
 	var namedStruct = false
+	var accessor = ""
+	var fieldType = x.String()
 	switch x.String() {
 	case "int", "int16", "int32", "int64":
-		zeroValue = "0"
+		zeroValue = `0`
 	case "float32", "float64":
-		zeroValue = "0.0"
+		zeroValue = `0.0`
 	case "string":
 		zeroValue = `""`
 	case "bool":
-		zeroValue = "false"
-	case "Date":
-		zeroValue = "Date{}"
-	case "TimestampParis":
-		zeroValue = "TimestampParis{}"
-	case "TimestampLondon":
-		zeroValue = "TimestampLondon{}"
+		zeroValue = `false`
+	case "KYCLevel":
+		zeroValue = `KYCLevelNone`
+	case "KYCReview":
+		zeroValue = `KYCReviewNone`
 	case "Currency":
 		zeroValue = `Currency("")`
-	case "Level":
-		zeroValue = "LevelNone"
-	case "Review":
-		zeroValue = "ReviewNone"
-	case "AdditionalDataOneOf":
-		zeroValue = "AdditionalDataOneOf{}"
+	case "UserType":
+		zeroValue = `UserType(0)`
+	case "ParentType":
+		zeroValue = `ParentType("")`
+	case "ControllingPersonType":
+		zeroValue = `ControllingPersonType(0)`
+	case "EmployeeType":
+		zeroValue = `EmployeeTypeNone`
+	case "EntityType":
+		zeroValue = `EntityType(0)`
+	case "WalletType":
+		zeroValue = `WalletType(0)`
+	case "DocumentStatus":
+		zeroValue = `DocumentStatus("")`
+	case "DocumentType":
+		zeroValue = `DocumentType(0)`
 	default:
 		zeroValue = "nil"
 		namedStruct = true
 	}
 
-	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, x.String(), zeroValue, namedStruct, false))
+	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, fieldType, zeroValue, namedStruct, false, accessor))
 }
 
 func (t *templateData) addMapType(x *ast.MapType, receiverType, fieldName string) {
@@ -244,7 +270,7 @@ func (t *templateData) addMapType(x *ast.MapType, receiverType, fieldName string
 
 	fieldType := fmt.Sprintf("map[%v]%v", keyType, valueType)
 	zeroValue := fmt.Sprintf("map[%v]%v{}", keyType, valueType)
-	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, fieldType, zeroValue, false, false))
+	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, fieldType, zeroValue, false, false, ""))
 }
 
 func (t *templateData) addSelectorExpr(x *ast.SelectorExpr, receiverType, fieldName string) {
@@ -258,24 +284,58 @@ func (t *templateData) addSelectorExpr(x *ast.SelectorExpr, receiverType, fieldN
 	}
 
 	switch xX {
-	case "time", "json", "http":
+	case "time", "json", "http", "types":
 		switch xX {
 		case "json":
-			t.Imports["encoding/json"] = "encoding/json"
+			t.Imports["json"] = "github.com/tifo/treezor-sdk/internal/json"
 		case "http":
 			t.Imports["net/http"] = "net/http"
+		case "types":
+			// Do not import as we are transforming each types here
+			t.Imports["types"] = "github.com/tifo/treezor-sdk/internal/types"
 		default:
 			t.Imports[xX] = xX
 		}
 		fieldType := fmt.Sprintf("%v.%v", xX, x.Sel.Name)
 		zeroValue := fmt.Sprintf("%v.%v{}", xX, x.Sel.Name)
-		if xX == "time" && x.Sel.Name == "Duration" {
+		accessor := ""
+		switch {
+		case xX == "time" && x.Sel.Name == "Duration":
 			zeroValue = "0"
-		}
-		if xX == "json" && x.Sel.Name == "Number" {
+		case xX == "json" && x.Sel.Name == "Number":
 			zeroValue = `json.Number("")`
+		case xX == "types" && x.Sel.Name == "Amount":
+			zeroValue = `0.0`
+			fieldType = "float64"
+			accessor = "Float64()"
+		case xX == "types" && x.Sel.Name == "Integer":
+			zeroValue = `0`
+			fieldType = "int64"
+			accessor = "Int64()"
+		case xX == "types" && x.Sel.Name == "Boolean":
+			zeroValue = `false`
+			fieldType = "bool"
+			accessor = "Bool()"
+		case xX == "types" && x.Sel.Name == "Percentage":
+			zeroValue = `0.0`
+			fieldType = "float64"
+			accessor = "Float64()"
+		case xX == "types" && x.Sel.Name == "Identifier":
+			zeroValue = `""`
+			fieldType = "string"
+			accessor = "String()"
+		case xX == "types" && x.Sel.Name == "Date":
+			t.Imports["time"] = "time"
+			fieldType = "time.Time"
+			zeroValue = "time.Time{}"
+			accessor = "Time"
+		case xX == "types" && strings.HasPrefix(x.Sel.Name, "Timestamp"):
+			t.Imports["time"] = "time"
+			fieldType = "time.Time"
+			zeroValue = "time.Time{}"
+			accessor = "Time"
 		}
-		t.Getters = append(t.Getters, newGetter(receiverType, fieldName, fieldType, zeroValue, false, false))
+		t.Getters = append(t.Getters, newGetter(receiverType, fieldName, fieldType, zeroValue, false, false, accessor))
 	default:
 		logf("addSelectorExpr: xX %q, type %q, field %q: unknown x=%+v; skipping.", xX, receiverType, fieldName, x)
 	}
@@ -297,6 +357,7 @@ type getter struct {
 	ZeroValue    string
 	NamedStruct  bool // Getter for named struct.
 	Slice        bool // Getter for slices.
+	Accessor     string
 }
 
 type byName []*getter
@@ -305,13 +366,17 @@ func (b byName) Len() int           { return len(b) }
 func (b byName) Less(i, j int) bool { return b[i].sortVal < b[j].sortVal }
 func (b byName) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
 
-const source = `// Code generated by gen_accessors; DO NOT EDIT.
+const source = `// Code generated by internal/scripts/gen_accessors; DO NOT EDIT.
 
 package {{.Package}}
 {{with .Imports}}
 import (
-  {{- range . -}}
-  "{{.}}"
+  {{- range $alias, $path := . -}}
+  {{- if eq $alias $path -}}
+  "{{ $path }}"
+  {{- else -}}
+  {{ $alias }} "{{ $path }}"
+  {{- end }}
   {{end -}}
 )
 {{end}}
@@ -332,6 +397,14 @@ func ({{.ReceiverVar}} *{{.ReceiverType}}) Get{{.FieldName}}() {{.FieldType}} {
   }
   return {{.ZeroValue}}
 }
+{{else if .Accessor }}
+// Get{{.FieldName}} returns the {{.FieldName}} field if it's non-nil, zero value otherwise.
+func ({{.ReceiverVar}} *{{.ReceiverType}}) Get{{.FieldName}}() {{.FieldType}} {
+  if {{.ReceiverVar}} != nil && {{.ReceiverVar}}.{{.FieldName}} != nil {
+    return {{.ReceiverVar}}.{{.FieldName}}.{{.Accessor}}
+  }
+  return {{.ZeroValue}}
+}
 {{else}}
 // Get{{.FieldName}} returns the {{.FieldName}} field if it's non-nil, zero value otherwise.
 func ({{.ReceiverVar}} *{{.ReceiverType}}) Get{{.FieldName}}() {{.FieldType}} {
@@ -343,3 +416,5 @@ func ({{.ReceiverVar}} *{{.ReceiverType}}) Get{{.FieldName}}() {{.FieldType}} {
 {{end}}
 {{end}}
 `
+
+// TODO: transform []*types.Identifier to []string

@@ -1,11 +1,12 @@
-package treezor
+package types
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
+
+	json "github.com/tifo/treezor-sdk/internal/json"
 )
 
 func TestTimestampLondon_MarshalJSON(t *testing.T) {

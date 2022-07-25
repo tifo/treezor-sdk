@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	"github.com/pkg/errors"
+
+	"github.com/tifo/treezor-sdk/internal/types"
 )
 
 // BalanceService handles communication with the balance related
@@ -21,29 +23,29 @@ type BalanceResponse struct {
 
 // Balance represents the balance on a wallet.
 type Balance struct {
-	Access
-	WalletID          *string         `json:"walletId,omitempty"`
-	CurrentBalance    *float64        `json:"currentBalance,string,omitempty"`
-	Authorizations    *float64        `json:"authorizations,string,omitempty"`
-	AuthorizedBalance *float64        `json:"authorizedBalance,string,omitempty"`
-	Currency          Currency        `json:"currency,omitempty"`
-	CalculationDate   *TimestampParis `json:"calculationDate,omitempty"`
+	WalletID          *types.Identifier     `json:"walletId,omitempty"`
+	CurrentBalance    *types.Amount         `json:"currentBalance,omitempty"`
+	Authorizations    *types.Amount         `json:"authorizations,omitempty"`
+	AuthorizedBalance *types.Amount         `json:"authorizedBalance,omitempty"`
+	Currency          *Currency             `json:"currency,omitempty"`
+	CalculationDate   *types.TimestampParis `json:"calculationDate,omitempty"`
 }
 
-// BalanceOptions specifies the optional parameters to the BalanceService.List.
-type BalanceOptions struct {
-	ListOptions
+// BalanceSearchOptions specifies the optional parameters to the BalanceService.Search.
+type BalanceSearchOptions struct {
+	Access
 
 	WalletID string `url:"walletId,omitempty"`
 	UserID   string `url:"userId,omitempty"`
 }
 
-// List the balances for the authenticated user. If WalletID is provided,
+// Search the balances for the authenticated user. If WalletID is provided,
 // list one balance for the specified wallet; if UserID is provided, list all
 // the balances for the user's wallets.
-func (s *BalanceService) List(ctx context.Context, opt *BalanceOptions) (*BalanceResponse, *http.Response, error) {
+// See https://www.treezor.com/api-documentation/#/balance/getBalances
+func (s *BalanceService) Search(ctx context.Context, opts *BalanceSearchOptions) (*BalanceResponse, *http.Response, error) {
 	u := "balances"
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, errors.WithStack(err)
 	}
@@ -56,4 +58,50 @@ func (s *BalanceService) List(ctx context.Context, opt *BalanceOptions) (*Balanc
 	}
 
 	return b, resp, errors.WithStack(err)
+}
+
+// BalanceListOptions specifies the optional parameters to the BalanceService.List.
+type BalanceListOptions struct {
+	Access
+}
+
+// List the balances for all the wallets of the specified userID.
+func (s *BalanceService) List(ctx context.Context, userID string, opts *BalanceListOptions) ([]*Balance, *http.Response, error) {
+
+	searchOpts := &BalanceSearchOptions{
+		Access: opts.Access,
+		UserID: userID,
+	}
+
+	b, resp, err := s.Search(ctx, searchOpts)
+	if err != nil {
+		return nil, resp, errors.WithStack(err)
+	}
+
+	return b.Balances, resp, errors.WithStack(err)
+}
+
+// BalanceGetOptions specifies the optional parameters to the BalanceService.Get.
+type BalanceGetOptions struct {
+	Access
+}
+
+// Get the balances for the specified wallet.
+func (s *BalanceService) Get(ctx context.Context, walletID string, opts *BalanceGetOptions) (*Balance, *http.Response, error) {
+
+	searchOpts := &BalanceSearchOptions{
+		Access:   opts.Access,
+		WalletID: walletID,
+	}
+
+	b, resp, err := s.Search(ctx, searchOpts)
+	if err != nil {
+		return nil, resp, errors.WithStack(err)
+	}
+
+	if l := len(b.Balances); l != 1 {
+		return nil, resp, errors.Errorf("API did not returned exactly one balance: %d balance returned", l)
+	}
+
+	return b.Balances[0], resp, nil
 }

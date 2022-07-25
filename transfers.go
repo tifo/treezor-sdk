@@ -4,20 +4,12 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/pkg/errors"
-)
 
-// TransferType defines the type of transfer we're doing.
-type TransferType string
-
-const (
-	// Wallet2WalletTransfer is a transfer type used for peer-to-peer transaction.
-	Wallet2WalletTransfer TransferType = "1"
-	// ClientFeesTransfer is transfer type used for client fees.
-	ClientFeesTransfer TransferType = "3"
-	// CreditNoteTransfer is a transfer type used for credit note.
-	CreditNoteTransfer TransferType = "4"
+	json "github.com/tifo/treezor-sdk/internal/json"
+	"github.com/tifo/treezor-sdk/internal/types"
 )
 
 // TransferService handles communication with the transfer related
@@ -32,33 +24,78 @@ type TransferResponse struct {
 	Transfers []*Transfer `json:"transfers"`
 }
 
+// TransferType defines the type of transfer we're doing.
+type TransferType int32
+
+const (
+	// TransferTypeWallet2Wallet is a transfer type used for peer-to-peer transaction.
+	TransferTypeWallet2Wallet TransferType = 1
+	// TransferTypeClientFees is transfer type used for client fees.
+	TransferTypeClientFees TransferType = 3
+	// TransferTypeCreditNote is a transfer type used for credit note.
+	TransferTypeCreditNote TransferType = 4
+)
+
+func (t *TransferType) UnmarshalJSON(data []byte) error {
+	var str json.Number
+	err := json.Unmarshal(data, &str)
+	if err != nil {
+		return err
+	}
+	v, err := str.Int64()
+	if err != nil {
+		return err
+	}
+	*t = TransferType(v)
+	return nil
+}
+
 // Transfer represents a transfer.
 type Transfer struct {
+	TransferID                 *types.Identifier `json:"transferId,omitempty"`
+	TransferTypeID             *TransferType     `json:"transferTypeId,omitempty"`
+	TransferTag                *string           `json:"transferTag,omitempty"`
+	TransferStatus             *string           `json:"transferStatus,omitempty"` // TODO: can be an enum
+	WalletID                   *types.Identifier `json:"walletId,omitempty"`
+	ForeignID                  *types.Identifier `json:"foreignId,omitempty"`
+	WalletTypeID               *types.Identifier `json:"walletTypeId,omitempty"` // TODO: can be an enum
+	BeneficiaryWalletID        *types.Identifier `json:"beneficiaryWalletId,omitempty"`
+	BeneficiaryWalletTypeID    *types.Identifier `json:"beneficiaryWalletTypeId,omitempty"` // TODO: can be an enum
+	TransferDate               *types.Date       `json:"transferDate,omitempty"`
+	Amount                     *types.Amount     `json:"amount,omitempty"`
+	Currency                   *Currency         `json:"currency,omitempty"`
+	Label                      *string           `json:"label,omitempty"`
+	PartnerFee                 *types.Amount     `json:"partnerFee,omitempty"`
+	WalletEventName            *string           `json:"walletEventName,omitempty"`
+	WalletAlias                *string           `json:"walletAlias,omitempty"`
+	BeneficiaryWalletEventName *string           `json:"beneficiaryWalletEventName,omitempty"`
+	BeneficiaryWalletAlias     *string           `json:"beneficiaryWalletAlias,omitempty"`
+	CreatedDate                *time.Time        `json:"createdDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
+	ModifiedDate               *time.Time        `json:"modifiedDate,omitempty" layout:"Treezor" loc:"Europe/Paris"`
+	TotalRows                  *types.Integer    `json:"totalRows,omitempty"`
+	CodeStatus                 *types.Identifier `json:"codeStatus,omitempty"`        // Legacy field
+	InformationStatus          *string           `json:"informationStatus,omitempty"` // Legacy field
+}
+
+type TransferCreateOptions struct {
 	Access
-	TransferID                 *string         `json:"transferId,omitempty"`
-	TransferStatus             *string         `json:"transferStatus,omitempty"`
-	TransferTypeID             TransferType    `json:"transferTypeId,omitempty"`
-	TransferTag                *string         `json:"transferTag,omitempty"`
-	WalletID                   *string         `json:"walletId,omitempty"`
-	WalletTypeID               *string         `json:"walletTypeId,omitempty"`
-	BeneficiaryWalletID        *string         `json:"beneficiaryWalletId,omitempty"`
-	BeneficiaryWalletTypeID    *string         `json:"beneficiaryWalletTypeId,omitempty"`
-	TransferDate               *Date           `json:"transferDate,omitempty"`
-	WalletEventName            *string         `json:"walletEventName,omitempty"`
-	WalletAlias                *string         `json:"walletAlias,omitempty"`
-	BeneficiaryWalletEventName *string         `json:"beneficiaryWalletEventName,omitempty"`
-	BeneficiaryWalletAlias     *string         `json:"beneficiaryWalletAlias,omitempty"`
-	Amount                     *float64        `json:"amount,string,omitempty"`
-	Currency                   Currency        `json:"currency,omitempty"`
-	Label                      *string         `json:"label,omitempty"`
-	CreatedDate                *TimestampParis `json:"createdDate,omitempty"`
-	ModifiedDate               *TimestampParis `json:"modifiedDate,omitempty"`
-	TotalRows                  *int64          `json:"totalRows,string,omitempty"`
+
+	WalletID            *string      `url:"-" json:"walletId,omitempty"`            // Required
+	BeneficiaryWalletID *string      `url:"-" json:"beneficiaryWalletId,omitempty"` // Required
+	Amount              *float64     `url:"-" json:"amount,omitempty"`              // Required
+	Currency            Currency     `url:"-" json:"currency,omitempty"`            // Required
+	Label               *string      `url:"-" json:"label,omitempty"`               // Optional
+	TransferTypeID      TransferType `url:"-" json:"transferTypeId,omitempty"`      // Optional // TODO: create enum
 }
 
 // Create creates a Treezor transfer. Required: WalletID, BeneficiaryWalletID,Amount,Currency(ISO 4217)
-func (s *TransferService) Create(ctx context.Context, transfer *Transfer) (*Transfer, *http.Response, error) {
-	req, _ := s.client.NewRequest(http.MethodPost, "transfers", transfer)
+func (s *TransferService) Create(ctx context.Context, opts *TransferCreateOptions) (*Transfer, *http.Response, error) {
+	u := "transfers"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPost, u, opts)
 
 	b := new(TransferResponse)
 	resp, err := s.client.Do(ctx, req, b)
@@ -139,3 +176,5 @@ func (s *TransferService) Delete(ctx context.Context, transferID string) (*Trans
 	}
 	return b.Transfers[0], resp, nil
 }
+
+// TODO: Update Transfer API

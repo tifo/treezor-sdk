@@ -4,26 +4,26 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/pkg/errors"
+
+	"github.com/tifo/treezor-sdk/internal/types"
 )
+
+type CardPermissionMask int8
 
 // Available permissions for a card.
 const (
-	Noop    int = 0
-	Foreign     = 1
-	Online      = 2
-	ATM         = 4
-	NFC         = 8
-	All         = 15
+	Foreign CardPermissionMask = 1 << iota
+	Online
+	ATM
+	NFC
 )
 
-// Error code for given status
 const (
-	ErrCodeCardWrongPIN = 32056
-	ErrCodeCardLost     = 32095
-	ErrCodeCardStolen   = 32096
-	ErrCodeCardBlocked  = 32111
+	Noop CardPermissionMask = 0
+	All  CardPermissionMask = Foreign | Online | ATM | NFC
 )
 
 // ConvertPermissions map binary field of card permission to
@@ -31,7 +31,7 @@ const (
 //
 // e.g.: ConvertPermissions(ATM|Foreign) returns TRZ-CU-006.
 //       ConvertPermissions(All) returns TRZ-CU-016.
-func ConvertPermissions(permissions int) string {
+func ConvertPermissions(permissions CardPermissionMask) string {
 	if permissions > All {
 		return "TRZ-CU-016"
 	}
@@ -50,82 +50,133 @@ type CardResponse struct {
 	Cards []*Card `json:"cards"`
 }
 
+type CardStatus string
+
+const (
+	CardStatusUnlock CardStatus = "UNLOCK"
+	CardStatusLock   CardStatus = "LOCK"
+	CardStatusLost   CardStatus = "LOST"
+	CardStatusStolen CardStatus = "STOLEN"
+)
+
 // Card represents a physical or virtual card.
 type Card struct {
+	CardID                     *types.Identifier             `json:"cardId,omitempty"`
+	UserID                     *types.Identifier             `json:"userId,omitempty"`
+	WalletID                   *types.Identifier             `json:"walletId,omitempty"`
+	WalletCardtransactionID    *types.Identifier             `json:"walletCardtransactionId,omitempty"`
+	MccRestrictionGroupID      *types.Identifier             `json:"mccRestrictionGroupId,omitempty"`
+	MerchantRestrictionGroupID *types.Identifier             `json:"merchantRestrictionGroupId,omitempty"`
+	CountryRestrictionGroupID  *types.Identifier             `json:"countryRestrictionGroupID,omitempty"`
+	EventName                  *string                       `json:"eventName,omitempty"`
+	EventAlias                 *string                       `json:"eventAlias,omitempty"`
+	PublicToken                *string                       `json:"publicToken,omitempty"`
+	CardTag                    *string                       `json:"cardTag,omitempty"`
+	StatusCode                 *CardStatus                   `json:"statusCode,omitempty"`
+	IsLive                     *types.Boolean                `json:"isLive,omitempty"`
+	PINTryExceeds              *types.Boolean                `json:"pinTryExceeds,omitempty"`
+	MaskedPan                  *string                       `json:"maskedPan,omitempty"`
+	EmbossedName               *string                       `json:"embossedName,omitempty"`
+	ExpiryDate                 *types.Date                   `json:"expiryDate,omitempty"`
+	CVV                        *string                       `json:"CVV,omitempty"`
+	StartDate                  *types.Date                   `json:"startDate,omitempty"`
+	EndDate                    *types.Date                   `json:"endDate,omitempty"`
+	CountryCode                *string                       `json:"countryCode,omitempty"`
+	CurrencyCode               *Currency                     `json:"currencyCode,omitempty"`
+	Lang                       *string                       `json:"lang,omitempty"`
+	DeliveryTitle              *string                       `json:"deliveryTitle,omitempty"`
+	DeliveryLastname           *string                       `json:"deliveryLastname,omitempty"`
+	DeliveryFirstname          *string                       `json:"deliveryFirstname,omitempty"`
+	DeliveryAddress1           *string                       `json:"deliveryAddress1,omitempty"`
+	DeliveryAddress2           *string                       `json:"deliveryAddress2,omitempty"`
+	DeliveryAddress3           *string                       `json:"deliveryAddress3,omitempty"`
+	DeliveryCity               *string                       `json:"deliveryCity,omitempty"`
+	DeliveryPostcode           *string                       `json:"deliveryPostcode,omitempty"`
+	DeliveryCountry            *string                       `json:"deliveryCountry,omitempty"`
+	MobileSent                 *string                       `json:"mobileSent,omitempty"`
+	LimitsGroup                *string                       `json:"limitsGroup,omitempty"`
+	PermsGroup                 *string                       `json:"permsGroup,omitempty"` // NOTE: could be a custom type using CardPermissionMask
+	CardDesign                 *string                       `json:"cardDesign,omitempty"`
+	VirtualConverted           *types.Boolean                `json:"virtualConverted,omitempty"`
+	Physical                   *types.Boolean                `json:"physical,omitempty"`
+	OptionATM                  *types.Boolean                `json:"optionAtm,omitempty"`
+	OptionForeign              *types.Boolean                `json:"optionForeign,omitempty"`
+	OptionOnline               *types.Boolean                `json:"optionOnline,omitempty"`
+	OptionNFC                  *types.Boolean                `json:"optionNfc,omitempty"`
+	LimitATMYear               *types.Integer                `json:"limitAtmYear,omitempty"`
+	LimitATMMonth              *types.Integer                `json:"limitAtmMonth,omitempty"`
+	LimitATMWeek               *types.Integer                `json:"limitAtmWeek,omitempty"`
+	LimitATMDay                *types.Integer                `json:"limitAtmDay,omitempty"`
+	LimitATMAll                *types.Integer                `json:"limitAtmAll,omitempty"`
+	LimitPaymentYear           *types.Integer                `json:"limitPaymentYear,omitempty"`
+	LimitPaymentMonth          *types.Integer                `json:"limitPaymentMonth,omitempty"`
+	LimitPaymentWeek           *types.Integer                `json:"limitPaymentWeek,omitempty"`
+	LimitPaymentDay            *types.Integer                `json:"limitPaymentDay,omitempty"`
+	LimitPaymentAll            *types.Integer                `json:"limitPaymentAll,omitempty"`
+	PaymentDailyLimit          *types.Amount                 `json:"paymentDailyLimit,omitempty"`
+	RestrictionGroupLimits     []*CardRestrictionGroupLimits `json:"restrictionGroupLimits,omitempty"`
+	TotalATMYear               *types.Amount                 `json:"totalAtmYear,omitempty"`
+	TotalATMMonth              *types.Amount                 `json:"totalAtmMonth,omitempty"`
+	TotalATMWeek               *types.Amount                 `json:"totalAtmWeek,omitempty"`
+	TotalATMDay                *types.Amount                 `json:"totalAtmDay,omitempty"`
+	TotalATMAll                *types.Amount                 `json:"totalAtmAll,omitempty"`
+	TotalPaymentYear           *types.Amount                 `json:"totalPaymentYear,omitempty"`
+	TotalPaymentMonth          *types.Amount                 `json:"totalPaymentMonth,omitempty"`
+	TotalPaymentWeek           *types.Amount                 `json:"totalPaymentWeek,omitempty"`
+	TotalPaymentDay            *types.Amount                 `json:"totalPaymentDay,omitempty"`
+	TotalPaymentAll            *types.Amount                 `json:"totalPaymentAll,omitempty"`
+	CreatedBy                  *types.Identifier             `json:"createdBy,omitempty"`
+	CreatedDate                *time.Time                    `json:"createdDate,omitempty" layout:"Treezor" loc:"Europe/London"`
+	ModifiedBy                 *types.Identifier             `json:"modifiedBy,omitempty"`
+	ModifiedDate               *time.Time                    `json:"modifiedDate,omitempty" layout:"Treezor" loc:"Europe/London"`
+	CancellationNumber         *types.Integer                `json:"cancellationNumber,omitempty"`
+	TotalRows                  *types.Integer                `json:"totalRows,omitempty"`
+}
+
+type CardRestrictionGroupLimits struct {
+	PaymentDailyLimit           *types.Amount     `json:"paymentDailyLimit,omitempty"`
+	MccRestrictionGroups        *types.Identifier `json:"mccRestrictionGroups,omitempty"`        // NOTE: not sure if its an identifier or a random integer
+	CountryRestrictionGroups    *types.Identifier `json:"countryRestrictionGroups,omitempty"`    // NOTE: not sure if its an identifier or a random integer
+	MerchantIdRestrictionGroups *types.Identifier `json:"merchantIdRestrictionGroups,omitempty"` // NOTE: not sure if its an identifier or a random integer
+}
+
+type CardRestrictionGroups struct {
+	MCCRestrictionGroupID      *string `url:"-" json:"mccRestrictionGroupId,omitempty"`
+	MerchantRestrictionGroupID *string `url:"-" json:"merchantRestrictionGroupId,omitempty"`
+	CountryRestrictionGroupID  *string `url:"-" json:"countryRestrictionGroupId,omitempty"`
+}
+
+type CreateVirtualCardOptions struct {
 	Access
-	CardID                     *string          `json:"cardId,omitempty"`
-	UserID                     *string          `json:"userId,omitempty"`
-	WalletID                   *string          `json:"walletId,omitempty"`
-	PermsGroup                 *string          `json:"permsGroup,omitempty"`
-	WalletCardtransactionID    *string          `json:"walletCardtransactionId,omitempty"`
-	CardPrint                  *string          `json:"cardPrint,omitempty"`
-	CardDesign                 *string          `json:"cardDesign,omitempty"`
-	MccRestrictionGroupID      *string          `json:"mccRestrictionGroupId,omitempty"`
-	MerchantRestrictionGroupID *string          `json:"merchantRestrictionGroupId,omitempty"`
-	PublicToken                *string          `json:"publicToken,omitempty"`
-	IsPhysical                 *int64           `json:"physical,string,omitempty"`
-	CardTag                    *string          `json:"cardTag,omitempty"`
-	StatusCode                 *string          `json:"statusCode,omitempty"`
-	LockStatus                 *int64           `json:"lockStatus,omitempty"`
-	IsLive                     *int64           `json:"isLive,string,omitempty"`
-	PINTryExceeds              *int64           `json:"pinTryExceeds,string,omitempty"`
-	MaskedPan                  *string          `json:"maskedPan,omitempty"`
-	EmbossedName               *string          `json:"embossedName,omitempty"`
-	ExpiryDate                 *Date            `json:"expiryDate,omitempty"`
-	CVV                        *string          `json:"CVV,omitempty"`
-	StartDate                  *Date            `json:"startDate,omitempty"`
-	EndDate                    *Date            `json:"endDate,omitempty"`
-	CountryCode                *string          `json:"countryCode,omitempty"`
-	CurrencyCode               Currency         `json:"currencyCode,omitempty"`
-	Lang                       *string          `json:"lang,omitempty"`
-	DeliveryTitle              *string          `json:"deliveryTitle,omitempty"`
-	DeliveryFirstname          *string          `json:"deliveryFirstname,omitempty"`
-	DeliveryLastname           *string          `json:"deliveryLastname,omitempty"`
-	DeliveryAddress1           *string          `json:"deliveryAddress1,omitempty"`
-	DeliveryAddress2           *string          `json:"deliveryAddress2,omitempty"`
-	DeliveryAddress3           *string          `json:"deliveryAddress3,omitempty"`
-	DeliveryCity               *string          `json:"deliveryCity,omitempty"`
-	DeliveryPostcode           *string          `json:"deliveryPostcode,omitempty"`
-	DeliveryCountry            *string          `json:"deliveryCountry,omitempty"`
-	MobileSent                 *string          `json:"mobileSent,omitempty"`
-	LimitsGroup                *string          `json:"limitsGroup,omitempty"`
-	VirtualConverted           *int64           `json:"virtualConverted,string,omitempty"`
-	OptionATM                  *int64           `json:"optionAtm,string,omitempty"`
-	OptionForeign              *int64           `json:"optionForeign,string,omitempty"`
-	OptionOnline               *int64           `json:"optionOnline,string,omitempty"`
-	OptionNFC                  *int64           `json:"optionNfc,string,omitempty"`
-	PIN                        *string          `json:"pin,omitempty"`
-	LimitATMYear               *int64           `json:"limitAtmYear,string,omitempty"`
-	LimitATMMonth              *int64           `json:"limitAtmMonth,string,omitempty"`
-	LimitATMWeek               *int64           `json:"limitAtmWeek,string,omitempty"`
-	LimitATMDay                *int64           `json:"limitAtmDay,string,omitempty"`
-	LimitATMAll                *int64           `json:"limitAtmAll,string,omitempty"`
-	LimitPaymentYear           *int64           `json:"limitPaymentYear,string,omitempty"`
-	LimitPaymentMonth          *int64           `json:"limitPaymentMonth,string,omitempty"`
-	LimitPaymentWeek           *int64           `json:"limitPaymentWeek,string,omitempty"`
-	LimitPaymentDay            *int64           `json:"limitPaymentDay,string,omitempty"`
-	LimitPaymentAll            *int64           `json:"limitPaymentAll,string,omitempty"`
-	TotalATMYear               *float64         `json:"totalAtmYear,string,omitempty"`
-	TotalATMMonth              *float64         `json:"totalAtmMonth,string,omitempty"`
-	TotalATMWeek               *float64         `json:"totalAtmWeek,string,omitempty"`
-	TotalATMDay                *float64         `json:"totalAtmDay,string,omitempty"`
-	TotalATMAll                *float64         `json:"totalAtmAll,string,omitempty"`
-	TotalPaymentYear           *float64         `json:"totalPaymentYear,string,omitempty"`
-	TotalPaymentMonth          *float64         `json:"totalPaymentMonth,string,omitempty"`
-	TotalPaymentWeek           *float64         `json:"totalPaymentWeek,string,omitempty"`
-	TotalPaymentDay            *float64         `json:"totalPaymentDay,string,omitempty"`
-	TotalPaymentAll            *float64         `json:"totalPaymentAll,string,omitempty"`
-	CreatedBy                  *string          `json:"createdBy,omitempty"`
-	CreatedDate                *TimestampLondon `json:"createdDate,omitempty"`
-	ModifiedBy                 *string          `json:"modifiedBy,omitempty"`
-	ModifiedDate               *TimestampLondon `json:"modifiedDate,omitempty"`
-	TotalRows                  *int64           `json:"totalRows,string,omitempty"`
+
+	UserID       *string        `url:"-" json:"userId"`     // Required
+	WalletID     *string        `url:"-" json:"walletId"`   // Required
+	PermsGroup   *string        `url:"-" json:"permsGroup"` // Required
+	CardPrint    *string        `url:"-" json:"cardPrint"`  // Required
+	CardTag      *string        `url:"-" json:"cardTag,omitempty"`
+	PIN          *string        `url:"-" json:"pin,omitempty"`
+	Anonymous    *types.Boolean `url:"-" json:"anonymous,omitempty"`
+	SendToParent *types.Boolean `url:"-" json:"sendToParent,omitempty"`
+
+	CardLimits
+	CardRestrictionGroups
+
+	EmbossLegalName *types.Boolean `url:"-" json:"embossLegalName,omitempty"`
+	LogoID          *string        `url:"-" json:"logoId,omitempty"`
+	DesignCode      *string        `url:"-" json:"designCode,omitempty"`
+	PackageID       *string        `url:"-" json:"packageId,omitempty"`
+	CustomizedInfo  *string        `url:"-" json:"customizedInfo,omitempty"`
+	CardLanguages   *string        `url:"-" json:"cardLanguages,omitempty"`
 }
 
 // CreateVirtual will create a virtual card.
-func (s *CardService) CreateVirtual(ctx context.Context, card *Card) (*Card, *http.Response, error) {
-	req, _ := s.client.NewRequest(http.MethodPost, "cards/CreateVirtual", card)
-
+func (s *CardService) CreateVirtual(ctx context.Context, opts *CreateVirtualCardOptions) (*Card, *http.Response, error) {
+	u := "cards/CreateVirtual"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPost, u, opts)
 	c := new(CardResponse)
 	resp, err := s.client.Do(ctx, req, c)
 	if err != nil {
@@ -138,9 +189,37 @@ func (s *CardService) CreateVirtual(ctx context.Context, card *Card) (*Card, *ht
 	return c.Cards[0], resp, nil
 }
 
+type RequestPhysicalCardOptions struct {
+	Access
+
+	UserID       *string        `url:"-" json:"userId"`     // Required
+	WalletID     *string        `url:"-" json:"walletId"`   // Required
+	PermsGroup   *string        `url:"-" json:"permsGroup"` // Required
+	CardPrint    *string        `url:"-" json:"cardPrint"`  // Required
+	CardTag      *string        `url:"-" json:"cardTag,omitempty"`
+	PIN          *string        `url:"-" json:"pin,omitempty"`
+	Anonymous    *types.Boolean `url:"-" json:"anonymous,omitempty"`
+	SendToParent *types.Boolean `url:"-" json:"sendToParent,omitempty"`
+
+	CardLimits
+	CardRestrictionGroups
+
+	EmbossLegalName *types.Boolean `url:"-" json:"embossLegalName,omitempty"`
+	LogoID          *string        `url:"-" json:"logoId,omitempty"`
+	DesignCode      *string        `url:"-" json:"designCode,omitempty"`
+	PackageID       *string        `url:"-" json:"packageId,omitempty"`
+	CustomizedInfo  *string        `url:"-" json:"customizedInfo,omitempty"`
+	CardLanguages   *string        `url:"-" json:"cardLanguages,omitempty"`
+}
+
 // RequestPhysical will request a physical card that will be sent to the user's address.
-func (s *CardService) RequestPhysical(ctx context.Context, card *Card) (*Card, *http.Response, error) {
-	req, _ := s.client.NewRequest(http.MethodPost, "cards/RequestPhysical", card)
+func (s *CardService) RequestPhysical(ctx context.Context, opts *RequestPhysicalCardOptions) (*Card, *http.Response, error) {
+	u := "cards/RequestPhysical"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPost, u, opts)
 
 	c := new(CardResponse)
 	resp, err := s.client.Do(ctx, req, c)
@@ -156,7 +235,10 @@ func (s *CardService) RequestPhysical(ctx context.Context, card *Card) (*Card, *
 
 // CardGetImagesOptions contains options when getting a card image.
 type CardGetImagesOptions struct {
-	CardID string `url:"cardId,omitempty"`
+	Access
+	CardID              *string `url:"cardId,omitempty" json:"-"` // Required
+	EncryptionMethod    *string `url:"encryptionMethod,omitempty" json:"-"`
+	EncryptionPublicKey *string `url:"encryptionPublicKey,omitempty" json:"-"`
 }
 
 // CardImagesResponse contains a list of virtual card images.
@@ -166,9 +248,9 @@ type CardImagesResponse struct {
 
 // CardImage represents a virtual card image.
 type CardImage struct {
-	ID     *string `json:"id,omitempty"`
+	ID     *string `json:"id"` // Required
 	CardID *string `json:"cardId,omitempty"`
-	File   *string `json:"file,omitempty"`
+	File   []byte  `json:"file,omitempty"`
 }
 
 // GetImage returns the provided virtual card image.
@@ -193,11 +275,17 @@ func (s *CardService) GetImage(ctx context.Context, opt *CardGetImagesOptions) (
 	return c.CardImages[0], resp, errors.WithStack(err)
 }
 
-// Get returns a card (virtual or physical).
-func (s *CardService) Get(ctx context.Context, cardID string) (*Card, *http.Response, error) {
-	u := fmt.Sprintf("cards/%s", cardID)
-	req, _ := s.client.NewRequest(http.MethodGet, u, nil)
+type CardGetOptions struct {
+}
 
+// Get returns a card (virtual or physical).
+func (s *CardService) Get(ctx context.Context, cardID string, opts *CardGetOptions) (*Card, *http.Response, error) {
+	u := fmt.Sprintf("cards/%s", cardID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodGet, u, nil)
 	c := new(CardResponse)
 	resp, err := s.client.Do(ctx, req, c)
 	if err != nil {
@@ -212,6 +300,20 @@ func (s *CardService) Get(ctx context.Context, cardID string) (*Card, *http.Resp
 
 // CardListOptions contains URL options for listing cards.
 type CardListOptions struct {
+	Access
+
+	CardID                     *string        `url:"cardId,omitempty" json:"-"`
+	UserID                     *string        `url:"userId,omitempty" json:"-"`
+	EmbossedName               *string        `url:"embossedName,omitempty" json:"-"`
+	PublicToken                *string        `url:"publicToken,omitempty" json:"-"`
+	PermsGroup                 *string        `url:"permsGroup,omitempty" json:"-"`
+	IsPhysical                 *types.Boolean `url:"isPhysical,omitempty" json:"-"`
+	IsConverted                *types.Boolean `url:"isConverted,omitempty" json:"-"`
+	LockStatus                 *LockStatus    `url:"lockStatus,omitempty" json:"-"`
+	MCCRestrictionGroupID      *string        `url:"mccRestrictionGroupId,omitempty" json:"-"`
+	MerchantRestrictionGroupID *string        `url:"merchantRestrictionGroupId,omitempty" json:"-"`
+	CountryRestrictionGroupID  *string        `url:"countryRestrictionGroupId,omitempty" json:"-"`
+
 	ListOptions
 }
 
@@ -276,15 +378,22 @@ const (
 	Locked
 	Lost
 	Stolen
+	Destroyed
 )
 
-// LockUnlock toggle the lock or unlock state of a card. If the card is locked, calling this function
-// will unlock the card, and vice versa.
-func (s *CardService) LockUnlock(ctx context.Context, cardID string, lockStatus LockStatus) (*Card, *http.Response, error) {
+type CardLockUnlockOptions struct {
+	Access
+	LockStatus LockStatus `url:"-" json:"lockStatus"`
+}
+
+// LockUnlock updates a card status
+func (s *CardService) LockUnlock(ctx context.Context, cardID string, opts *CardLockUnlockOptions) (*Card, *http.Response, error) {
 	u := fmt.Sprintf("cards/%s/LockUnlock/", cardID)
-	req, _ := s.client.NewRequest(http.MethodPut, u, &Card{
-		LockStatus: Int64(int64(lockStatus)),
-	})
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPut, u, opts)
 
 	c := new(CardResponse)
 	resp, err := s.client.Do(ctx, req, c)
@@ -292,8 +401,8 @@ func (s *CardService) LockUnlock(ctx context.Context, cardID string, lockStatus 
 		return nil, resp, errors.WithStack(err)
 	}
 
-	if len(c.Cards) < 1 {
-		return nil, resp, errors.New("API returned no card")
+	if len(c.Cards) != 1 {
+		return nil, resp, errors.Errorf("API did not returned exactly one card: %d cards returned", len(c.Cards))
 	}
 	return c.Cards[0], resp, nil
 }
@@ -325,16 +434,16 @@ func (s *CardService) ChangeOptions(ctx context.Context, cardID string, options 
 
 // CardLimits contains a card limit.
 type CardLimits struct {
-	LimitATMYear      int64 `json:"limitAtmYear,omitempty"`
-	LimitATMMonth     int64 `json:"limitAtmMonth,omitempty"`
-	LimitATMWeek      int64 `json:"limitAtmWeek,omitempty"`
-	LimitATMDay       int64 `json:"limitAtmDay,omitempty"`
-	LimitATMAll       int64 `json:"limitAtmAll,omitempty"`
-	LimitPaymentYear  int64 `json:"limitPaymentYear,omitempty"`
-	LimitPaymentMonth int64 `json:"limitPaymentMonth,omitempty"`
-	LimitPaymentWeek  int64 `json:"limitPaymentWeek,omitempty"`
-	LimitPaymentDay   int64 `json:"limitPaymentDay,omitempty"`
-	LimitPaymentAll   int64 `json:"limitPaymentAng,omitempty"`
+	LimitATMYear      int64 `url:"-" json:"limitAtmYear,omitempty"`
+	LimitATMMonth     int64 `url:"-" json:"limitAtmMonth,omitempty"`
+	LimitATMWeek      int64 `url:"-" json:"limitAtmWeek,omitempty"`
+	LimitATMDay       int64 `url:"-" json:"limitAtmDay,omitempty"`
+	LimitATMAll       int64 `url:"-" json:"limitAtmAll,omitempty"`
+	LimitPaymentYear  int64 `url:"-" json:"limitPaymentYear,omitempty"`
+	LimitPaymentMonth int64 `url:"-" json:"limitPaymentMonth,omitempty"`
+	LimitPaymentWeek  int64 `url:"-" json:"limitPaymentWeek,omitempty"`
+	LimitPaymentDay   int64 `url:"-" json:"limitPaymentDay,omitempty"`
+	LimitPaymentAll   int64 `url:"-" json:"limitPaymentAng,omitempty"`
 }
 
 // ChangeLimits change a card' limits with the provided limits.
@@ -388,17 +497,20 @@ func (s *CardService) ConvertVirtual(ctx context.Context, cardID string) (*Card,
 	return c.Cards[0], resp, nil
 }
 
-// PIN is used to make PIN modification operations.
-type PIN struct {
-	Current      string `json:"currentPIN,omitempty"`
-	New          string `json:"newPIN,omitempty"`
-	Confirmation string `json:"confirmPIN,omitempty"`
+type ChangePINOptions struct {
+	CurrentPIN string `url:"-" json:"currentPIN,omitempty"`
+	NewPIN     string `url:"-" json:"newPIN,omitempty"`
+	ConfirmPIN string `url:"-" json:"confirmPIN,omitempty"`
 }
 
 // ChangePIN changes the card PIN. It needs the current PIN, the new one and a confirmation one.
-func (s *CardService) ChangePIN(ctx context.Context, cardID string, pin *PIN) (*Card, *http.Response, error) {
+func (s *CardService) ChangePIN(ctx context.Context, cardID string, opts *ChangePINOptions) (*Card, *http.Response, error) {
 	u := fmt.Sprintf("cards/%s/ChangePIN/", cardID)
-	req, _ := s.client.NewRequest(http.MethodPut, u, pin)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPut, u, opts)
 
 	c := new(CardResponse)
 	resp, err := s.client.Do(ctx, req, c)
@@ -412,11 +524,21 @@ func (s *CardService) ChangePIN(ctx context.Context, cardID string, pin *PIN) (*
 	return c.Cards[0], resp, nil
 }
 
+type SetPINOptions struct {
+	Access
+	NewPIN     string `url:"-" json:"newPIN,omitempty"`
+	ConfirmPIN string `url:"-" json:"confirmPIN,omitempty"`
+}
+
 // SetPIN sets the card PIN. It needs the the new PIN and a confirmation one. It is solely used by operators,
 // not users.
-func (s *CardService) SetPIN(ctx context.Context, cardID string, pin *PIN) (*Card, *http.Response, error) {
+func (s *CardService) SetPIN(ctx context.Context, cardID string, opts *SetPINOptions) (*Card, *http.Response, error) {
 	u := fmt.Sprintf("cards/%s/setPIN/", cardID)
-	req, _ := s.client.NewRequest(http.MethodPut, u, pin)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPut, u, opts)
 
 	c := new(CardResponse)
 	resp, err := s.client.Do(ctx, req, c)
@@ -447,10 +569,19 @@ func (s *CardService) UnblockPIN(ctx context.Context, cardID string) (*Card, *ht
 	return c.Cards[0], resp, nil
 }
 
-// Deactivate deactivates a card permanently.
-func (s *CardService) Deactivate(ctx context.Context, cardID string) (*Card, *http.Response, error) {
-	u := fmt.Sprintf("cards/%s", cardID)
-	req, _ := s.client.NewRequest(http.MethodDelete, u, nil)
+// Card3DS is used to make register a 3D Secure card.
+type RegisterCard3DSOptions struct {
+	CardID *string `url:"-" json:"cardId"`
+}
+
+// Register3DS will register a card to 3DS
+func (s *CardService) Register3DS(ctx context.Context, opts *RegisterCard3DSOptions) (*Card, *http.Response, error) {
+	u := "cards/Register3DS"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+	req, _ := s.client.NewRequest(http.MethodPost, u, opts)
 
 	c := new(CardResponse)
 	resp, err := s.client.Do(ctx, req, c)
@@ -462,30 +593,4 @@ func (s *CardService) Deactivate(ctx context.Context, cardID string) (*Card, *ht
 		return nil, resp, errors.Errorf("API did not returned exactly one card: %d cards returned", len(c.Cards))
 	}
 	return c.Cards[0], resp, nil
-}
-
-// Card3DS is used to make register a 3D Secure card.
-type Card3DS struct {
-	CardID *string `json:"cardId,omitempty"`
-}
-
-// Register3DSecure will register a card to 3DSecure
-func (s *CardService) Register3DSecure(ctx context.Context, cardID *Card3DS) (*Card, *http.Response, error) {
-	card := &Card{}
-	req, _ := s.client.NewRequest(http.MethodPost, "cards/Register3DS", cardID)
-
-	c := new(CardResponse)
-	resp, err := s.client.Do(ctx, req, c)
-	if err != nil {
-		return nil, resp, errors.WithStack(err)
-	}
-
-	// TODO: Make sure the response is actually a single card or an empty array
-	if len(c.GetCards()) > 0 {
-		card = c.GetCards()[len(c.GetCards())-1]
-	}
-	/*if len(c.Cards) != 1 {
-		return nil, resp, errors.Errorf("API did not returned exactly one card: %d cards returned", len(c.Cards))
-	}*/
-	return card, resp, nil
 }

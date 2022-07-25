@@ -1,11 +1,12 @@
-package treezor
+package types
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
+
+	json "github.com/tifo/treezor-sdk/internal/json"
 )
 
 func TestDate_MarshalJSON(t *testing.T) {
@@ -65,12 +66,6 @@ func TestDate_UnmarshalJSON(t *testing.T) {
 		ti := &Date{}
 
 		err := json.Unmarshal(dateByte, ti)
-		assert.Equal(t, err, &time.ParseError{
-			Layout:     "\"2006-01-02\"",
-			Value:      "\"2019-10-01 11:00:00\"",
-			LayoutElem: "\"",
-			ValueElem:  " 11:00:00\"",
-			Message:    "",
-		})
+		assert.EqualError(t, err, `unmarshalerDecoder: treezor.Date: parsing time ""2019-10-01 11:00:00"" as ""2006-01-02"": cannot parse " 11:00:00"" as """, error found in #10 byte of ...| 11:00:00"|..., bigger context ...|"2019-10-01 11:00:00"|...`)
 	})
 }

@@ -1,36 +1,23 @@
 package treezor
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	json "github.com/tifo/treezor-sdk/internal/json"
 )
 
-const (
-	ErrCodeInsuficientFunds = 15030
-)
-
-// An ErrorResponse reports one or more errors caused by an API request.
-type ErrorResponse struct {
-	Response *http.Response // HTTP response that caused this error
-	Errors   []Error        `json:"errors"`
+// Error represents an all errors apiErrorResponse as API errors (transforming simple errors to APIErrors).
+type Error struct {
+	Response *http.Response    // HTTP response that caused this error
+	Errors   []ConnectAPIError // Formatted Errors
 }
 
-func (r *ErrorResponse) Error() string {
+func (r *Error) Error() string {
 	return fmt.Sprintf("%v %v: %d %+v",
 		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
 		r.Response.StatusCode, r.Errors)
-}
-
-// An Error reports more details on an individual error in an ErrorResponse.
-type Error struct {
-	Code    int    `json:"errorCode"`
-	Message string `json:"errorMessage"`
-}
-
-func (e *Error) Error() string {
-	return fmt.Sprintf("%v error caused because: %v", e.Code, e.Message)
 }
 
 // CheckResponse checks the API response for errors, and returns them if
@@ -43,11 +30,17 @@ func CheckResponse(r *http.Response) error {
 	if c := r.StatusCode; c >= http.StatusOK && c < http.StatusBadRequest {
 		return nil
 	}
-	errorResponse := &ErrorResponse{Response: r}
+	errorResponse := &connectErrorResponse{}
 	data, err := ioutil.ReadAll(r.Body)
 	if err == nil && data != nil {
-		json.Unmarshal(data, errorResponse)
+		_ = json.Unmarshal(data, errorResponse)
+	}
+	if errorResponse.Error != nil {
+		errorResponse.Errors = append(errorResponse.Errors, ConnectAPIError{Message: *errorResponse.Error})
 	}
 
-	return errorResponse
+	return &Error{
+		Response: r,
+		Errors:   errorResponse.Errors,
+	}
 }

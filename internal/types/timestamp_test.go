@@ -1,18 +1,19 @@
-package treezor
+package types
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
+
+	json "github.com/tifo/treezor-sdk/internal/json"
 )
 
 func TestTimestamp_MarshalJSON(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		dateUTC0, _ := time.Parse(fullFormat, "2019-10-01 09:00:00")
 
-		ti := &timestamp{}
+		ti := &Timestamp{}
 		ti.Time = dateUTC0
 
 		jsonDate, err := json.Marshal(ti)
@@ -23,7 +24,7 @@ func TestTimestamp_MarshalJSON(t *testing.T) {
 		assert.Nil(t, err)
 	})
 	t.Run("Success emtpy date", func(t *testing.T) {
-		ti := &timestamp{}
+		ti := &Timestamp{}
 
 		data, err := json.Marshal(ti)
 		assert.Equal(t, []byte(`"0000-00-00 00:00:00"`), data)
@@ -35,9 +36,9 @@ func TestTimestamp_UnmarshalJSON(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		dateByte := []byte(`"2019-10-01 11:00:00"`)
 
-		ti := &timestamp{}
+		ti := &Timestamp{}
 		dateUTC0, _ := time.Parse(`"`+fullFormat+`"`, string(dateByte))
-		expectedTi := &timestamp{
+		expectedTi := &Timestamp{
 			Time:            dateUTC0,
 			OriginalPayload: string(dateByte),
 		}
@@ -49,9 +50,9 @@ func TestTimestamp_UnmarshalJSON(t *testing.T) {
 	t.Run("Success empty date", func(t *testing.T) {
 		dateByte := []byte(`"0000-00-00 00:00:00"`)
 
-		ti := &timestamp{}
+		ti := &Timestamp{}
 
-		expectedTi := &timestamp{
+		expectedTi := &Timestamp{
 			OriginalPayload: string(dateByte),
 		}
 
@@ -59,18 +60,17 @@ func TestTimestamp_UnmarshalJSON(t *testing.T) {
 		assert.Equal(t, expectedTi, ti)
 		assert.Nil(t, err)
 	})
-	t.Run("Error wrong format", func(t *testing.T) {
+	t.Run("Success with wrong format", func(t *testing.T) {
 		dateByte := []byte(`"2019-10-01"`)
 
-		ti := &timestamp{}
+		ti := &Timestamp{}
+
+		expectedTi := &Timestamp{
+			OriginalPayload: string(dateByte),
+		}
 
 		err := json.Unmarshal(dateByte, ti)
-		assert.Equal(t, err, &time.ParseError{
-			Layout:     "\"2006-01-02 15:04:05\"",
-			Value:      "\"2019-10-01\"",
-			LayoutElem: " ",
-			ValueElem:  "\"",
-			Message:    "",
-		})
+		assert.Equal(t, expectedTi, ti)
+		assert.Nil(t, err)
 	})
 }
